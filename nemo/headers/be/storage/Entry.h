@@ -33,7 +33,7 @@ struct entry_ref {
 
 	bool operator==(const entry_ref &ref) const;
 	bool operator!=(const entry_ref &ref) const;
-	entry_ref &operator=(const entry_ref &ref);
+	entry_ref & operator=(const entry_ref &ref);
 
 	dev_t	device;
 	ino_t	directory;
