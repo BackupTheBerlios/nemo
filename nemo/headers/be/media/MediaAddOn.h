@@ -15,7 +15,7 @@
 #include <image.h>
 
 #include <MediaDefs.h>
-#include <Flattenable.h>
+//#include <Flattenable.h>
 
 
 struct dormant_node_info {
@@ -58,7 +58,7 @@ private:
 	flavor_info & operator=(const flavor_info & other);
 };
 
-struct dormant_flavor_info : public flavor_info, public BFlattenable {
+struct dormant_flavor_info : public flavor_info/*, public BFlattenable */{
 
 		dormant_flavor_info();
 virtual	~dormant_flavor_info();

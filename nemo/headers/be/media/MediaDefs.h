@@ -659,8 +659,8 @@ struct buffer_clone_info;
 //	use these functions, rather than sending messages yourself.
 //	The callback will be called for various stages of the process, with 100 meaning completely done
 //	The callback should always return TRUE for the time being.
-status_t shutdown_media_server(bigtime_t timeout = B_INFINITE_TIMEOUT, bool (*progress)(int stage, const char * message, void * cookie) = NULL, void * cookie = NULL);
-status_t launch_media_server(uint32 flags = 0);
+status_t shutdown_media_server(bigtime_t timeout /*= B_INFINITE_TIMEOUT*/, bool (*progress)(int stage, const char * message, void * cookie) = NULL, void * cookie = NULL);
+status_t launch_media_server(uint32 flags /*= 0*/);
 
 //	Given an image_id, prepare that image_id for realtime media
 //	If the kind of media indicated by "flags" is not enabled for real-time,

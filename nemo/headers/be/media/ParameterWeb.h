@@ -17,7 +17,7 @@
 #define _CONTROL_WEB_H
 
 #include <MediaDefs.h>
-#include <Flattenable.h>
+//#include <Flattenable.h>
 #include <MediaNode.h>
 
 #if !defined(_PR3_COMPATIBLE_)
@@ -96,8 +96,8 @@ enum media_parameter_flags {
 };
 
 
-class BParameterWeb :
-	public BFlattenable
+class BParameterWeb/* :
+	public BFlattenable*/
 {
 public:
 		BParameterWeb();
@@ -155,8 +155,8 @@ virtual		status_t _Reserved_ControlWeb_7(void *);
 };
 
 
-class BParameterGroup :
-	public BFlattenable
+class BParameterGroup/* :
+	public BFlattenable*/
 {
 private:
 
@@ -243,8 +243,8 @@ virtual		status_t _Reserved_ControlGroup_7(void *);
 
 /* After you create a BParameter, hook it up by calling AddInput() and/or AddOutput() */
 /* (which will call the reciprocal in the target) and optionally call SetChannelCount() and SetMediaType() */
-class BParameter :
-	public BFlattenable
+class BParameter/* :
+	public BFlattenable*/
 {
 public:
 
