@@ -57,14 +57,14 @@ BMediaTheme::ID()
 	return _mID;
 }
 
-/*
+
 bool
 BMediaTheme::GetRef(entry_ref *out_ref)
 {
 	UNIMPLEMENTED();
 
 	return false;
-}*/
+}
 
 BView *
 BMediaTheme::ViewFor(BParameterWeb *web, const BRect *hintRect, BMediaTheme *usingTheme)

@@ -35,7 +35,7 @@ _CreateReader(Reader **reader, int32 *streamCount, media_file_format *mff, BData
 	}
 
 	// try each reader by calling it's Sniff function...
-/*	for (int32 i = 0; i < reply.count; i++) {
+	for (int32 i = 0; i < reply.count; i++) {
 	entry_ref ref =reply.ref[i];
 		MediaPlugin *plugin = _plugin_manager.GetPlugin(ref);
 		if (!plugin) {
@@ -67,7 +67,7 @@ _CreateReader(Reader **reader, int32 *streamCount, media_file_format *mff, BData
 		// _DestroyReader(*reader);
 		delete *reader;
 		_plugin_manager.PutPlugin(plugin);
-	}*/
+	}
 
 	TRACE("_CreateReader leave\n");
 	return B_MEDIA_NO_HANDLER;

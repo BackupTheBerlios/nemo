@@ -2473,7 +2473,6 @@ BMediaRoster::SetRefFor(const media_node & file_interface,
 	return B_ERROR;
 }
 
-/*
 status_t 
 BMediaRoster::GetRefFor(const media_node & node,
 						entry_ref * out_file,
@@ -2482,7 +2481,6 @@ BMediaRoster::GetRefFor(const media_node & node,
 	UNIMPLEMENTED();
 	return B_ERROR;
 }
-*/
 
 status_t 
 BMediaRoster::SniffRefFor(const media_node & file_interface,
