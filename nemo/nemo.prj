@@ -1,0 +1,830 @@
+# Anjuta Version 1.2.0 
+Compatibility Level: 1 
+
+<PROJECT_DESCRIPTION_START>
+<PROJECT_DESCRIPTION_END>
+<CONFIG_PROGS_START>
+<CONFIG_PROGS_END>
+<CONFIG_LIBS_START>
+<CONFIG_LIBS_END>
+<CONFIG_HEADERS_START>
+<CONFIG_HEADERS_END>
+<CONFIG_CHARACTERISTICS_START>
+<CONFIG_CHARACTERISTICS_END>
+<CONFIG_LIB_FUNCS_START>
+<CONFIG_LIB_FUNCS_END>
+<CONFIG_ADDITIONAL_START>
+<CONFIG_ADDITIONAL_END>
+<CONFIG_FILES_START>
+<CONFIG_FILES_END>
+<MAKEFILE_AM_START>
+<MAKEFILE_AM_END>
+
+props.file.type=project
+
+anjuta.version=1.2.0
+anjuta.compatibility.level=1
+
+project.name=nemo
+project.type=GENERIC
+project.target.type=EXECUTABLE
+project.version=0.1
+project.author=go6
+project.source.target=unknown
+project.has.gettext=0
+project.gui.command=
+project.programming.language=C_C++
+project.excluded.modules=intl
+
+project.config.extra.modules.before=
+project.config.extra.modules.after=
+project.config.blocked=1
+project.config.disable.overwriting=1 1 1 1 1 1 1 1 1 
+
+project.menu.entry=nemo Version 0.1
+project.menu.group=Application
+project.menu.comment=nemo Version 0.1
+project.menu.icon=
+project.menu.need.terminal=0
+
+project.configure.options=
+anjuta.program.arguments=
+preferences.build.option.jobs=0
+preferences.build.option.silent=0
+preferences.build.option.autosave=0
+preferences.anjuta.make.options=-k
+preferences.make=make
+preferences.build.option.keep.going=1
+preferences.build.option.warn.undef=0
+preferences.autoformat.custom.style= -i8 -sc -bli0 -bl0 -cbi0 -ss
+preferences.indent.opening=0
+preferences.autoformat.disable=1
+preferences.indent.automatic=1
+preferences.use.tabs=1
+preferences.indent.size=4
+preferences.tabsize=4
+preferences.indent.closing=0
+
+module.include.name=.
+module.include.type=
+module.include.files=\
+	headers/be/AppKit.h\
+	headers/be/Be.h\
+	headers/be/BeBuild.h\
+	headers/be/DeviceKit.h\
+	headers/be/GameKit.h\
+	headers/be/InterfaceKit.h\
+	headers/be/KernelKit.h\
+	headers/be/MailKit.h\
+	headers/be/MediaKit.h\
+	headers/be/MidiKit.h\
+	headers/be/NetKit.h\
+	headers/be/NetworkKit.h\
+	headers/be/StorageKit.h\
+	headers/be/SupportKit.h\
+	headers/be/TranslationKit.h\
+	headers/be/add-ons/file_system/fsproto.h\
+	headers/be/add-ons/graphics/Accelerant.h\
+	headers/be/add-ons/graphics/GraphicsCard.h\
+	headers/be/add-ons/input_server/InputServerDevice.h\
+	headers/be/add-ons/input_server/InputServerFilter.h\
+	headers/be/add-ons/input_server/InputServerMethod.h\
+	headers/be/add-ons/screen_saver/ScreenSaver.h\
+	headers/be/add-ons/tracker/Background.h\
+	headers/be/add-ons/tracker/TrackerAddon.h\
+	headers/be/app/AppDefs.h\
+	headers/be/app/Application.h\
+	headers/be/app/Clipboard.h\
+	headers/be/app/Cursor.h\
+	headers/be/app/Handler.h\
+	headers/be/app/Invoker.h\
+	headers/be/app/Looper.h\
+	headers/be/app/Message.h\
+	headers/be/app/MessageFilter.h\
+	headers/be/app/MessageQueue.h\
+	headers/be/app/MessageRunner.h\
+	headers/be/app/Messenger.h\
+	headers/be/app/PropertyInfo.h\
+	headers/be/app/Roster.h\
+	headers/be/device/Joystick.h\
+	headers/be/device/A2D.h\
+	headers/be/device/CAM.h\
+	headers/be/device/D2A.h\
+	headers/be/device/DigitalPort.h\
+	headers/be/device/SerialPort.h\
+	headers/be/device/graphic_driver.h\
+	headers/be/device/scsi.h\
+	headers/be/drivers/Drivers.h\
+	headers/be/drivers/ISA.h\
+	headers/be/drivers/KernelExport.h\
+	headers/be/drivers/PCI.h\
+	headers/be/drivers/USB.h\
+	headers/be/drivers/USB_rle.h\
+	headers/be/drivers/USB_spec.h\
+	headers/be/drivers/atomizer.h\
+	headers/be/drivers/bus_manager.h\
+	headers/be/drivers/config_manager.h\
+	headers/be/drivers/driver_settings.h\
+	headers/be/drivers/fs_interface.h\
+	headers/be/drivers/isapnp.h\
+	headers/be/drivers/module.h\
+	headers/be/drivers/node_monitor.h\
+	headers/be/drivers/usb/USB_audio.h\
+	headers/be/drivers/usb/USB_cdc.h\
+	headers/be/drivers/usb/USB_langIDs.h\
+	headers/be/drivers/usb/USB_midi.h\
+	headers/be/game/DirectWindow.h\
+	headers/be/game/FileGameSound.h\
+	headers/be/game/GameSound.h\
+	headers/be/game/GameSoundDefs.h\
+	headers/be/game/PushGameSound.h\
+	headers/be/game/SimpleGameSound.h\
+	headers/be/game/StreamingGameSound.h\
+	headers/be/game/WindowScreen.h\
+	headers/be/interface/Bitmap.h\
+	headers/be/interface/Alert.h\
+	headers/be/interface/Button.h\
+	headers/be/interface/Box.h\
+	headers/be/interface/ChannelControl.h\
+	headers/be/interface/ChannelSlider.h\
+	headers/be/interface/CheckBox.h\
+	headers/be/interface/ColorControl.h\
+	headers/be/interface/ColorUtils.h\
+	headers/be/interface/Control.h\
+	headers/be/interface/Deskbar.h\
+	headers/be/interface/Dragger.h\
+	headers/be/interface/Font.h\
+	headers/be/interface/GraphicsDefs.h\
+	headers/be/interface/Input.h\
+	headers/be/interface/InterfaceDefs.h\
+	headers/be/interface/ListItem.h\
+	headers/be/interface/ListView.h\
+	headers/be/interface/Menu.h\
+	headers/be/interface/MenuBar.h\
+	headers/be/interface/MenuField.h\
+	headers/be/interface/MenuItem.h\
+	headers/be/interface/MultiChannelControl.h\
+	headers/be/interface/OptionControl.h\
+	headers/be/interface/OptionPopUp.h\
+	headers/be/interface/OutlineListView.h\
+	headers/be/interface/Picture.h\
+	headers/be/interface/PictureButton.h\
+	headers/be/interface/Point.h\
+	headers/be/interface/Polygon.h\
+	headers/be/interface/PopUpMenu.h\
+	headers/be/interface/PrintJob.h\
+	headers/be/interface/RadioButton.h\
+	headers/be/interface/Rect.h\
+	headers/be/interface/Region.h\
+	headers/be/interface/Screen.h\
+	headers/be/interface/ScrollBar.h\
+	headers/be/interface/ScrollView.h\
+	headers/be/interface/Shape.h\
+	headers/be/interface/Shelf.h\
+	headers/be/interface/Slider.h\
+	headers/be/interface/StatusBar.h\
+	headers/be/interface/StringItem.h\
+	headers/be/interface/StringView.h\
+	headers/be/interface/TabView.h\
+	headers/be/interface/TextControl.h\
+	headers/be/interface/TextView.h\
+	headers/be/interface/UnicodeBlockObjects.h\
+	headers/be/interface/View.h\
+	headers/be/interface/Window.h\
+	headers/be/kernel/debugger.h\
+	headers/be/kernel/OS.h\
+	headers/be/kernel/disk_scanner.h\
+	headers/be/kernel/fs_attr.h\
+	headers/be/kernel/fs_index.h\
+	headers/be/kernel/fs_info.h\
+	headers/be/kernel/fs_query.h\
+	headers/be/kernel/fs_volume.h\
+	headers/be/kernel/image.h\
+	headers/be/kernel/scheduler.h\
+	headers/be/mail/E-mail.h\
+	headers/be/media/Buffer.h\
+	headers/be/media/BufferConsumer.h\
+	headers/be/media/BufferGroup.h\
+	headers/be/media/BufferProducer.h\
+	headers/be/media/Controllable.h\
+	headers/be/media/FileInterface.h\
+	headers/be/media/MediaAddOn.h\
+	headers/be/media/MediaDecoder.h\
+	headers/be/media/MediaDefs.h\
+	headers/be/media/MediaEncoder.h\
+	headers/be/media/MediaEventLooper.h\
+	headers/be/media/MediaFile.h\
+	headers/be/media/MediaFiles.h\
+	headers/be/media/MediaFormats.h\
+	headers/be/media/MediaNode.h\
+	headers/be/media/MediaRoster.h\
+	headers/be/media/MediaTheme.h\
+	headers/be/media/MediaTrack.h\
+	headers/be/media/ParameterWeb.h\
+	headers/be/media/PlaySound.h\
+	headers/be/media/RealtimeAlloc.h\
+	headers/be/media/Sound.h\
+	headers/be/media/SoundFile.h\
+	headers/be/media/SoundPlayer.h\
+	headers/be/media/TimeCode.h\
+	headers/be/media/TimeSource.h\
+	headers/be/media/TimedEventQueue.h\
+	headers/be/midi/MidiDefs.h\
+	headers/be/midi/Midi.h\
+	headers/be/midi/MidiPort.h\
+	headers/be/midi/MidiStore.h\
+	headers/be/midi/MidiSynth.h\
+	headers/be/midi/MidiSynthFile.h\
+	headers/be/midi/MidiText.h\
+	headers/be/midi/Samples.h\
+	headers/be/midi/Synth.h\
+	headers/be/midi2/Midi2Defs.h\
+	headers/be/midi2/MidiConsumer.h\
+	headers/be/midi2/MidiEndpoint.h\
+	headers/be/midi2/MidiProducer.h\
+	headers/be/midi2/MidiRoster.h\
+	headers/be/net/NetAddress.h\
+	headers/be/net/NetBuffer.h\
+	headers/be/net/NetDebug.h\
+	headers/be/net/NetEndpoint.h\
+	headers/be/net/net_settings.h\
+	headers/be/net/netdb.h\
+	headers/be/net/socket.h\
+	headers/be/storage/Directory.h\
+	headers/be/storage/Alias.h\
+	headers/be/storage/AppFileInfo.h\
+	headers/be/storage/Entry.h\
+	headers/be/storage/EntryList.h\
+	headers/be/storage/File.h\
+	headers/be/storage/FilePanel.h\
+	headers/be/storage/FindDirectory.h\
+	headers/be/storage/Mime.h\
+	headers/be/storage/MimeType.h\
+	headers/be/storage/Node.h\
+	headers/be/storage/NodeInfo.h\
+	headers/be/storage/NodeMonitor.h\
+	headers/be/storage/Path.h\
+	headers/be/storage/Query.h\
+	headers/be/storage/ResourceStrings.h\
+	headers/be/storage/Resources.h\
+	headers/be/storage/Statable.h\
+	headers/be/storage/StorageDefs.Private.h\
+	headers/be/storage/StorageDefs.h\
+	headers/be/storage/SymLink.h\
+	headers/be/storage/Volume.h\
+	headers/be/storage/VolumeRoster.h\
+	headers/be/support/Archivable.h\
+	headers/be/support/Autolock.h\
+	headers/be/support/Beep.h\
+	headers/be/support/BlockCache.h\
+	headers/be/support/BufferIO.h\
+	headers/be/support/byteorder.h\
+	headers/be/support/ClassInfo.h\
+	headers/be/support/DataIO.h\
+	headers/be/support/Debug.h\
+	headers/be/support/Errors.h\
+	headers/be/support/Flattenable.h\
+	headers/be/support/List.h\
+	headers/be/support/Locker.h\
+	headers/be/support/StopWatch.h\
+	headers/be/support/String.h\
+	headers/be/support/SupportDefs.h\
+	headers/be/support/TLS.h\
+	headers/be/support/TypeConstants.h\
+	headers/be/support/UTF8.h\
+	headers/be/support/parsedate.h\
+	headers/be/support/syslog.h\
+	headers/be/translation/BitmapStream.h\
+	headers/be/translation/FuncTranslator.h\
+	headers/be/translation/TranslationDefs.h\
+	headers/be/translation/TranslationErrors.h\
+	headers/be/translation/TranslationKit.h\
+	headers/be/translation/TranslationUtils.h\
+	headers/be/translation/Translator.h\
+	headers/be/translation/TranslatorAddOn.h\
+	headers/be/translation/TranslatorFormats.h\
+	headers/be/translation/TranslatorRoster.h\
+	headers/posix/alloca.h\
+	headers/posix/ctype.h\
+	headers/posix/dirent.h\
+	headers/posix/div_t.h\
+	headers/posix/dlfcn.h\
+	headers/posix/endian.h\
+	headers/posix/errno.h\
+	headers/posix/fcntl.h\
+	headers/posix/float.h\
+	headers/posix/fnmatch.h\
+	headers/posix/glob.h\
+	headers/posix/iconv.h\
+	headers/posix/inttypes.h\
+	headers/posix/iovec.h\
+	headers/posix/limits.h\
+	headers/posix/locale.h\
+	headers/posix/malloc.h\
+	headers/posix/math.h\
+	headers/posix/netdb.h\
+	headers/posix/new.h\
+	headers/posix/nl_types.h\
+	headers/posix/null.h\
+	headers/posix/poll.h\
+	headers/posix/pthread.h\
+	headers/posix/pwd.h\
+	headers/posix/resolv.h\
+	headers/posix/signal.h\
+	headers/posix/size_t.h\
+	headers/posix/stdarg.h\
+	headers/posix/stdbool.h\
+	headers/posix/stddef.h\
+	headers/posix/stdint.h\
+	headers/posix/stdio_post.h\
+	headers/posix/stdio_pre.h\
+	headers/posix/stdlib.h\
+	headers/posix/string.h\
+	headers/posix/strings.h\
+	headers/posix/termios.h\
+	headers/posix/time.h\
+	headers/posix/unistd.h\
+	headers/posix/utime.h\
+	headers/posix/varargs.h\
+	headers/posix/wchar.h\
+	headers/posix/wchar_t.h\
+	headers/posix/arpa/nameser.h\
+	headers/posix/arpa/inet.h\
+	headers/posix/net/if_arp.h\
+	headers/posix/net/if.h\
+	headers/posix/net/if_ppp.h\
+	headers/posix/net/if_dl.h\
+	headers/posix/net/if_types.h\
+	headers/posix/net/radix.h\
+	headers/posix/net/raw_cb.h\
+	headers/posix/net/route.h\
+	headers/posix/netinet/icmp_var.h\
+	headers/posix/netinet/if_ether.h\
+	headers/posix/netinet/in.h\
+	headers/posix/netinet/in_pcb.h\
+	headers/posix/netinet/in_systm.h\
+	headers/posix/netinet/in_var.h\
+	headers/posix/netinet/ip.h\
+	headers/posix/netinet/ip_icmp.h\
+	headers/posix/netinet/ip_var.h\
+	headers/posix/netinet/tcp.h\
+	headers/posix/netinet/tcp_debug.h\
+	headers/posix/netinet/tcp_fsm.h\
+	headers/posix/netinet/tcp_seq.h\
+	headers/posix/netinet/tcp_timer.h\
+	headers/posix/netinet/tcp_var.h\
+	headers/posix/netinet/tcpip.h\
+	headers/posix/netinet/udp.h\
+	headers/posix/netinet/udp_var.h\
+	headers/posix/sys/ioccom.h\
+	headers/posix/sys/filio.h\
+	headers/posix/sys/resource.h\
+	headers/posix/sys/ioctl.h\
+	headers/posix/sys/param.h\
+	headers/posix/sys/select.h\
+	headers/posix/sys/socket.h\
+	headers/posix/sys/stat.h\
+	headers/posix/sys/time.h\
+	headers/posix/sys/timeb.h\
+	headers/posix/sys/times.h\
+	headers/posix/sys/types.h\
+	headers/posix/sys/uio.h\
+	headers/private/app/AppMisc.h\
+	headers/private/app/AppServerLink.h\
+	headers/private/app/AreaLink.h\
+	headers/private/app/LooperList.h\
+	headers/private/app/MessageBody.h\
+	headers/private/app/MessageField.h\
+	headers/private/app/MessagePrivate.h\
+	headers/private/app/MessageUtils.h\
+	headers/private/app/MessengerPrivate.h\
+	headers/private/app/PortLink.h\
+	headers/private/app/PortMessage.h\
+	headers/private/app/PortQueue.h\
+	headers/private/app/RegistrarDefs.h\
+	headers/private/app/RegistrarThread.h\
+	headers/private/app/RegistrarThreadManager.h\
+	headers/private/app/RosterPrivate.h\
+	headers/private/app/ServerProtocol.h\
+	headers/private/app/Session.h\
+	headers/private/app/SysCursor.h\
+	headers/private/app/TokenSpace.h\
+	headers/private/app/ObserverList.h\
+	headers/private/disk_scanner/disk_scanner.h\
+	headers/private/disk_scanner/fs.h\
+	headers/private/disk_scanner/partition.h\
+	headers/private/disk_scanner/session.h\
+	headers/private/input/kb_mouse_driver.h\
+	headers/private/interface/BMCPrivate.h\
+	headers/private/interface/ClientFontList.h\
+	headers/private/interface/PictureProtocol.h\
+	headers/private/interface/PrivateScreen.h\
+	headers/private/interface/R5_AppServerLink.h\
+	headers/private/interface/R5_Session.h\
+	headers/private/interface/TPicture.h\
+	headers/private/interface/TextInput.h\
+	headers/private/interface/ViewAux.h\
+	headers/private/interface/WindowAux.h\
+	headers/private/interface/clipping.h\
+	headers/private/interface/pr_server.h\
+	headers/private/kernel/assert.h\
+	headers/private/kernel/bus.h\
+	headers/private/kernel/cbuf.h\
+	headers/private/kernel/console.h\
+	headers/private/kernel/cpu.h\
+	headers/private/kernel/ctlreg.h\
+	headers/private/kernel/debug.h\
+	headers/private/kernel/defines.h\
+	headers/private/kernel/dev.h\
+	headers/private/kernel/devfs.h\
+	headers/private/kernel/devs.h\
+	headers/private/kernel/elf.h\
+	headers/private/kernel/elf32.h\
+	headers/private/kernel/elf_priv.h\
+	headers/private/kernel/faults_priv.h\
+	headers/private/kernel/fb_console.h\
+	headers/private/kernel/fd.h\
+	headers/private/kernel/float.h\
+	headers/private/kernel/font.h\
+	headers/private/kernel/gdb.h\
+	headers/private/kernel/int.h\
+	headers/private/kernel/isa.h\
+	headers/private/kernel/isovol.h\
+	headers/private/kernel/kernel.h\
+	headers/private/kernel/kernel_daemon.h\
+	headers/private/kernel/kerrors.h\
+	headers/private/kernel/khash.h\
+	headers/private/kernel/kimage.h\
+	headers/private/kernel/kmodule.h\
+	headers/private/kernel/kqueue.h\
+	headers/private/kernel/ksignal.h\
+	headers/private/kernel/ksocket.h\
+	headers/private/kernel/ksyscalls.h\
+	headers/private/kernel/ktypes.h\
+	headers/private/kernel/lock.h\
+	headers/private/kernel/memheap.h\
+	headers/private/kernel/pci_priv.h\
+	headers/private/kernel/pools.h\
+	headers/private/kernel/port.h\
+	headers/private/kernel/queue.h\
+	headers/private/kernel/sem.h\
+	headers/private/kernel/smp.h\
+	headers/private/kernel/stdio.h\
+	headers/private/kernel/syscalls.h\
+	headers/private/kernel/sysctl.h\
+	headers/private/kernel/thread.h\
+	headers/private/kernel/thread_types.h\
+	headers/private/kernel/timer.h\
+	headers/private/kernel/tls.h\
+	headers/private/kernel/user_atomic.h\
+	headers/private/kernel/user_runtime.h\
+	headers/private/kernel/vfs.h\
+	headers/private/kernel/vfs_types.h\
+	headers/private/kernel/vm.h\
+	headers/private/kernel/vm_cache.h\
+	headers/private/kernel/vm_page.h\
+	headers/private/kernel/vm_priv.h\
+	headers/private/kernel/vm_store_anonymous_noswap.h\
+	headers/private/kernel/vm_store_device.h\
+	headers/private/kernel/vm_store_null.h\
+	headers/private/kernel/vm_store_vnode.h\
+	headers/private/kernel/vm_translation_map.h\
+	headers/private/kernel/vm_types.h\
+	headers/private/kernel/arch/faults.h\
+	headers/private/kernel/arch/cpu.h\
+	headers/private/kernel/arch/debug.h\
+	headers/private/kernel/arch/dbg_console.h\
+	headers/private/kernel/arch/elf.h\
+	headers/private/kernel/arch/thread.h\
+	headers/private/kernel/arch/int.h\
+	headers/private/kernel/arch/smp.h\
+	headers/private/kernel/arch/thread_struct.h\
+	headers/private/kernel/arch/timer.h\
+	headers/private/kernel/arch/vm.h\
+	headers/private/kernel/arch/vm_translation_map.h\
+	headers/private/kernel/arch/alpha/kernel.h\
+	headers/private/kernel/arch/alpha/cpu.h\
+	headers/private/kernel/arch/alpha/ktypes.h\
+	headers/private/kernel/arch/alpha/stage2.h\
+	headers/private/kernel/arch/alpha/thread_struct.h\
+	headers/private/kernel/arch/alpha/va-alpha.h\
+	headers/private/kernel/arch/ppc/arch_cpu.h\
+	headers/private/kernel/arch/ppc/arch_elf.h\
+	headers/private/kernel/arch/ppc/arch_kernel.h\
+	headers/private/kernel/arch/ppc/arch_kernel_args.h\
+	headers/private/kernel/arch/ppc/arch_mmu.h\
+	headers/private/kernel/arch/ppc/arch_thread.h\
+	headers/private/kernel/arch/ppc/arch_vm_translation_map.h\
+	headers/private/kernel/arch/ppc/cpu.h\
+	headers/private/kernel/arch/ppc/kernel.h\
+	headers/private/kernel/arch/ppc/ktypes.h\
+	headers/private/kernel/arch/ppc/stage2_priv.h\
+	headers/private/kernel/arch/ppc/thread_struct.h\
+	headers/private/kernel/arch/ppc/types.h\
+	headers/private/kernel/arch/sh4/arch_cpu.h\
+	headers/private/kernel/arch/sh4/cpu.h\
+	headers/private/kernel/arch/sh4/defs.h\
+	headers/private/kernel/arch/sh4/kernel.h\
+	headers/private/kernel/arch/sh4/ktypes.h\
+	headers/private/kernel/arch/sh4/mmu.h\
+	headers/private/kernel/arch/sh4/rtl8139_priv.h\
+	headers/private/kernel/arch/sh4/rtl8139c.h\
+	headers/private/kernel/arch/sh4/serial.h\
+	headers/private/kernel/arch/sh4/sh4.h\
+	headers/private/kernel/arch/sh4/stage2.h\
+	headers/private/kernel/arch/sh4/thread_struct.h\
+	headers/private/kernel/arch/sh4/types.h\
+	headers/private/kernel/arch/sh4/va-sh.h\
+	headers/private/kernel/arch/sh4/vcpu.h\
+	headers/private/kernel/arch/sh4/vcpu_struct.h\
+	headers/private/kernel/arch/sparc/kernel.h\
+	headers/private/kernel/arch/sparc/DEFS.h\
+	headers/private/kernel/arch/sparc/cpu.h\
+	headers/private/kernel/arch/sparc/ktypes.h\
+	headers/private/kernel/arch/sparc/promdev.h\
+	headers/private/kernel/arch/sparc/saerrno.h\
+	headers/private/kernel/arch/sparc/saioctl.h\
+	headers/private/kernel/arch/sparc/sparc.h\
+	headers/private/kernel/arch/sparc/sparcbootblock.h\
+	headers/private/kernel/arch/sparc/stage2.h\
+	headers/private/kernel/arch/sparc/stand.h\
+	headers/private/kernel/arch/sparc/thread_struct.h\
+	headers/private/kernel/arch/sparc/types.h\
+	headers/private/kernel/arch/sparc/va-sparc.h\
+	headers/private/kernel/arch/x86/arch_cpu.h\
+	headers/private/kernel/arch/x86/arch_elf.h\
+	headers/private/kernel/arch/x86/arch_kernel.h\
+	headers/private/kernel/arch/x86/arch_kernel_args.h\
+	headers/private/kernel/arch/x86/arch_thread.h\
+	headers/private/kernel/arch/x86/arch_vm_translation_map.h\
+	headers/private/kernel/arch/x86/console_dev.h\
+	headers/private/kernel/arch/x86/descriptors.h\
+	headers/private/kernel/arch/x86/faults.h\
+	headers/private/kernel/arch/x86/ide_bus.h\
+	headers/private/kernel/arch/x86/ide_private.h\
+	headers/private/kernel/arch/x86/ide_raw.h\
+	headers/private/kernel/arch/x86/interrupts.h\
+	headers/private/kernel/arch/x86/partition.h\
+	headers/private/kernel/arch/x86/rtl8139_dev.h\
+	headers/private/kernel/arch/x86/rtl8139_priv.h\
+	headers/private/kernel/arch/x86/selector.h\
+	headers/private/kernel/arch/x86/smp_apic.h\
+	headers/private/kernel/arch/x86/smp_priv.h\
+	headers/private/kernel/arch/x86/stage2_priv.h\
+	headers/private/kernel/arch/x86/thread_struct.h\
+	headers/private/kernel/arch/x86/timer.h\
+	headers/private/kernel/arch/x86/types.h\
+	headers/private/kernel/arch/x86/vesa.h\
+	headers/private/kernel/arch/x86/vm.h\
+	headers/private/kernel/boot/bootdir.h\
+	headers/private/kernel/boot/elf.h\
+	headers/private/kernel/boot/heap.h\
+	headers/private/kernel/boot/kernel_args.h\
+	headers/private/kernel/boot/partitions.h\
+	headers/private/kernel/boot/platform.h\
+	headers/private/kernel/boot/stage2.h\
+	headers/private/kernel/boot/stage2_args.h\
+	headers/private/kernel/boot/stdio.h\
+	headers/private/kernel/boot/vfs.h\
+	headers/private/kernel/boot/platform/bios_ia32/platform_kernel_args.h\
+	headers/private/kernel/boot/platform/bios_ia32/platform_stage2_args.h\
+	headers/private/kernel/boot/platform/openfirmware/platform_arch.h\
+	headers/private/kernel/boot/platform/openfirmware/platform_kernel_args.h\
+	headers/private/kernel/boot/platform/openfirmware/platform_stage2_args.h\
+	headers/private/kernel/disk_device_manager/KDiskDevice.h\
+	headers/private/kernel/disk_device_manager/KDiskDeviceJob.h\
+	headers/private/kernel/disk_device_manager/KDiskDeviceJobFactory.h\
+	headers/private/kernel/disk_device_manager/KDiskDeviceJobQueue.h\
+	headers/private/kernel/disk_device_manager/KDiskDeviceManager.h\
+	headers/private/kernel/disk_device_manager/KDiskDeviceUtils.h\
+	headers/private/kernel/disk_device_manager/KDiskSystem.h\
+	headers/private/kernel/disk_device_manager/KFileDiskDevice.h\
+	headers/private/kernel/disk_device_manager/KFileSystem.h\
+	headers/private/kernel/disk_device_manager/KPartition.h\
+	headers/private/kernel/disk_device_manager/KPartitionListener.h\
+	headers/private/kernel/disk_device_manager/KPartitionVisitor.h\
+	headers/private/kernel/disk_device_manager/KPartitioningSystem.h\
+	headers/private/kernel/disk_device_manager/KPhysicalPartition.h\
+	headers/private/kernel/disk_device_manager/KShadowPartition.h\
+	headers/private/kernel/disk_device_manager/ddm_modules.h\
+	headers/private/kernel/disk_device_manager/ddm_userland_interface.h\
+	headers/private/kernel/disk_device_manager/disk_device_manager.h\
+	headers/private/kernel/fs/node_monitor.h\
+	headers/private/kernel/util/AVLTreeMap.h\
+	headers/private/kernel/util/Constructor.h\
+	headers/private/kernel/util/DoublyLinkedList.h\
+	headers/private/kernel/util/KernelUtilsOrder.h\
+	headers/private/kernel/util/MallocFreeAllocator.h\
+	headers/private/kernel/util/SinglyLinkedList.h\
+	headers/private/kernel/util/Vector.h\
+	headers/private/kernel/util/VectorMap.h\
+	headers/private/kernel/util/VectorSet.h\
+	headers/private/kernel/util/kernel_cpp.h\
+	headers/private/kernel/util/list.h\
+	headers/private/kernel/util/syscall_args.h\
+	headers/private/libroot/mathimpl.h\
+	headers/private/libroot/trig.h\
+	headers/private/media/ChannelMixer.h\
+	headers/private/media/DataExchange.h\
+	headers/private/media/Decoder.h\
+	headers/private/media/DecoderPlugin.h\
+	headers/private/media/DefaultMediaTheme.h\
+	headers/private/media/DormantNodeManager.h\
+	headers/private/media/Encoder.h\
+	headers/private/media/Extractor.h\
+	headers/private/media/MediaMisc.h\
+	headers/private/media/MediaPlugin.h\
+	headers/private/media/MediaRosterEx.h\
+	headers/private/media/Notifications.h\
+	headers/private/media/OldSoundDriver.h\
+	headers/private/media/PortPool.h\
+	headers/private/media/ReaderPlugin.h\
+	headers/private/media/SampleConverter.h\
+	headers/private/media/SamplingrateConverter.h\
+	headers/private/media/SharedBufferList.h\
+	headers/private/media/TList.h\
+	headers/private/media/TMap.h\
+	headers/private/media/TStack.h\
+	headers/private/media/Writer.h\
+	headers/private/media/audio_module.h\
+	headers/private/media/debug.h\
+	headers/private/media/multi_audio.h\
+	headers/private/media/experimental/MediaExtractorAddOn.h\
+	headers/private/media/experimental/MediaFileProducer.h\
+	headers/private/media/experimental/MediaFileProducerAddOn.h\
+	headers/private/midi/protocol.h\
+	headers/private/midi/debug.h\
+	headers/private/net/core_funcs.h\
+	headers/private/net/core_module.h\
+	headers/private/net/icmp_module.h\
+	headers/private/net/ipv4_module.h\
+	headers/private/net/lock.h\
+	headers/private/net/mbuf.h\
+	headers/private/net/net_malloc.h\
+	headers/private/net/net_misc.h\
+	headers/private/net/net_module.h\
+	headers/private/net/net_socket.h\
+	headers/private/net/net_stack_driver.h\
+	headers/private/net/net_timer.h\
+	headers/private/net/nhash.h\
+	headers/private/net/pools.h\
+	headers/private/net/protocols.h\
+	headers/private/net/raw_module.h\
+	headers/private/net/userland_ipc.h\
+	headers/private/net/sys/domain.h\
+	headers/private/net/sys/protosw.h\
+	headers/private/net/sys/socketvar.h\
+	headers/private/net/sys/sockio.h\
+	headers/private/print/BeUtils.h\
+	headers/private/print/FolderWatcher.h\
+	headers/private/print/Jobs.h\
+	headers/private/print/PictureIterator.h\
+	headers/private/print/PicturePrinter.h\
+	headers/private/print/PrintJobReader.h\
+	headers/private/print/PrintTransportAddOn.h\
+	headers/private/print/Template.h\
+	headers/private/print/libprint/AboutBox.h\
+	headers/private/print/libprint/DbgMsg.h\
+	headers/private/print/libprint/Exports.h\
+	headers/private/print/libprint/GraphicsDriver.h\
+	headers/private/print/libprint/Halftone.h\
+	headers/private/print/libprint/JobData.h\
+	headers/private/print/libprint/JobSetupDlg.h\
+	headers/private/print/libprint/PageSetupDlg.h\
+	headers/private/print/libprint/Pattern.h\
+	headers/private/print/libprint/Preview.h\
+	headers/private/print/libprint/PrintProcess.h\
+	headers/private/print/libprint/PrinterCap.h\
+	headers/private/print/libprint/PrinterData.h\
+	headers/private/print/libprint/Transport.h\
+	headers/private/print/libprint/UIDriver.h\
+	headers/private/print/libprint/ValidRect.h\
+	headers/private/servers/app/BitmapManager.h\
+	headers/private/servers/app/ColorSet.h\
+	headers/private/servers/app/Decorator.h\
+	headers/private/servers/app/DisplayDriver.h\
+	headers/private/servers/app/FontFamily.h\
+	headers/private/servers/app/FontServer.h\
+	headers/private/servers/app/LayerData.h\
+	headers/private/servers/app/PatternHandler.h\
+	headers/private/servers/app/RGBColor.h\
+	headers/private/servers/app/RectUtils.h\
+	headers/private/servers/app/ServerBitmap.h\
+	headers/private/servers/app/ServerConfig.h\
+	headers/private/servers/app/ServerCursor.h\
+	headers/private/servers/app/ServerFont.h\
+	headers/private/servers/app/SharedObject.h\
+	headers/private/servers/app/SystemPalette.h\
+	headers/private/servers/app/TokenHandler.h\
+	headers/private/shared/AutoDeleter.h\
+	headers/private/shared/DataBuffer.h\
+	headers/private/shared/ObjectList.h\
+	headers/private/shared/ObjectLocker.h\
+	headers/private/storage/DiskDevice.h\
+	headers/private/storage/DiskDeviceDefs.h\
+	headers/private/storage/DiskDeviceJob.h\
+	headers/private/storage/DiskDeviceList.h\
+	headers/private/storage/DiskDevicePrivate.h\
+	headers/private/storage/DiskDeviceRoster.h\
+	headers/private/storage/DiskDeviceTypes.h\
+	headers/private/storage/DiskDeviceVisitor.h\
+	headers/private/storage/DiskScannerAddOn.h\
+	headers/private/storage/DiskSystem.h\
+	headers/private/storage/Elf.h\
+	headers/private/storage/Exception.h\
+	headers/private/storage/LibBeAdapter.h\
+	headers/private/storage/OffsetFile.h\
+	headers/private/storage/Partition.h\
+	headers/private/storage/PartitioningInfo.h\
+	headers/private/storage/Pef.h\
+	headers/private/storage/QueryPredicate.h\
+	headers/private/storage/ResourceFile.h\
+	headers/private/storage/ResourceItem.h\
+	headers/private/storage/ResourcesContainer.h\
+	headers/private/storage/ResourcesDefs.h\
+	headers/private/storage/kernel_interface.h\
+	headers/private/storage/storage_support.h\
+	headers/private/storage/mime/AssociatedTypes.h\
+	headers/private/storage/mime/CreateAppMetaMimeThread.h\
+	headers/private/storage/mime/Database.h\
+	headers/private/storage/mime/InstalledTypes.h\
+	headers/private/storage/mime/MimeUpdateThread.h\
+	headers/private/storage/mime/SnifferRules.h\
+	headers/private/storage/mime/Supertype.h\
+	headers/private/storage/mime/SupportingApps.h\
+	headers/private/storage/mime/UpdateMimeInfoThread.h\
+	headers/private/storage/mime/database_access.h\
+	headers/private/storage/mime/database_support.h\
+	headers/private/storage/sniffer/CharStream.h\
+	headers/private/storage/sniffer/DisjList.h\
+	headers/private/storage/sniffer/Err.h\
+	headers/private/storage/sniffer/Parser.h\
+	headers/private/storage/sniffer/Pattern.h\
+	headers/private/storage/sniffer/PatternList.h\
+	headers/private/storage/sniffer/RPattern.h\
+	headers/private/storage/sniffer/RPatternList.h\
+	headers/private/storage/sniffer/Range.h\
+	headers/private/storage/sniffer/Rule.h\
+	headers/private/support/CharacterSet.h\
+	headers/private/support/CharacterSetRoster.h\
+	headers/private/nemo_debug.h\
+	src/servers/app/AppServer.h\
+	src/servers/app/ServerApp.h
+
+module.source.name=.
+module.source.type=
+module.source.files=\
+	headers/private/nemo_debug.c\
+	src/kits/support/List.cpp\
+	src/kits/support/Archivable.cpp\
+	src/kits/support/Locker.cpp\
+	src/kits/app/Handler.cpp\
+	src/kits/app/Looper.cpp\
+	src/kits/app/TokenSpace.cpp\
+	src/kits/app/ObserverList.cpp\
+	src/servers/app/AppServer.cpp\
+	src/servers/app/ServerApp.cpp\
+	src/kernel/libroot/os/port.cpp\
+	src/kernel/libroot/os/sem.cpp\
+	src/kernel/libroot/os/thread.cpp\
+	src/test/input_server.cpp\
+	src/test/locker_test.cpp\
+	src/test/test_app.cpp\
+	src/test/test.cpp
+
+module.pixmap.name=.
+module.pixmap.type=
+module.pixmap.files=
+
+module.data.name=.
+module.data.type=
+module.data.files=
+
+module.help.name=.
+module.help.type=
+module.help.files=
+
+module.doc.name=.
+module.doc.type=
+module.doc.files=
+
+module.po.files=
+
+compiler.options.supports=
+compiler.options.include.paths=\
+	.\
+	..
+compiler.options.library.paths=
+compiler.options.libraries=
+compiler.options.libraries.selected=
+compiler.options.defines=\
+	HAVE_CONFIG_H
+compiler.options.defines.selected=
+compiler.options.warning.buttons=0 0 1 1 0 1 0 0 0 0 0 0 0 1 0 0 
+compiler.options.optimize.buttons=0 0 1 0 
+compiler.options.other.buttons=1 0 
+compiler.options.other.c.flags=
+compiler.options.other.l.flags=
+compiler.options.other.l.libs=
+
+project.src.paths=

@@ -1,0 +1,26 @@
+in MediaDefs.h line 670
+in MediaNode.h line 239 void * operator new(
+				size_t size,
+				const nothrow_t &) throw(); commented
+in MediaNode.h line 246 void operator delete(
+				void * ptr, 
+				const nothrow_t &) throw(); commented
+
+
+in MediaNode.cpp function: new(,) (at line 681) commented
+in MediaNode.cpp function: delete(,) (at line 696) commented
+
+
+uncommented BLOOPER::Postmessage(BMessage *);
+
+in TimeCode.h and .cpp all functions with the 6ths paramater const timecode_info * code = NULL 
+		--> const timecode_info * code /*= NULL*/
+
+in Sound.h and .cpp all all functions with a paramater bool free_when_done = false
+		--> bool free_when_done /*= false*/   
+
+		
+		
+Add #ifndef #define #endif to 	DecoderPlugin.h
+				ReaderPlugin.h
+				MediaPlugin.h

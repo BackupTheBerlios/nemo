@@ -1,0 +1,15 @@
+o	implemented BLocker & tested it with 2 threads
+o	added BAutoLock, not tested yet
+o	added a temporary fix for the lack of atomic operations (i386 only)
+
+22/12/2003
+o	cleaned up the make file and added the _REENTRANT flag
+o	implemented most thread & port functions in libroot.so and made changes in
+	all the rest of the code to make use of them instead of pthread* & msg* functions
+	
+22/1/2004
+o	rewrote the make file completely
+o	most semaphore functions implemented in libroot
+o	kernel layer code now is compiled in libroot.so separately
+o	kit classes are now compiled separately in libbe.so
+o	last version before migrating to Anjuta...

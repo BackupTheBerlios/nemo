@@ -1,0 +1,5 @@
+PluginManager.cpp
+ParameterWeb.cpp
+MediaTrack.cpp
+MediaRoster.cpp
+MediaFormats.cpp
