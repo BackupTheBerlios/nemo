@@ -1353,8 +1353,9 @@ BParameter::GetValue(void *buffer, size_t *_ioSize, bigtime_t *_when)
 	void *data;
 	if (ioSize > MAX_PARAMETER_DATA) {
 		// create an area if large data needs to be transfered
-		area = create_area("get parameter data", &data, B_ANY_ADDRESS, ROUND_UP_TO_PAGE(ioSize),
-			B_NO_LOCK, B_READ_AREA | B_WRITE_AREA);
+/*		area = create_area("get parameter data", &data, B_ANY_ADDRESS, ROUND_UP_TO_PAGE(ioSize),
+			B_NO_LOCK, B_READ_AREA | B_WRITE_AREA);*/
+		area=B_ERROR;
 		if (area < B_OK) {
 			ERROR("BParameter::GetValue can't create area of %ld bytes\n", ioSize);
 			return B_NO_MEMORY;
@@ -1386,7 +1387,9 @@ BParameter::GetValue(void *buffer, size_t *_ioSize, bigtime_t *_when)
 		ERROR("BParameter::GetValue querying node failed: %s\n", strerror(status));
 
 	if (area >= B_OK)
-		delete_area(area);
+	{
+	/*	delete_area(area);*/
+	}
 
 	return status;
 }
@@ -1422,7 +1425,8 @@ BParameter::SetValue(const void *buffer, size_t size, bigtime_t when)
 	
 	if (size > MAX_PARAMETER_DATA) {
 		// create an area if large data needs to be transfered
-		area = create_area("set parameter data", &data, B_ANY_ADDRESS, ROUND_UP_TO_PAGE(size), B_NO_LOCK, B_READ_AREA | B_WRITE_AREA);
+/*		area = create_area("set parameter data", &data, B_ANY_ADDRESS, ROUND_UP_TO_PAGE(size), B_NO_LOCK, B_READ_AREA | B_WRITE_AREA);*/
+		area=B_ERROR;
 		if (area < B_OK) {
 			ERROR("BParameter::SetValue can't create area of %ld bytes\n", size);
 			return B_NO_MEMORY;
@@ -1443,7 +1447,9 @@ BParameter::SetValue(const void *buffer, size_t size, bigtime_t when)
 		ERROR("BParameter::SetValue querying node failed\n");
 
 	if (area != -1)
-		delete_area(area);
+	{
+	/*	delete_area(area);*/
+	}
 	
 	return rv;
 }

@@ -15,7 +15,7 @@ class BTrackReader
 {
 public:
 	BTrackReader(BMediaTrack *, media_raw_audio_format const &);
-	BTrackReader(BFile *, media_raw_audio_format const &);
+/*	BTrackReader(BFile *, media_raw_audio_format const &);*/
 	~BTrackReader();
 
 	status_t 	InitCheck();	

@@ -57,9 +57,9 @@ BSoundFile::SetTo(const entry_ref *ref,
 		delete file;
 	}		
 	if (fSoundFile) {
-		BFile * file = fSoundFile;
+/*		BFile * file = fSoundFile;*/
 		fSoundFile = 0;
-		delete file;
+/*		delete file;*/
 	}
 	if (open_mode == B_READ_ONLY) {
 		return _ref_to_file(ref);
@@ -308,13 +308,14 @@ status_t
 BSoundFile::_ref_to_file(const entry_ref *ref)
 {
 	status_t status;
-	BFile * file = new BFile(ref,B_READ_ONLY);
-	status = file->InitCheck();
+/*	BFile * file = new BFile(ref,B_READ_ONLY);*/
+/*	status = file->InitCheck();*/
+	status = B_ERROR; 
 	if (status != B_OK) {
-		fSoundFile = file;
+/*		fSoundFile = file;*/
 		return status;
 	}	
-	BMediaFile * media = new BMediaFile(file);
+/*	BMediaFile * media = new BMediaFile(file);*/
 	status = media->InitCheck();
 	if (status != B_OK) {
 		delete media;

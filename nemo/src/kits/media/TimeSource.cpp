@@ -11,6 +11,8 @@
 #include "ServerInterface.h"
 #include "TimeSourceObject.h"
 
+#include <time.h>
+
 #define DEBUG_TIMESOURCE 0
 
 #if DEBUG_TIMESOURCE
@@ -21,7 +23,7 @@
 
 namespace BPrivate { namespace media {
 
-#define _atomic_read(p) 	atomic_or((p), 0)
+//#define _atomic_read(p) 	atomic_or((p), 0)
 
 #define TS_AREA_SIZE		B_PAGE_SIZE		// must be multiple of page size
 #define TS_INDEX_COUNT 		128				// must be power of two
@@ -55,8 +57,8 @@ struct SlaveNodes
 BTimeSource::~BTimeSource()
 {
 	CALLED();
-	if (fArea > 0)
-		delete_area(fArea);
+	if (fArea > 0){}
+		/*delete_area(fArea);*/
 	if (fSlaveNodes)
 		free(fSlaveNodes);
 }
@@ -75,7 +77,7 @@ BTimeSource::SnoozeUntil(bigtime_t performance_time,
 	status_t err;
 	do {
 		time = RealTimeFor(performance_time, with_latency);
-		err = snooze_until(time, B_SYSTEM_TIMEBASE);
+/*		err = snooze_until(time, B_SYSTEM_TIMEBASE);*/
 	} while (err == B_INTERRUPTED && retry_signals);
 	return err;
 }
@@ -150,7 +152,7 @@ BTimeSource::GetTime(bigtime_t *performance_time,
 	PRINT(8, "CALLED BTimeSource::GetTime()\n");
 
 	if (fIsRealtime) {
-		*performance_time = *real_time = system_time();
+		*performance_time = *real_time =/* system_time();*/time(NULL);
 		*drift = 1.0f;
 		return B_OK;
 	}
@@ -162,7 +164,7 @@ BTimeSource::GetTime(bigtime_t *performance_time,
 //	}
 
 	int32 index;
-	index = _atomic_read(&fBuf->readindex);
+/*	index = _atomic_read(&fBuf->readindex);*/
 	index &= (TS_INDEX_COUNT - 1);
 	*real_time = fBuf->realtime[index];
 	*performance_time = fBuf->perftime[index];
@@ -184,7 +186,7 @@ bigtime_t
 BTimeSource::RealTime()
 {
 	PRINT(8, "CALLED BTimeSource::RealTime()\n");
-	return system_time();
+	return /*system_*/time(NULL);
 }
 
 
@@ -400,13 +402,15 @@ BTimeSource::BTimeSource(media_node_id id) :
 	char name[32];
 	area_id area;
 	sprintf(name, "__timesource_buf_%ld", id);
-	area = find_area(name);
+/*	area = find_area(name);*/
+	area=0;
 	if (area <= 0) {
 		ERROR("BTimeSource::BTimeSource couldn't find area, node %ld\n", id);
 		return;
 	}
 	sprintf(name, "__cloned_timesource_buf_%ld", id);
-	fArea = clone_area(name, reinterpret_cast<void **>(const_cast<BPrivate::media::TimeSourceTransmit **>(&fBuf)), B_ANY_ADDRESS, B_READ_AREA | B_WRITE_AREA, area);
+/*	fArea = clone_area(name, reinterpret_cast<void **>(const_cast<BPrivate::media::TimeSourceTransmit **>(&fBuf)), B_ANY_ADDRESS, B_READ_AREA | B_WRITE_AREA, area);*/
+	fArea=0;
 	if (fArea <= 0) {
 		ERROR("BTimeSource::BTimeSource couldn't clone area, node %ld\n", id);
 		return;
@@ -422,7 +426,8 @@ BTimeSource::FinishCreate()
 	
 	char name[32];
 	sprintf(name, "__timesource_buf_%ld", ID());
-	fArea = create_area(name, reinterpret_cast<void **>(const_cast<BPrivate::media::TimeSourceTransmit **>(&fBuf)), B_ANY_ADDRESS, TS_AREA_SIZE, B_FULL_LOCK, B_READ_AREA | B_WRITE_AREA);
+/*	fArea = create_area(name, reinterpret_cast<void **>(const_cast<BPrivate::media::TimeSourceTransmit **>(&fBuf)), B_ANY_ADDRESS, TS_AREA_SIZE, B_FULL_LOCK, B_READ_AREA | B_WRITE_AREA);*/
+	fArea=0;
 	if (fArea <= 0) {
 		ERROR("BTimeSource::BTimeSource couldn't create area, node %ld\n", ID());
 		fBuf = NULL;
@@ -534,7 +539,9 @@ BTimeSource::DirectStart(bigtime_t at)
 {
 	UNIMPLEMENTED();
 	if (fBuf)
-		atomic_or(&fBuf->isrunning, 1);
+	{
+/*		atomic_or(&fBuf->isrunning, 1);*/
+	}
 	else
 		fStarted = true;
 }
@@ -546,7 +553,9 @@ BTimeSource::DirectStop(bigtime_t at,
 {
 	UNIMPLEMENTED();
 	if (fBuf)
-		atomic_and(&fBuf->isrunning, 0);
+	{
+	/*	atomic_and(&fBuf->isrunning, 0);*/
+	}
 	else
 		fStarted = false;
 }

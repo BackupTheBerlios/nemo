@@ -8,6 +8,7 @@
 #include "SharedBufferList.h"
 #include "debug.h"
 
+#include <time.h>
 
 status_t
 _shared_buffer_list::Init()
@@ -39,14 +40,15 @@ _shared_buffer_list::Clone(area_id id)
 
 	if (id == -1) {
 		size_t size = ((sizeof(_shared_buffer_list)) + (B_PAGE_SIZE - 1)) & ~(B_PAGE_SIZE - 1);
-		status = create_area("shared buffer list",(void **)&adr,B_ANY_KERNEL_ADDRESS,size,B_LAZY_LOCK,B_READ_AREA | B_WRITE_AREA);
+/*		status = create_area("shared buffer list",(void **)&adr,B_ANY_KERNEL_ADDRESS,size,B_LAZY_LOCK,B_READ_AREA | B_WRITE_AREA);*/
+		status=B_ERROR;
 		if (status >= B_OK) {
 			status = adr->Init();
-			if (status != B_OK)
-				delete_area(area_for(adr));
+			if (status != B_OK){}
+				/*delete_area(area_for(adr));*/
 		}
 	} else {
-		status = clone_area("shared buffer list clone",(void **)&adr,B_ANY_KERNEL_ADDRESS,B_READ_AREA | B_WRITE_AREA,id);
+/*		status = clone_area("shared buffer list clone",(void **)&adr,B_ANY_KERNEL_ADDRESS,B_READ_AREA | B_WRITE_AREA,id);*/
 		//TRACE("cloned area, id = 0x%08lx, ptr = 0x%08x\n",status,(int)adr);
 	}
 	
@@ -60,9 +62,12 @@ _shared_buffer_list::Unmap()
 	// unmap the memory used by this struct
 	// XXX is this save?
 	area_id id;
-	id = area_for(this);
+/*	id = area_for(this);*/
+	id=B_ERROR;
 	if (id >= B_OK)
-		delete_area(id);
+	{
+	/*	delete_area(id);*/
+	}
 }
 
 void
@@ -165,7 +170,7 @@ _shared_buffer_list::RequestBuffer(sem_id group_reclaim_sem, int32 buffers_in_gr
 		timeout = 0;
 		acquire_flags = B_RELATIVE_TIMEOUT;
 	} else if (timeout != B_INFINITE_TIMEOUT) {
-		timeout += system_time();
+		timeout += /*system_*/time(NULL);
 		acquire_flags = B_ABSOLUTE_TIMEOUT;
 	} else {
 	 	//timeout is B_INFINITE_TIMEOUT

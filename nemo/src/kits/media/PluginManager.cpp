@@ -35,8 +35,8 @@ _CreateReader(Reader **reader, int32 *streamCount, media_file_format *mff, BData
 	}
 
 	// try each reader by calling it's Sniff function...
-	for (int32 i = 0; i < reply.count; i++) {
-		entry_ref ref = reply.ref[i];
+/*	for (int32 i = 0; i < reply.count; i++) {
+	entry_ref ref =reply.ref[i];
 		MediaPlugin *plugin = _plugin_manager.GetPlugin(ref);
 		if (!plugin) {
 			printf("_CreateReader: GetPlugin failed\n");
@@ -67,7 +67,7 @@ _CreateReader(Reader **reader, int32 *streamCount, media_file_format *mff, BData
 		// _DestroyReader(*reader);
 		delete *reader;
 		_plugin_manager.PutPlugin(plugin);
-	}
+	}*/
 
 	TRACE("_CreateReader leave\n");
 	return B_MEDIA_NO_HANDLER;
@@ -88,7 +88,7 @@ _CreateDecoder(Decoder **_decoder, const media_format &format)
 		return B_ERROR;
 	}
 
-	MediaPlugin *plugin = _plugin_manager.GetPlugin(reply.ref);
+	MediaPlugin *plugin = NULL;/*_plugin_manager.GetPlugin(reply.ref);*/
 	if (!plugin) {
 		printf("_CreateDecoder: GetPlugin failed\n");
 		return B_ERROR;
@@ -147,7 +147,7 @@ PluginManager::~PluginManager()
 		fPluginList->Get(fPluginList->CountItems() - 1, &info);
 		printf("PluginManager: Error, unloading PlugIn %s with usecount %d\n", info->name, info->usecount);
 		delete info->plugin;
-		unload_add_on(info->image);
+/*		unload_add_on(info->image);*/
 		fPluginList->Remove(fPluginList->CountItems() - 1);
 	}
 	delete fLocker;
@@ -203,7 +203,7 @@ PluginManager::PutPlugin(MediaPlugin *plugin)
 			pinfo->usecount--;
 			if (pinfo->usecount == 0) {
 				delete pinfo->plugin;
-				unload_add_on(pinfo->image);
+/*				unload_add_on(pinfo->image);*/
 			}
 			fPluginList->RemoveCurrent();
 			fLocker->Unlock();
@@ -220,29 +220,30 @@ PluginManager::PutPlugin(MediaPlugin *plugin)
 bool
 PluginManager::LoadPlugin(const entry_ref &ref, MediaPlugin **plugin, image_id *image)
 {
-	BPath p(&ref);
+/*	BPath p(&ref);*/
 
 	TRACE("PluginManager: LoadPlugin trying to load %s\n", p.Path());
 
 	image_id id;
-	id = load_add_on(p.Path());
+/*	id = load_add_on(p.Path());*/
+	id=-1;
 	if (id < 0)
 		return false;
 		
 	MediaPlugin *(*instantiate_plugin_func)();
 	
-	if (get_image_symbol(id, "instantiate_plugin", B_SYMBOL_TYPE_TEXT, (void**)&instantiate_plugin_func) < B_OK) {
+/*	if (get_image_symbol(id, "instantiate_plugin", B_SYMBOL_TYPE_TEXT, (void**)&instantiate_plugin_func) < B_OK) {
 		printf("PluginManager: Error, LoadPlugin can't find instantiate_plugin in %s\n", p.Path());
 		unload_add_on(id);
 		return false;
-	}
+	}*/
 	
 	MediaPlugin *pl;
 	
 	pl = (*instantiate_plugin_func)();
 	if (pl == 0) {
-		printf("PluginManager: Error, LoadPlugin instantiate_plugin in %s returned 0\n", p.Path());
-		unload_add_on(id);
+/*		printf("PluginManager: Error, LoadPlugin instantiate_plugin in %s returned 0\n", p.Path());
+		unload_add_on(id);*/
 		return false;
 	}
 	

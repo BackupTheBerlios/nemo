@@ -68,7 +68,7 @@ BTrackReader::BTrackReader(BMediaTrack *track, media_raw_audio_format const &for
 
 	TRACE("BTrackReader::BTrackReader successful\n");
 }
-
+/*
 BTrackReader::BTrackReader(BFile *file, media_raw_audio_format const &format) : 
 	fFrameSize(0),
 	fBuffer(0),
@@ -81,8 +81,9 @@ BTrackReader::BTrackReader(BFile *file, media_raw_audio_format const &format) :
 	CALLED();
 	if (file == NULL)
 		return;
-	if (file->InitCheck() != B_OK)
-		return;
+/*	if (file->InitCheck() != B_OK)
+		return;*/
+/*		return;
 		
 	fMediaFile = new BMediaFile(file);
 	if (fMediaFile->InitCheck() != B_OK)
@@ -128,7 +129,7 @@ BTrackReader::BTrackReader(BFile *file, media_raw_audio_format const &format) :
 
 	TRACE("BTrackReader::BTrackReader successful\n");
 }
-
+*/
 void
 BTrackReader::SetToTrack(BMediaTrack *track)
 {	

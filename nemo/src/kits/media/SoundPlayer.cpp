@@ -9,6 +9,8 @@
 #include <math.h>
 #include <string.h>
 
+#include <time.h>
+
 #include "debug.h"
 #include "SoundPlayNode.h"
 #include "SoundPlayer.h"
@@ -259,7 +261,7 @@ BSoundPlayer::CurrentTime()
 {
 	CALLED();
 	if (!_m_node)
-		return system_time();
+		return /*system_*/time(NULL);
 
 	return _m_node->TimeSource()->Now();
 }
@@ -379,7 +381,7 @@ BSoundPlayer::VolumeDB(bool forcePoll)
 	if(_m_volumeSlider==NULL)
 		return 0.0;
 		
-	if(!forcePoll && (system_time() - _m_gotVolume < 500000))
+	if(!forcePoll && (/*system_*/time(NULL) - _m_gotVolume < 500000))
 		return _m_volume;
 	
 	bigtime_t lastChange;
@@ -387,7 +389,7 @@ BSoundPlayer::VolumeDB(bool forcePoll)
 	float values[count];
 	size_t size = count * sizeof(float);
 	_m_volumeSlider->GetValue(&values, &size, &lastChange);
-	_m_gotVolume = system_time();
+	_m_gotVolume = /*system_*/time(NULL);
 	_m_volume = values[0];
 		
 	return values[0];
@@ -414,7 +416,7 @@ BSoundPlayer::SetVolumeDB(float volume_dB)
 		values[i] = volume_dB;
 	_m_volumeSlider->SetValue(values, sizeof(float) * count, 0);
 	_m_volume = volume_dB;
-	_m_gotVolume = system_time();
+	_m_gotVolume = /*system_*/time(NULL);
 }
 
 
