@@ -1,7 +1,8 @@
-#include <MediaTrack.h>
+#ifndef _MEDIA_PLUGIN_H
+#define _MEDIA_PLUGIN_H
 
-#ifndef MEDIAPLUGIN_H
-#define MEDIAPLUGIN_H
+#include <BeBuild.h>
+#include <SupportDefs.h>
 
 namespace BPrivate { namespace media {
 
@@ -18,5 +19,7 @@ class Reader;
 } } // namespace BPrivate::media
 
 using namespace BPrivate::media;
+
+extern "C" MediaPlugin *instantiate_plugin();
 
 #endif

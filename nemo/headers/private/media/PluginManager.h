@@ -4,10 +4,11 @@
 #include "ReaderPlugin.h"
 #include "DecoderPlugin.h"
 #include <TList.h>
+#include <image.h>
 #include <Locker.h>
 
 status_t _CreateReader(Reader **reader, int32 *streamCount, media_file_format *mff, BDataIO *source);
-status_t _CreateDecoder(Decoder **decoder, const media_format *format);
+status_t _CreateDecoder(Decoder **decoder, const media_format &format);
 
 void _DestroyReader(Reader *reader);
 void _DestroyDecoder(Decoder *decoder);

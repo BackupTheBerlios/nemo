@@ -1,11 +1,15 @@
-#ifndef READERPLUGIN_H
-#define READERPLUGIN_H
-
+#ifndef _READER_PLUGIN_H
+#define _READER_PLUGIN_H
 
 #include <MediaTrack.h>
 #include "MediaPlugin.h"
 
 namespace BPrivate { namespace media {
+
+enum {
+	B_MEDIA_SEEK_TO_TIME	= 0x10000,
+	B_MEDIA_SEEK_TO_FRAME	= 0x20000
+};
 
 class Reader
 {
@@ -17,6 +21,8 @@ public:
 	
 	virtual status_t	Sniff(int32 *streamCount) = 0;
 
+	virtual void		GetFileFormatInfo(media_file_format *mff) = 0;
+
 	virtual status_t	AllocateCookie(int32 streamNumber, void **cookie) = 0;
 	virtual	status_t	FreeCookie(void *cookie) = 0;
 	
@@ -24,7 +30,7 @@ public:
 									  media_format *format, void **infoBuffer, int32 *infoSize) = 0;
 
 	virtual status_t	Seek(void *cookie,
-							 media_seek_type seekTo,
+							 uint32 seekTo,
 							 int64 *frame, bigtime_t *time) = 0;
 
 	virtual status_t	GetNextChunk(void *cookie,
@@ -34,19 +40,18 @@ public:
 	BDataIO *			Source();
 	
 private:
+public: // XXX for test programs only
 	void		Setup(BDataIO *source);
 
 	BDataIO * fSource;
 };
 
 
-class ReaderPlugin : public MediaPlugin
+class ReaderPlugin : public virtual MediaPlugin
 {
 public:
 	virtual Reader *NewReader() = 0;
 };
-
-MediaPlugin *instantiate_plugin();
 
 } } // namespace BPrivate::media
 

@@ -6,8 +6,9 @@
 #ifndef _DATA_EXCHANGE_H
 #define _DATA_EXCHANGE_H
 
+//Next line added by fadi raafat on 21/3/2004
 #include <string.h>
-#include <MediaDefs.h>
+#include <MediaFormats.h>
 #include <MediaNode.h>
 #include <MediaAddOn.h>
 #include <Messenger.h>
@@ -24,6 +25,7 @@ struct command_data;
 
 // BMessage based data exchange with the media_server
 status_t SendToServer(BMessage *msg);
+status_t QueryServer(BMessage &request, BMessage &reply);
 
 // Raw data based data exchange with the media_server
 status_t SendToServer(int32 msgcode, command_data *msg, int size);
@@ -65,12 +67,13 @@ using namespace BPrivate::media::dataexchange;
 
 // BMessage based server communication
 enum {
-
 	// BMediaRoster notification service
 	MEDIA_SERVER_REQUEST_NOTIFICATIONS = 1000,
 	MEDIA_SERVER_CANCEL_NOTIFICATIONS,
-	MEDIA_SERVER_SEND_NOTIFICATIONS
+	MEDIA_SERVER_SEND_NOTIFICATIONS,
 
+	MEDIA_SERVER_GET_FORMATS,
+	MEDIA_SERVER_MAKE_FORMAT_FOR,
 };
 
 // Raw port based communication
@@ -100,6 +103,16 @@ enum {
 	SERVER_RESCAN_DEFAULTS,
 	SERVER_SET_NODE_CREATOR,
 	SERVER_CHANGE_ADDON_FLAVOR_INSTANCES_COUNT,
+	SERVER_REWINDTYPES,
+	SERVER_REWINDREFS,
+	SERVER_GETREFFOR,
+	SERVER_SETREFFOR,
+	SERVER_REMOVEREFFOR,
+	SERVER_REMOVEITEM,
+	SERVER_GET_FORMAT_FOR_DESCRIPTION,
+	SERVER_GET_DESCRIPTION_FOR_FORMAT,
+	SERVER_GET_READERS,
+	SERVER_GET_DECODER_FOR_FORMAT,
 	SERVER_MESSAGE_END,
 	NODE_MESSAGE_START = 0x200,
 	
@@ -163,6 +176,7 @@ enum {
 	TIMESOURCE_OP, // datablock is a struct time_source_op_info
 	TIMESOURCE_ADD_SLAVE_NODE,
 	TIMESOURCE_REMOVE_SLAVE_NODE,
+	TIMESOURCE_GET_START_LATENCY,
 	
 	TIMESOURCE_MESSAGE_END,
 };
@@ -190,12 +204,15 @@ public:
 		{
 			device = ref.device;
 			directory = ref.directory;
-			strcpy(name, ref.name);
+			if(ref.name)
+				strcpy(name, ref.name);
+			else
+				name[0] = 0;
 		}
 private:
 	dev_t	device;
 	ino_t	directory;
-	char	name[B_FILE_NAME_LENGTH];
+	char	name[B_FILE_NAME_LENGTH]; // == 256 bytes
 };
 
 
@@ -230,6 +247,12 @@ enum
 enum
 {
 	MAX_NODE_ID = 4000,
+};
+
+// used by SERVER_GET_READERS
+enum
+{
+	MAX_READERS = 40,
 };
 
 struct addonserver_instantiate_dormant_node_request : public request_data
@@ -804,6 +827,90 @@ struct server_unregister_buffer_command : public command_data
 	media_buffer_id bufferid;
 };
 
+struct server_rewindtypes_request : public request_data
+{
+};
+
+struct server_rewindtypes_reply : public reply_data
+{
+	int32 count;
+	area_id area;
+};
+
+struct server_rewindrefs_request : public request_data
+{
+	char type[B_MEDIA_NAME_LENGTH];
+};
+
+struct server_rewindrefs_reply : public reply_data
+{
+	int32 count;
+	area_id area;
+};
+
+struct server_getreffor_request : public request_data
+{
+	char type[B_MEDIA_NAME_LENGTH];
+	char item[B_MEDIA_NAME_LENGTH];
+};
+
+struct server_getreffor_reply : public reply_data
+{
+	xfer_entry_ref	ref; // a ref to the file
+};
+
+struct server_setreffor_request : public request_data
+{
+	char type[B_MEDIA_NAME_LENGTH];
+	char item[B_MEDIA_NAME_LENGTH];
+	xfer_entry_ref	ref; // a ref to the file
+};
+
+struct server_setreffor_reply : public reply_data
+{
+};
+
+struct server_removereffor_request : public request_data
+{
+	char type[B_MEDIA_NAME_LENGTH];
+	char item[B_MEDIA_NAME_LENGTH];
+	xfer_entry_ref	ref; // a ref to the file
+};
+
+struct server_removereffor_reply : public reply_data
+{
+};
+
+struct server_removeitem_request : public request_data
+{
+	char type[B_MEDIA_NAME_LENGTH];
+	char item[B_MEDIA_NAME_LENGTH];
+};
+
+struct server_removeitem_reply : public reply_data
+{
+};
+
+struct server_get_decoder_for_format_request : public request_data
+{
+	media_format format;
+};
+
+struct server_get_decoder_for_format_reply : public reply_data
+{
+	xfer_entry_ref	ref; // a ref to the decoder
+};
+
+struct server_get_readers_request : public request_data
+{
+};
+
+struct server_get_readers_reply : public reply_data
+{
+	xfer_entry_ref	ref[MAX_READERS]; // a list of refs to the reader
+	int32			count;
+};
+
 struct node_request_completed_command : public command_data
 {
 	media_request_info info;
@@ -863,6 +970,15 @@ struct timesource_add_slave_node_command : public command_data
 struct timesource_remove_slave_node_command : public command_data
 {
 	media_node node;
+};
+
+struct timesource_get_start_latency_request : public request_data
+{
+};
+
+struct timesource_get_start_latency_reply : public reply_data
+{
+	bigtime_t start_latency;
 };
 
 struct controllable_get_parameter_web_request : public request_data
