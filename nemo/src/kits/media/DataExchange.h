@@ -183,7 +183,7 @@ enum {
 
 
 /* We can't send an entry_ref through a port to another team,
- * but we can assign it to an xfer_entry_ref and send this one,
+ * but we can assign it to an  and send this one,
  * when we receive it we can assign it to a normal entry_ref
  */
 struct xfer_entry_ref
@@ -195,11 +195,11 @@ public:
 			directory = -1;
 			name[0] = 0;
 		}
-/*	operator entry_ref() const
+		operator entry_ref() const
 		{
 			entry_ref ref(device, directory, name);
 			return ref;
-		}*/
+		}
 	void operator=(const entry_ref &ref)
 		{
 			device = ref.device;
