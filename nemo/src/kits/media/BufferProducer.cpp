@@ -27,6 +27,8 @@
  *
  */
 
+//Next line added by fadi raafat on 21/3/2004
+#include <string.h>
 #include <BufferProducer.h>
 #include <BufferConsumer.h>
 #include <BufferGroup.h>

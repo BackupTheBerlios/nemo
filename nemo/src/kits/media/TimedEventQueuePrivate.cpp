@@ -29,9 +29,9 @@
 
 /* Implements _event_queue_imp used by BTimedEventQueue, not thread save!
  */
- 
+
+//Next line added by fadi raafat on 21/3/2004
 #include <string.h>
- 
 #include <TimedEventQueue.h>
 #include <Autolock.h>
 #include <Buffer.h>

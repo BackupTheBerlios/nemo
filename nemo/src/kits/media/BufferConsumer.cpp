@@ -26,7 +26,8 @@
  * THE SOFTWARE.
  *
  */
-
+//Next line added by fadi raafat on 21/3/2004
+#include <string.h>
 #include <BufferConsumer.h>
 #include <BufferProducer.h>
 #include <BufferGroup.h>

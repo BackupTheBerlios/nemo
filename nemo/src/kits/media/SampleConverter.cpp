@@ -4,10 +4,11 @@
  *  DESCR: Converts between different sample formats
  ***********************************************************************/
 
+//Next line added by fadi raafat on 21/3/2004
+#include <string.h>
 #include <SupportDefs.h>
 #include <MediaDefs.h>
 #include <stdio.h>
-#include <string.h>
 
 #include "SampleConverter.h"
 

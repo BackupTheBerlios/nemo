@@ -519,7 +519,6 @@ BMediaNode::HandleMessage(int32 message,
 						  const void *data,
 						  size_t size)
 {
-
 	PRINT(4, "BMediaNode::HandleMessage %#lx, node %ld\n", message, fNodeID);
 	switch (message) {
 		case NODE_FINAL_RELEASE:
@@ -674,15 +673,15 @@ BMediaNode::operator new(size_t size)
 	CALLED();
 	return ::operator new(size);
 }
-
-/*void *
+/*
+void *
 BMediaNode::operator new(size_t size,
-						 const nothrow_t & nothrow) throw()
+						 const nothrow_t &) throw()
 {
 	CALLED();
 	return ::operator new(size, nothrow);
-}*/
-
+}
+*/
 void
 BMediaNode::operator delete(void *ptr)
 {
@@ -696,8 +695,8 @@ BMediaNode::operator delete(void * ptr,
 {
 	CALLED();
 	::operator delete(ptr, nothrow);
-}*/
-
+}
+*/
 /*************************************************************
  * protected BMediaNode
  *************************************************************/

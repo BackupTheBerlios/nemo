@@ -7,10 +7,11 @@
  *
  ***********************************************************************/
 
+//Next line added by fadi raafat on 21/3/2004
+#include <string.h>
 #include <OS.h>
 #include <stdio.h>
 #include <MediaRoster.h>
-#include <string.h>
 #include "MediaMisc.h"
 #include "TimeSourceObject.h"
 #include "TimeSourceObjectManager.h"

@@ -117,7 +117,7 @@ virtual 	void SetRunMode(run_mode mode);
 		/* you should not call HandleEvent directly */
 		virtual void		HandleEvent(	const media_timed_event *event,
 											bigtime_t lateness,
-											bool realTimeEvent = false);
+											bool realTimeEvent/* = false*/);
 
 /* end from BMediaEventLooper */
 /******************************/
@@ -130,31 +130,31 @@ protected:
 virtual status_t HandleStart(
 						const media_timed_event *event,
 						bigtime_t lateness,
-						bool realTimeEvent = false);
+						bool realTimeEvent/* = false*/);
 virtual status_t HandleSeek(
 						const media_timed_event *event,
 						bigtime_t lateness,
-						bool realTimeEvent = false);
+						bool realTimeEvent/* = false*/);
 virtual status_t HandleWarp(
 						const media_timed_event *event,
 						bigtime_t lateness,
-						bool realTimeEvent = false);
+						bool realTimeEvent/* = false*/);
 virtual status_t HandleStop(
 						const media_timed_event *event,
 						bigtime_t lateness,
-						bool realTimeEvent = false);
+						bool realTimeEvent /*= false*/);
 virtual status_t SendNewBuffer(
 						const media_timed_event *event,
 						bigtime_t lateness,
-						bool realTimeEvent = false);
+						bool realTimeEvent/* = false*/);
 virtual status_t HandleDataStatus(
 						const media_timed_event *event,
 						bigtime_t lateness,
-						bool realTimeEvent = false);
+						bool realTimeEvent/* = false*/);
 virtual status_t HandleParameter(
 						const media_timed_event *event,
 						bigtime_t lateness,
-						bool realTimeEvent = false);
+						bool realTimeEvent /*= false*/);
 	
 	void 				AllocateBuffers();
 	BBuffer*			FillNextBuffer(bigtime_t event_time);
