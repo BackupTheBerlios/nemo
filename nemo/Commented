@@ -18,6 +18,9 @@ in TimeCode.h and .cpp all functions with the 6ths paramater const timecode_info
 
 in Sound.h and .cpp all all functions with a paramater bool free_when_done = false
 		--> bool free_when_done /*= false*/   
+		
+in soundplayer.h  class sound_error/* : public exception*/ instead of class sound_error : public exception line 15
+
 
 		
 		

@@ -227,6 +227,37 @@ libbe: $(LIBBE_DEP)
 #######  install lib
 #	cp -f $(LIB_DIR)/libbe.so /usr/lib
 
+
+#########################################################################
+# libmedia target added by fadi raafat on 17-4-2004
+#########################################################################
+
+#########################################################################
+# TARGET libmedia.so
+#########################################################################
+LIBMEDIA_INCLUDES := $(INCLUDE_ALL_BE) $(INCLUDE_ALL_PRIVATE) -I$(SRC_BASE)/kits/media
+
+$(OBJ_DIR)/libmedia/%.o: $(SRC_BASE)/kits/media/%.cpp
+	$(CPP_COMPILER) $(CXXFLAGS) -c -fPIC $(LIBMEDIA_INCLUDES) -o $@ $<
+
+LIBMEDIA_DEP:=	$(OBJ_DIR)/libmedia/SoundPlayer.o
+
+#				libroot \
+#				libbe \
+#				\
+#				$(OBJ_DIR)/libmedia/SoundPlayer.o
+				
+libmedia: $(LIBMEDIA_DEP)
+	$(CPP_COMPILER) -shared -o $(LIB_DIR)/libmedia.so \
+	$(OBJ_DIR)/libmedia/SoundPlayer.o \
+	\
+	-lroot \
+	-lbe
+
+#######  install lib
+#	cp -f $(LIB_DIR)/libbe.so /usr/lib
+
+
 #########################################################################
 # TARGET libnetapi.so
 #########################################################################
@@ -406,6 +437,27 @@ wnd_test: $(WND_TEST_DEP)
 	$(OBJ_DIR)/wnd_test.o \
 	$(OBJ_DIR)/Window.o \
 	-lbe
+
+#########################################################################
+# SoundPlayer_test target added by fadi raafat on 17-4-2004
+#########################################################################
+
+#########################################################################
+# TARGET SoundPlayer_test
+#########################################################################
+SOUNDPLAYER_TEST_DEP	:=	#libmedia \
+							$(SRC_BASE)/test/media/SoundPlayer/main.cpp
+
+SOUNDPLAYER_TEST_INCLUDES	:=	$(INCLUDE_ALL_BE) $(INCLUDE_ALL_PRIVATE)
+
+SoundPlayer_test: $(SOUNDPLAYER_TEST_DEP)
+####### compiling
+	$(CXX) $(CXXFLAGS) -c $(SOUNDPLAYER_TEST_INCLUDES) -o $(OBJ_DIR)/test/media/SoundPlayer/main.o $(SRC_BASE)/test/media/SoundPlayer/main.cpp
+
+####### linking
+	$(CXX) $(CXXFLAGS) -o $(BIN_DIR)/SoundPlayer \
+	$(OBJ_DIR)/test/media/SoundPlayer/main.o \
+	-lmedia
 		
 #########################################################################
 # TARGET clean
