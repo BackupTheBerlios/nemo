@@ -12,7 +12,7 @@
 
 
 class BSound;
-class sound_error/* : public exception*/ {
+class sound_error /*: public exception */{
 	const char * m_str_const;
 public:
 	sound_error(const char * str);

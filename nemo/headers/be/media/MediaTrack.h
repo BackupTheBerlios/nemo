@@ -6,10 +6,12 @@
 #include <MediaFormats.h>
 
 namespace BPrivate {
-	class MediaExtractor;
-	class Decoder;
 	class MediaWriter;
-	class Encoder;
+	namespace media {
+		class MediaExtractor;
+		class Decoder;
+		class Encoder;
+	}
 }
 
 class BView;
@@ -79,7 +81,7 @@ public:
 	// The data returned through ReadFrames() will be in the format that's
  	// returned by this function.
 
-	status_t		DecodedFormat(media_format *inout_format);
+	status_t		DecodedFormat(media_format *inout_format, int32 flags = 0);
 
 	// CountFrames and Duration return the total number of frame and the
 	// total duration (expressed in microseconds) of a track.
@@ -192,23 +194,29 @@ public:
 virtual	status_t Perform(int32 selector, void * data);
 
 private:
+	friend class BMediaFile;
+	
 					// for read-only access to a track
-					BMediaTrack(BPrivate::MediaExtractor *extractor, int32 stream);
+					BMediaTrack(BPrivate::media::MediaExtractor *extractor, int32 stream);
 
 					// for write-only access to a BMediaTrack
 					BMediaTrack(BPrivate::MediaWriter *writer,
 								int32 stream_num,
 								media_format *in_format,
-								BPrivate::Encoder *encoder,
+								BPrivate::media::Encoder *encoder,
 								media_codec_info *mci);
 
-	status_t		TrackInfo(media_format *out_format, void **out_info,
-							  int32 *out_infoSize);
+#ifdef __BUILDING_MEDIA_TRACK_CPP
+	status_t		DecodedFormat(media_format *inout_format);
+#endif
+
+	void			SetupWorkaround();
+	bool			SetupFormatTranslation(const media_format &from, media_format *to);
 
 	status_t				fErr;
-	BPrivate::Decoder		*fDecoder;
-	int32					fDecoderID;
-	BPrivate::MediaExtractor *fExtractor;
+	BPrivate::media::Decoder *fDecoder;
+	BPrivate::media::Decoder *fRawDecoder;
+	BPrivate::media::MediaExtractor *fExtractor;
 
 	int32					fStream;
 	int64					fCurFrame;
@@ -216,25 +224,21 @@ private:
 
 	media_codec_info		fMCI;
 
-	BPrivate::Encoder		*fEncoder;
+	BPrivate::media::Encoder *fEncoder;
 	int32					fEncoderID;
 	BPrivate::MediaWriter	*fWriter;
 	media_format			fWriterFormat;
-	void					*fExtractorCookie;
+	
+	uint32					fWorkaroundFlags;
 
 protected:
 	int32			EncoderID() { return fEncoderID; };
 
 private:
 
-friend class BMediaFile;
-friend class BPrivate::Decoder;
-
 	BMediaTrack();
 	BMediaTrack(const BMediaTrack&);
 	BMediaTrack& operator=(const BMediaTrack&);
-
-static	BPrivate::Decoder *	find_decoder(BMediaTrack *track, int32 *id);
 
 	/* fbc data and virtuals */
 

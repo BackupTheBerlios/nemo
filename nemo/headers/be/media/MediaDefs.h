@@ -15,6 +15,7 @@
 #include <SupportDefs.h>
 #include <OS.h>
 #include <ByteOrder.h>
+#include <image.h>
 
 #if defined(__cplusplus)
 #include <GraphicsDefs.h>
@@ -501,6 +502,7 @@ struct media_format {	/* no more than 192 bytes */
 	bool 			IsAudio() const		{ return (type==B_MEDIA_ENCODED_AUDIO)||(type==B_MEDIA_RAW_AUDIO); };
 	uint32 			AudioFormat() const	{ return (type==B_MEDIA_ENCODED_AUDIO)?u.encoded_audio.output.format:u.raw_audio.format; };
 	uint32 & 		AudioFormat()		{ return (type==B_MEDIA_ENCODED_AUDIO)?u.encoded_audio.output.format:u.raw_audio.format; };
+	uint32 			AudioFrameSize() const	{ return (type==B_MEDIA_ENCODED_AUDIO)?(u.encoded_audio.output.format & 0xf)*u.encoded_audio.output.channel_count:(u.raw_audio.format & 0xf)*u.raw_audio.channel_count; };
 
 	uint32			Encoding() const	{ return (type==B_MEDIA_ENCODED_VIDEO)?u.encoded_video.encoding:(type==B_MEDIA_ENCODED_AUDIO)?u.encoded_audio.encoding:(type==B_MEDIA_MULTISTREAM)?u.multistream.format:0UL; }
 
@@ -665,12 +667,7 @@ status_t launch_media_server(uint32 flags = 0);
 //	B_MEDIA_REALTIME_DISABLED is returned.
 //	If there are not enough system resources to enable real-time performance,
 //	B_MEDIA_REALTIME_UNAVAILABLE is returned.
-
-
-//cooocoococo
-//status_t media_realtime_init_image(image_id image, uint32 flags);
-
-
+status_t media_realtime_init_image(image_id image, uint32 flags);
 
 //	Given a thread ID, and an optional indication of what the thread is
 //	doing in "flags", prepare the thread for real-time media performance.

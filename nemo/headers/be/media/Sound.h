@@ -21,7 +21,7 @@ public:
 				bool free_when_done /*= false*/);
 		BSound(
 				const entry_ref * sound_file,
-				bool load_into_memory /*= false*/);
+				bool load_into_memory/* = false*/);
 
 		status_t InitCheck();
 		BSound * AcquireRef();
