@@ -1,0 +1,243 @@
+#########################################################################
+# nemo media kit makefile
+# 
+# Fadi EDWARD
+# 22/4/2004
+#########################################################################
+
+#########################################################################
+# VARIABLES
+#########################################################################
+
+# compilers
+C_COMPILER		:= $(CC)
+CPP_COMPILER	:= $(CXX)
+
+# output directories
+BUILD_DIR	:= ./build/x86
+OBJ_DIR		:= $(BUILD_DIR)/obj
+LIB_DIR		:= $(BUILD_DIR)/lib
+BIN_DIR		:= $(BUILD_DIR)/bin
+
+# include directories
+INCLUDE_BASE		:= ./headers
+INCLUDE_POSIX		:= $(INCLUDE_BASE)/posix
+
+# Be includes
+INCLUDE_BE			:= $(INCLUDE_BASE)/be
+INCLUDE_ADDONS		:= $(INCLUDE_BE)/add-ons
+INCLUDE_APP			:= $(INCLUDE_BE)/app
+INCLUDE_DEVICE		:= $(INCLUDE_BE)/device
+INCLUDE_DRIVERS		:= $(INCLUDE_BE)/drivers
+INCLUDE_GAME		:= $(INCLUDE_BE)/game
+INCLUDE_INTERFACE	:= $(INCLUDE_BE)/interface
+INCLUDE_KERNEL		:= $(INCLUDE_BE)/kernel
+INCLUDE_MAIL		:= $(INCLUDE_BE)/mail
+INCLUDE_MEDIA		:= $(INCLUDE_BE)/media
+INCLUDE_MIDI		:= $(INCLUDE_BE)/midi
+INCLUDE_MIDI2		:= $(INCLUDE_BE)/midi2
+INCLUDE_NET			:= $(INCLUDE_BE)/net
+INCLUDE_STORAGE		:= $(INCLUDE_BE)/storage
+INCLUDE_SUPPORT		:= $(INCLUDE_BE)/support
+INCLUDE_TRANSLATION	:= $(INCLUDE_BE)/translation
+
+INCLUDE_ALL_BE	:=	-I$(INCLUDE_BE) -I$(INCLUDE_ADDONS) \
+					-I$(INCLUDE_APP) -I$(INCLUDE_DEVICE) \
+					-I$(INCLUDE_DRIVERS) -I$(INCLUDE_GAME) \
+					-I$(INCLUDE_INTERFACE) -I$(INCLUDE_KERNEL) \
+					-I$(INCLUDE_MAIL) -I$(INCLUDE_MEDIA) \
+					-I$(INCLUDE_MIDI) -I$(INCLUDE_MIDI2) \
+					-I$(INCLUDE_NET) -I$(INCLUDE_STORAGE) \
+					-I$(INCLUDE_SUPPORT) -I$(INCLUDE_TRANSLATION)
+
+# private includes
+INCLUDE_PRIVATE		:= $(INCLUDE_BASE)/private
+
+INCLUDE_ALL_PRIVATE	:=	-I$(INCLUDE_PRIVATE) \
+						-I$(INCLUDE_PRIVATE)/app \
+						-I$(INCLUDE_PRIVATE)/libroot \
+						-I$(INCLUDE_PRIVATE)/shared \
+						-I$(INCLUDE_PRIVATE)/storage \
+						-I$(INCLUDE_PRIVATE)/media \
+						-I$(INCLUDE_PRIVATE)/servers/app \
+						-I$(INCLUDE_PRIVATE)/servers/kernel \
+						-I/usr/local/include/directfb \
+						-I/usr/local/include
+
+# use this to include everything
+INCLUDE_ALL		:= -I$(INCLUDE_POSIX) $(INCLUDE_ALL_BE) $(INCLUDE_ALL_PRIVATE)
+
+# source directories
+SRC_BASE	:= ./src
+
+
+#########################################################################
+# COMPILER FLAGS
+#########################################################################
+CXXFLAGS	:= -g -D_REENTRANT -D__NEMO__ -DDEBUG_NEMO=1 -Wno-multichar
+
+#########################################################################
+# libmedia target added by fadi raafat on 17-4-2004
+#########################################################################
+
+#########################################################################
+# TARGET libmedia.so
+#########################################################################
+LIBMEDIA_INCLUDES := $(INCLUDE_ALL_BE) $(INCLUDE_ALL_PRIVATE) -I$(SRC_BASE)/kits/media -I$(SRC_BASE)/servers/media
+
+$(OBJ_DIR)/libmedia/%.o: $(SRC_BASE)/kits/media/%.cpp
+	$(CPP_COMPILER) $(CXXFLAGS) -c -fPIC $(LIBMEDIA_INCLUDES) -o $@ $<
+
+LIBMEDIA_DEP:=	$(OBJ_DIR)/libmedia/BufferConsumer.o \
+				$(OBJ_DIR)/libmedia/Buffer.o \
+				$(OBJ_DIR)/libmedia/BufferGroup.o \
+				$(OBJ_DIR)/libmedia/BufferIdCache.o \
+				$(OBJ_DIR)/libmedia/BufferProducer.o \
+				$(OBJ_DIR)/libmedia/ChannelMixer.o \
+				$(OBJ_DIR)/libmedia/Controllable.o \
+				$(OBJ_DIR)/libmedia/DataExchange.o \
+				$(OBJ_DIR)/libmedia/DecoderPlugin.o \
+				$(OBJ_DIR)/libmedia/DormantNodeManager.o \
+				$(OBJ_DIR)/libmedia/FileInterface.o \
+				$(OBJ_DIR)/libmedia/MediaAddOn.o \
+				$(OBJ_DIR)/libmedia/MediaDecoder.o \
+				$(OBJ_DIR)/libmedia/MediaDefs.o \
+				$(OBJ_DIR)/libmedia/MediaEncoder.o \
+				$(OBJ_DIR)/libmedia/MediaEventLooper.o \
+				$(OBJ_DIR)/libmedia/MediaExtractor.o \
+				$(OBJ_DIR)/libmedia/MediaFile.o \
+				$(OBJ_DIR)/libmedia/MediaFiles.o \
+				$(OBJ_DIR)/libmedia/MediaFormats.o \
+				$(OBJ_DIR)/libmedia/MediaNode.o \
+				$(OBJ_DIR)/libmedia/MediaPlugin.o \
+				$(OBJ_DIR)/libmedia/MediaTheme.o \
+				$(OBJ_DIR)/libmedia/MediaTrack.o \
+				$(OBJ_DIR)/libmedia/!missing_symbols.o \
+				$(OBJ_DIR)/libmedia/Notifications.o \
+				$(OBJ_DIR)/libmedia/ParameterWeb.o \
+				$(OBJ_DIR)/libmedia/PlaySound.o \
+				$(OBJ_DIR)/libmedia/PluginManager.o \
+				$(OBJ_DIR)/libmedia/PortPool.o \
+				$(OBJ_DIR)/libmedia/ReaderPlugin.o \
+				$(OBJ_DIR)/libmedia/RealtimeAlloc.o \
+				$(OBJ_DIR)/libmedia/SampleConverter.o \
+				$(OBJ_DIR)/libmedia/SamplingrateConverter.o \
+				$(OBJ_DIR)/libmedia/SharedBufferList.o \
+				$(OBJ_DIR)/libmedia/Sound.o \
+				$(OBJ_DIR)/libmedia/SoundFile.o \
+				$(OBJ_DIR)/libmedia/SoundPlayer.o \
+				$(OBJ_DIR)/libmedia/SoundPlayNode.o \
+				$(OBJ_DIR)/libmedia/TimeCode.o \
+				$(OBJ_DIR)/libmedia/TimedEventQueue.o \
+				$(OBJ_DIR)/libmedia/TimedEventQueuePrivate.o \
+				$(OBJ_DIR)/libmedia/TimeSource.o \
+				$(OBJ_DIR)/libmedia/TimeSourceObject.o \
+				$(OBJ_DIR)/libmedia/TimeSourceObjectManager.o \
+				$(OBJ_DIR)/libmedia/TrackReader.o
+
+#				libroot \
+#				libbe \
+#				\
+#				$(OBJ_DIR)/libmedia/SoundPlayer.o
+				
+libmedia: $(LIBMEDIA_DEP)
+	$(CPP_COMPILER) -shared -o $(LIB_DIR)/libmedia.so \
+	$(OBJ_DIR)/libmedia/BufferConsumer.o \
+	$(OBJ_DIR)/libmedia/Buffer.o \
+	$(OBJ_DIR)/libmedia/BufferGroup.o \
+	$(OBJ_DIR)/libmedia/BufferIdCache.o \
+	$(OBJ_DIR)/libmedia/BufferProducer.o \
+	$(OBJ_DIR)/libmedia/ChannelMixer.o \
+	$(OBJ_DIR)/libmedia/Controllable.o \
+	$(OBJ_DIR)/libmedia/DataExchange.o \
+	$(OBJ_DIR)/libmedia/DecoderPlugin.o \
+	$(OBJ_DIR)/libmedia/DormantNodeManager.o \
+	$(OBJ_DIR)/libmedia/FileInterface.o \
+	$(OBJ_DIR)/libmedia/MediaAddOn.o \
+	$(OBJ_DIR)/libmedia/MediaDecoder.o \
+	$(OBJ_DIR)/libmedia/MediaDefs.o \
+	$(OBJ_DIR)/libmedia/MediaEncoder.o \
+	$(OBJ_DIR)/libmedia/MediaEventLooper.o \
+	$(OBJ_DIR)/libmedia/MediaExtractor.o \
+	$(OBJ_DIR)/libmedia/MediaFile.o \
+	$(OBJ_DIR)/libmedia/MediaFiles.o \
+	$(OBJ_DIR)/libmedia/MediaFormats.o \
+	$(OBJ_DIR)/libmedia/MediaNode.o \
+	$(OBJ_DIR)/libmedia/MediaPlugin.o \
+	$(OBJ_DIR)/libmedia/MediaTheme.o \
+	$(OBJ_DIR)/libmedia/MediaTrack.o \
+	$(OBJ_DIR)/libmedia/!missing_symbols.o \
+	$(OBJ_DIR)/libmedia/Notifications.o \
+	$(OBJ_DIR)/libmedia/ParameterWeb.o \
+	$(OBJ_DIR)/libmedia/PlaySound.o \
+	$(OBJ_DIR)/libmedia/PluginManager.o \
+	$(OBJ_DIR)/libmedia/PortPool.o \
+	$(OBJ_DIR)/libmedia/ReaderPlugin.o \
+	$(OBJ_DIR)/libmedia/RealtimeAlloc.o \
+	$(OBJ_DIR)/libmedia/SampleConverter.o \
+	$(OBJ_DIR)/libmedia/SamplingrateConverter.o \
+	$(OBJ_DIR)/libmedia/SharedBufferList.o \
+	$(OBJ_DIR)/libmedia/Sound.o \
+	$(OBJ_DIR)/libmedia/SoundFile.o \
+	$(OBJ_DIR)/libmedia/SoundPlayer.o \
+	$(OBJ_DIR)/libmedia/SoundPlayNode.o \
+	$(OBJ_DIR)/libmedia/TimeCode.o \
+	$(OBJ_DIR)/libmedia/TimedEventQueue.o \
+	$(OBJ_DIR)/libmedia/TimedEventQueuePrivate.o \
+	$(OBJ_DIR)/libmedia/TimeSource.o \
+	$(OBJ_DIR)/libmedia/TimeSourceObject.o \
+	$(OBJ_DIR)/libmedia/TimeSourceObjectManager.o \
+	$(OBJ_DIR)/libmedia/TrackReader.o \
+	\
+	-lroot \
+	-lbe
+
+#######  install lib
+#	cp -f $(LIB_DIR)/libbe.so /usr/lib
+
+#########################################################################
+# libmedia target added by fadi raafat on 22-4-2004
+#########################################################################
+
+#########################################################################
+# TARGET limitedlibmedia.so
+#########################################################################
+
+LIBMEDIA_DEP:=	\
+				$(OBJ_DIR)/libmedia/SoundPlayer.o \
+
+#				libroot \
+#				libbe \
+#				\
+#				$(OBJ_DIR)/libmedia/SoundPlayer.o
+				
+limitedlibmedia: $(LIBMEDIA_DEP)
+	$(CPP_COMPILER) -shared -o $(LIB_DIR)/libmedia.so \
+	$(OBJ_DIR)/libmedia/SoundPlayer.o \
+	\
+	-lroot \
+	-lbe
+
+#######  install lib
+#	cp -f $(LIB_DIR)/libbe.so /usr/lib
+
+#########################################################################
+# SoundPlayer_test target added by fadi raafat on 17-4-2004
+#########################################################################
+
+#########################################################################
+# TARGET SoundPlayer_test
+#########################################################################
+SOUNDPLAYER_TEST_DEP	:=	#libmedia \
+							$(SRC_BASE)/test/media/SoundPlayer/main.cpp
+
+SOUNDPLAYER_TEST_INCLUDES	:=	$(INCLUDE_ALL_BE) $(INCLUDE_ALL_PRIVATE)
+
+SoundPlayer_test: $(SOUNDPLAYER_TEST_DEP)
+####### compiling
+	$(CXX) $(CXXFLAGS) -c $(SOUNDPLAYER_TEST_INCLUDES) -o $(OBJ_DIR)/test/media/SoundPlayer/SoundPlayerTest.o $(SRC_BASE)/test/media/SoundPlayer/SoundPlayerTest.cpp
+
+####### linking
+	$(CXX) $(CXXFLAGS) -o $(BIN_DIR)/SoundPlayer \
+	$(OBJ_DIR)/test/media/SoundPlayer/SoundPlayerTest.o \
+	-lmedia
