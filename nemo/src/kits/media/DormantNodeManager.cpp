@@ -119,14 +119,15 @@ DormantNodeManager::GetAddon(media_addon_id id)
 	// Be careful, we avoid locking here!
 
 	// ok, it's not loaded, try to get the path
-	BPath path;
-	if (B_OK != FindAddonPath(&path, id)) {
+/*	BPath path;*/
+/*	if (B_OK != FindAddonPath(&path, id)) {
 		ERROR("DormantNodeManager::GetAddon: can't find path for add-on %ld\n",id);
 		return NULL;
-	}
+	}*/
+	return NULL;
 	
 	// try to load it
-	BMediaAddOn *newaddon;
+/*	BMediaAddOn *newaddon;
 	image_id image;
 	if (B_OK != LoadAddon(&newaddon, &image, path.Path(), id)) {
 		ERROR("DormantNodeManager::GetAddon: can't load add-on %ld from path %s\n",id, path.Path());
@@ -152,7 +153,7 @@ DormantNodeManager::GetAddon(media_addon_id id)
 	}
 	fLock->Unlock();
 	ASSERT(addon->AddonID() == id);
-	return addon;
+	return addon;*/
 }
 
 void
@@ -207,7 +208,8 @@ DormantNodeManager::RegisterAddon(const char *path)
 	
 	TRACE("DormantNodeManager::RegisterAddon, path %s\n",path);
 	
-	rv = get_ref_for_path(path, &tempref);
+/*	rv = get_ref_for_path(path, &tempref);*/
+	rv=B_ERROR;
 	if (rv != B_OK) {
 		ERROR("DormantNodeManager::RegisterAddon failed, couldn't get ref for path %s\n",path);
 		return 0;
@@ -280,7 +282,7 @@ DormantNodeManager::FindAddonPath(BPath *path, media_addon_id id)
 		return B_ERROR;
 
 	tempref = reply.ref;
-	return path->SetTo(&tempref);
+	return B_ERROR;/*path->SetTo(&tempref);*/
 }
 
 
@@ -292,23 +294,25 @@ DormantNodeManager::LoadAddon(BMediaAddOn **newaddon, image_id *newimage, const 
 	image_id image;
 	status_t rv;
 	
-	image = load_add_on(path);
+/*	image = load_add_on(path);*/
+	image=B_ERROR;
 	if (image < B_OK) {
 		ERROR("DormantNodeManager::LoadAddon: loading failed, error %lx (%s), path %s\n", image, strerror(image), path);
 		return B_ERROR;
 	}
 	
-	rv = get_image_symbol(image, "make_media_addon", B_SYMBOL_TYPE_TEXT, (void**)&make_addon);
+/*	rv = get_image_symbol(image, "make_media_addon", B_SYMBOL_TYPE_TEXT, (void**)&make_addon);*/
+	rv=B_ERROR;
 	if (rv < B_OK) {
 		ERROR("DormantNodeManager::LoadAddon: loading failed, function not found, error %lx (%s)\n", rv, strerror(rv));
-		unload_add_on(image);
+/*		unload_add_on(image);*/
 		return B_ERROR;
 	}
 	
 	addon = make_addon(image);
 	if (addon == 0) {
 		ERROR("DormantNodeManager::LoadAddon: creating BMediaAddOn failed\n");
-		unload_add_on(image);
+/*		unload_add_on(image);*/
 		return B_ERROR;
 	}
 	
@@ -332,7 +336,7 @@ DormantNodeManager::UnloadAddon(BMediaAddOn *addon, image_id image)
 	ASSERT(addon);
 	ASSERT(addon->ImageID() == image); // if this failes, something bad happened to the add-on
 	delete addon;
-	unload_add_on(image);
+/*	unload_add_on(image);*/
 }
 
 }; // namespace media

@@ -44,6 +44,8 @@
 #include "TimeSourceObject.h"
 #include "TimeSourceObjectManager.h"
 
+using namespace std;
+
 // don't rename this one, it's used and exported for binary compatibility
 int32 BMediaNode::_m_changeTag = 0;
 
@@ -673,7 +675,7 @@ BMediaNode::operator new(size_t size)
 	CALLED();
 	return ::operator new(size);
 }
-/*
+
 void *
 BMediaNode::operator new(size_t size,
 						 const nothrow_t &) throw()
@@ -681,14 +683,13 @@ BMediaNode::operator new(size_t size,
 	CALLED();
 	return ::operator new(size, nothrow);
 }
-*/
+
 void
 BMediaNode::operator delete(void *ptr)
 {
 	CALLED();
 	::operator delete(ptr);
 }
-/*
 void 
 BMediaNode::operator delete(void * ptr, 
 							const nothrow_t &) throw()
@@ -696,7 +697,6 @@ BMediaNode::operator delete(void * ptr,
 	CALLED();
 	::operator delete(ptr, nothrow);
 }
-*/
 /*************************************************************
  * protected BMediaNode
  *************************************************************/

@@ -195,11 +195,11 @@ public:
 			directory = -1;
 			name[0] = 0;
 		}
-	operator entry_ref() const
+/*	operator entry_ref() const
 		{
 			entry_ref ref(device, directory, name);
 			return ref;
-		}
+		}*/
 	void operator=(const entry_ref &ref)
 		{
 			device = ref.device;

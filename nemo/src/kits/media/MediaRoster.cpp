@@ -332,7 +332,8 @@ BMediaRosterEx::PublishOutputs(const media_node & node, List<media_output> *list
 		void *start_addr;
 		size_t size;
 		size = ROUND_UP_TO_PAGE(count * sizeof(media_output));
-		request.area = create_area("publish outputs", &start_addr, B_ANY_ADDRESS, size, B_NO_LOCK, B_READ_AREA | B_WRITE_AREA);
+		/*request.area = create_area("publish outputs", &start_addr, B_ANY_ADDRESS, size, B_NO_LOCK, B_READ_AREA | B_WRITE_AREA);*/
+		request.area = B_ERROR;
 		if (request.area < B_OK) {
 			ERROR("PublishOutputs: failed to create area, %#lx\n", request.area);
 			return (status_t)request.area;
@@ -353,7 +354,9 @@ BMediaRosterEx::PublishOutputs(const media_node & node, List<media_output> *list
 	rv = QueryServer(SERVER_PUBLISH_OUTPUTS, &request, sizeof(request), &reply, sizeof(reply));
 	
 	if (request.area != -1)
-		delete_area(request.area);
+	{
+	/*	delete_area(request.area);*/
+	}
 	
 	return rv;
 }
@@ -377,7 +380,8 @@ BMediaRosterEx::PublishInputs(const media_node & node, List<media_input> *list)
 		void *start_addr;
 		size_t size;
 		size = ROUND_UP_TO_PAGE(count * sizeof(media_input));
-		request.area = create_area("publish inputs", &start_addr, B_ANY_ADDRESS, size, B_NO_LOCK, B_READ_AREA | B_WRITE_AREA);
+/*		request.area = create_area("publish inputs", &start_addr, B_ANY_ADDRESS, size, B_NO_LOCK, B_READ_AREA | B_WRITE_AREA);*/
+		request.area=B_ERROR;
 		if (request.area < B_OK) {
 			ERROR("PublishInputs: failed to create area, %#lx\n", request.area);
 			return (status_t)request.area;
@@ -398,7 +402,9 @@ BMediaRosterEx::PublishInputs(const media_node & node, List<media_input> *list)
 	rv = QueryServer(SERVER_PUBLISH_INPUTS, &request, sizeof(request), &reply, sizeof(reply));
 
 	if (request.area != -1)
-		delete_area(request.area);
+	{
+	/*	delete_area(request.area);*/
+	}
 	
 	return rv;
 }
@@ -1270,10 +1276,11 @@ BMediaRoster::GetLiveNodes(live_node_info * out_live_nodes,
 		live_node_info *live_info;
 		area_id clone;
 
-		clone = clone_area("live_node_info clone", reinterpret_cast<void **>(&live_info), B_ANY_ADDRESS, B_READ_AREA | B_WRITE_AREA, reply.area);
+/*		clone = clone_area("live_node_info clone", reinterpret_cast<void **>(&live_info), B_ANY_ADDRESS, B_READ_AREA | B_WRITE_AREA, reply.area);*/
+		clone=B_ERROR;
 		if (clone < B_OK) {
 			ERROR("BMediaRoster::GetLiveNodes failed to clone area, %#lx\n", clone);
-			delete_area(reply.area);
+/*			delete_area(reply.area);*/
 			*io_total_count = 0;
 			return B_ERROR;
 		}
@@ -1282,8 +1289,8 @@ BMediaRoster::GetLiveNodes(live_node_info * out_live_nodes,
 			out_live_nodes[i] = live_info[i];
 		}
 
-		delete_area(clone);
-		delete_area(reply.area);
+/*		delete_area(clone);
+		delete_area(reply.area);*/
 	} else {
 		for (int32 i = 0; i < reply.count; i++) {
 			out_live_nodes[i] = reply.live_info[i];
@@ -1935,7 +1942,8 @@ BMediaRoster::GetParameterWebFor(const media_node & node,
 		status_t rv;
 		area_id area;
 		void *data;
-		area = create_area("parameter web data", &data, B_ANY_ADDRESS, size, B_NO_LOCK, B_READ_AREA | B_WRITE_AREA);
+/*		area = create_area("parameter web data", &data, B_ANY_ADDRESS, size, B_NO_LOCK, B_READ_AREA | B_WRITE_AREA);*/
+		area=B_ERROR;
 		if (area < B_OK) {
 			ERROR("BMediaRoster::GetParameterWebFor couldn't create area of size %ld\n", size);
 			return B_ERROR;
@@ -1945,7 +1953,7 @@ BMediaRoster::GetParameterWebFor(const media_node & node,
 		rv = QueryPort(node.port, CONTROLLABLE_GET_PARAMETER_WEB, &request, sizeof(request), &reply, sizeof(reply));
 		if (rv != B_OK) {
 			ERROR("BMediaRoster::GetParameterWebFor CONTROLLABLE_GET_PARAMETER_WEB failed\n");
-			delete_area(area);
+/*			delete_area(area);*/
 			return B_ERROR;
 		}
 		if (reply.size == 0) {
@@ -1953,7 +1961,7 @@ BMediaRoster::GetParameterWebFor(const media_node & node,
 			// XXX should we return an error?
 			ERROR("BMediaRoster::GetParameterWebFor node %ld has no parameter web\n", node.node);
 			*out_web = new BParameterWeb();
-			delete_area(area);
+/*			delete_area(area);*/
 			return B_OK;
 		}
 		if (reply.size > 0) {
@@ -1966,14 +1974,14 @@ BMediaRoster::GetParameterWebFor(const media_node & node,
 			rv = (*out_web)->Unflatten(reply.code, data, reply.size);
 			if (rv != B_OK) {
 				ERROR("BMediaRoster::GetParameterWebFor Unflatten failed, %s\n", strerror(rv));
-				delete_area(area);
+/*				delete_area(area);*/
 				delete *out_web;
 				return B_ERROR;
 			}
-			delete_area(area);
+/*			delete_area(area);*/
 			return B_OK;
 		}
-		delete_area(area);
+/*		delete_area(area);*/
 		ASSERT(reply.size == -1);
 		// parameter web data was too large
 		// loop and try a larger size
@@ -2465,7 +2473,7 @@ BMediaRoster::SetRefFor(const media_node & file_interface,
 	return B_ERROR;
 }
 
-
+/*
 status_t 
 BMediaRoster::GetRefFor(const media_node & node,
 						entry_ref * out_file,
@@ -2474,7 +2482,7 @@ BMediaRoster::GetRefFor(const media_node & node,
 	UNIMPLEMENTED();
 	return B_ERROR;
 }
-
+*/
 
 status_t 
 BMediaRoster::SniffRefFor(const media_node & file_interface,
@@ -2699,7 +2707,7 @@ BMediaRoster::AudioBufferSizeFor(int32 channel_count,
 	ssize_t buffer_size;
 
 	system_info info;
-	get_system_info(&info);
+/*	get_system_info(&info);*/
 	
 	if (info.cpu_clock_speed > 2000000000)
 		buffer_duration = 2500;

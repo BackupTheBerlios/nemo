@@ -11,7 +11,7 @@
 #include "debug.h"
 
 #include <MediaFormats.h>
-#include <ObjectList.h>
+//#include <ObjectList.h>
 #include <Message.h>
 #include <Autolock.h>
 
@@ -379,8 +379,8 @@ BMediaFormats::GetFormatFor(const media_format_description &description,
 	// search for a matching format description
 
 	meta_format other(description);
-	const meta_format *metaFormat = sFormats.BinarySearch(other, meta_format::CompareDescriptions);
-	printf("meta format == %p\n", metaFormat);
+	const meta_format *metaFormat=NULL;/*= sFormats.BinarySearch(other, meta_format::CompareDescriptions);
+	printf("meta format == %p\n", metaFormat);*/
 	if (metaFormat == NULL) {
 		memset(_format, 0, sizeof(*_format)); // clear to widlcard
 		return B_MEDIA_BAD_FORMAT;

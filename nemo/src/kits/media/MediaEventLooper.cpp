@@ -174,8 +174,8 @@ BMediaEventLooper::SetRunMode(run_mode mode)
 		fCurrentPriority = priority;
 		if(fControlThread > 0) {
 			set_thread_priority(fControlThread, fCurrentPriority);
-			fSchedulingLatency = estimate_max_scheduling_latency(fControlThread);
-			printf("BMediaEventLooper: SchedulingLatency is %Ld\n", fSchedulingLatency);
+/*			fSchedulingLatency = estimate_max_scheduling_latency(fControlThread);
+			printf("BMediaEventLooper: SchedulingLatency is %Ld\n", fSchedulingLatency);*/
 		}
 	}
 
@@ -357,8 +357,8 @@ BMediaEventLooper::SetPriority(int32 priority)
 
 	if(fControlThread > 0) {
 		set_thread_priority(fControlThread, fCurrentPriority);
-		fSchedulingLatency = estimate_max_scheduling_latency(fControlThread);
-		printf("BMediaEventLooper: SchedulingLatency is %Ld\n", fSchedulingLatency);
+/*		fSchedulingLatency = estimate_max_scheduling_latency(fControlThread);
+		printf("BMediaEventLooper: SchedulingLatency is %Ld\n", fSchedulingLatency);*/
 	}
 
 	return B_OK;
@@ -424,8 +424,8 @@ BMediaEventLooper::Run()
 	resume_thread(fControlThread);
 
 	// get latency information
-	fSchedulingLatency = estimate_max_scheduling_latency(fControlThread);
-	printf("BMediaEventLooper: SchedulingLatency is %Ld\n", fSchedulingLatency);
+/*	fSchedulingLatency = estimate_max_scheduling_latency(fControlThread);
+	printf("BMediaEventLooper: SchedulingLatency is %Ld\n", fSchedulingLatency);*/
 }
 
 

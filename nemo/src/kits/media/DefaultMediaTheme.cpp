@@ -23,6 +23,8 @@
 #include <MessageFilter.h>
 #include <Window.h>
 
+#include <time.h>
+
 
 using namespace BPrivate;
 
@@ -179,13 +181,13 @@ void
 DynamicScrollView::AttachedToWindow(void)
 {
 	BRect frame = ConvertToScreen(Bounds());
-	BRect windowFrame = Window()->Frame();
+//	BRect windowFrame = Window()->Frame();
 
 	fIsDocumentScroller = Parent() == NULL
-		&& Window() != NULL
-		&& Window()->Look() == B_DOCUMENT_WINDOW_LOOK
-		&& frame.right == windowFrame.right
-		&& frame.bottom == windowFrame.bottom;
+		&& Window() != NULL;
+//		&& Window()->Look() == B_DOCUMENT_WINDOW_LOOK
+//		&& frame.right == windowFrame.right
+//		&& frame.bottom == windowFrame.bottom;
 
 	UpdateBars();
 }
@@ -577,7 +579,7 @@ ContinuousMessageFilter::Filter(BMessage *message, BHandler **target)
 
 	printf("update view %s, %ld channels\n", control->Name(), fParameter.CountChannels());
 
-	if (fParameter.SetValue((void *)value, sizeof(value), system_time()) < B_OK) {
+	if (fParameter.SetValue((void *)value, sizeof(value), /*system_*/time(NULL)) < B_OK) {
 		ERROR("Could not set parameter value for %p\n", &fParameter);
 		return B_DISPATCH_MESSAGE;
 	}
@@ -640,7 +642,7 @@ DiscreteMessageFilter::Filter(BMessage *message, BHandler **target)
 
 	printf("update view %s, value = %ld\n", control->Name(), value);
 
-	if (fParameter.SetValue((void *)&value, sizeof(value), system_time()) < B_OK) {
+	if (fParameter.SetValue((void *)&value, sizeof(value), /*system_*/time(NULL)) < B_OK) {
 		ERROR("Could not set parameter value for %p\n", &fParameter);
 		return B_DISPATCH_MESSAGE;
 	}

@@ -53,10 +53,11 @@ BMediaFiles::RewindTypes()
 	char *types;
 	area_id clone;
 
-	clone = clone_area("rewind types clone", reinterpret_cast<void **>(&types), B_ANY_ADDRESS, B_READ_AREA | B_WRITE_AREA, reply.area);
+	/*clone = clone_area("rewind types clone", reinterpret_cast<void **>(&types), B_ANY_ADDRESS, B_READ_AREA | B_WRITE_AREA, reply.area);*/
+	clone=B_ERROR;
 	if (clone < B_OK) {
 		ERROR("BMediaFiles::RewindTypes failed to clone area, %#lx\n", clone);
-		delete_area(reply.area);
+/*		delete_area(reply.area);*/
 		return B_ERROR;
 	}
 
@@ -64,8 +65,8 @@ BMediaFiles::RewindTypes()
 		m_types.AddItem(new BString(types + i * B_MEDIA_NAME_LENGTH));
 	}
 
-	delete_area(clone);
-	delete_area(reply.area);
+/*	delete_area(clone);
+	delete_area(reply.area);*/
 	
 	m_type_index = 0;
 
@@ -115,10 +116,11 @@ BMediaFiles::RewindRefs(const char *type)
 		char *items;
 		area_id clone;
 	
-		clone = clone_area("rewind refs clone", reinterpret_cast<void **>(&items), B_ANY_ADDRESS, B_READ_AREA | B_WRITE_AREA, reply.area);
+/*		clone = clone_area("rewind refs clone", reinterpret_cast<void **>(&items), B_ANY_ADDRESS, B_READ_AREA | B_WRITE_AREA, reply.area);*/
+		clone=B_ERROR;
 		if (clone < B_OK) {
 			ERROR("BMediaFiles::RewindRefs failed to clone area, %#lx\n", clone);
-			delete_area(reply.area);
+/*			delete_area(reply.area);*/
 			return B_ERROR;
 		}
 	
@@ -126,8 +128,8 @@ BMediaFiles::RewindRefs(const char *type)
 			m_items.AddItem(new BString(items + i * B_MEDIA_NAME_LENGTH));
 		}
 	
-		delete_area(clone);
-		delete_area(reply.area);
+/*		delete_area(clone);
+		delete_area(reply.area);*/
 	}
 	
 	m_cur_type = BString(type);

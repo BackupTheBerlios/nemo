@@ -20,7 +20,7 @@ BMediaFile::BMediaFile(const entry_ref *ref)
 	CALLED();
 	Init();
 	fDeleteSource = true;
-	InitReader(new BFile(ref, O_RDONLY));
+/*	InitReader(new BFile(ref, O_RDONLY));*/
 }
 
 BMediaFile::BMediaFile(BDataIO * source)
@@ -36,7 +36,7 @@ BMediaFile::BMediaFile(const entry_ref * ref,
 	CALLED();
 	Init();
 	fDeleteSource = true;
-	InitReader(new BFile(ref, O_RDONLY), flags);
+/*	InitReader(new BFile(ref, O_RDONLY), flags);*/
 }
 
 BMediaFile::BMediaFile(BDataIO * source,
@@ -54,7 +54,7 @@ BMediaFile::BMediaFile(const entry_ref *ref,
 	CALLED();
 	Init();
 	fDeleteSource = true;
-	InitWriter(new BFile(ref, O_WRONLY), mfi, flags);
+/*	InitWriter(new BFile(ref, O_WRONLY), mfi, flags);*/
 }
 					   
 BMediaFile::BMediaFile(BDataIO	*destination,

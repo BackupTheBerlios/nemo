@@ -239,7 +239,7 @@ BBuffer::BBuffer(const buffer_clone_info & info) :
 	fFlags = reply.info.flags;
 	fOffset = reply.info.offset;
 	
-	fArea = clone_area("a cloned BBuffer", &fData, B_ANY_ADDRESS, B_READ_AREA | B_WRITE_AREA, reply.info.area);
+/*	fArea = clone_area("a cloned BBuffer", &fData, B_ANY_ADDRESS, B_READ_AREA | B_WRITE_AREA, reply.info.area);*/
 	if (fArea <= B_OK) {
 		// XXX should unregister buffer here
 		ERROR("BBuffer::BBuffer: buffer cloning failed\n");
@@ -263,7 +263,7 @@ BBuffer::~BBuffer()
 	// unmap the Data
 	if (fData != NULL) {
 
-		delete_area(fArea);
+/*		delete_area(fArea);*/
 
 		// ask media_server to unregister the buffer
 		// when the last clone of this buffer is gone,

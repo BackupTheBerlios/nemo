@@ -146,7 +146,8 @@ BControllable::HandleMessage(int32 message, const void *data, size_t size)
 				data = reply.rawdata;
 			} else {
 				// large data transfer, clone area
-				area = clone_area("get parameter data clone", &data, B_ANY_ADDRESS, B_READ_AREA | B_WRITE_AREA, request->area);
+/*				area = clone_area("get parameter data clone", &data, B_ANY_ADDRESS, B_READ_AREA | B_WRITE_AREA, request->area);*/
+				area=B_ERROR;
 				if (area < B_OK) {
 					ERROR("CONTROLLABLE_GET_PARAMETER_DATA cloning area failed\n");
 					request->SendReply(B_NO_MEMORY, &reply, sizeof(reply));
@@ -156,7 +157,9 @@ BControllable::HandleMessage(int32 message, const void *data, size_t size)
 			reply.size = request->requestsize;
 			rv = GetParameterValue(request->parameter_id, &reply.last_change, data, &reply.size);
 			if (area != -1)
-				delete_area(area);
+			{
+/*				delete_area(area);*/
+			}
 			request->SendReply(rv, &reply, sizeof(reply));
 			return B_OK;
 		}
@@ -174,7 +177,8 @@ BControllable::HandleMessage(int32 message, const void *data, size_t size)
 				data = request->rawdata;
 			} else {
 				// large data transfer, clone area
-				area = clone_area("set parameter data clone", (void **)&data, B_ANY_ADDRESS, B_READ_AREA | B_WRITE_AREA, request->area);
+/*				area = clone_area("set parameter data clone", (void **)&data, B_ANY_ADDRESS, B_READ_AREA | B_WRITE_AREA, request->area);*/
+				area=B_ERROR;
 				if (area < B_OK) {
 					ERROR("CONTROLLABLE_SET_PARAMETER_DATA cloning area failed\n");
 					request->SendReply(B_NO_MEMORY, &reply, sizeof(reply));
@@ -183,7 +187,9 @@ BControllable::HandleMessage(int32 message, const void *data, size_t size)
 			}
 			SetParameterValue(request->parameter_id, request->when, data, request->size);
 			if (area != -1)
-				delete_area(area);
+			{
+/*				delete_area(area);*/
+			}
 			request->SendReply(B_OK, &reply, sizeof(reply));
 			return B_OK;
 		}
@@ -200,7 +206,8 @@ BControllable::HandleMessage(int32 message, const void *data, size_t size)
 			} else if (fWeb != NULL && fWeb->FlattenedSize() <= request->maxsize) {
 				void *buffer;
 				area_id area;
-				area = clone_area("cloned parameter web", &buffer, B_ANY_ADDRESS, B_READ_AREA | B_WRITE_AREA, request->area);
+/*				area = clone_area("cloned parameter web", &buffer, B_ANY_ADDRESS, B_READ_AREA | B_WRITE_AREA, request->area);*/
+				area=B_ERROR;
 				if (area < B_OK) {
 					ERROR("BControllable::HandleMessage CONTROLLABLE_GET_PARAMETER_WEB clone_area failed\n");
 					rv = B_ERROR;
@@ -214,7 +221,7 @@ BControllable::HandleMessage(int32 message, const void *data, size_t size)
 						printf("BControllable::HandleMessage CONTROLLABLE_GET_PARAMETER_WEB %ld bytes, 0x%08lx, 0x%08lx, 0x%08lx, 0x%08lx\n",
 							reply.size, ((uint32*)buffer)[0], ((uint32*)buffer)[1], ((uint32*)buffer)[2], ((uint32*)buffer)[3]);
 					}
-					delete_area(area);
+/*					delete_area(area);*/
 				}
 			} else {
 				reply.code = 0;

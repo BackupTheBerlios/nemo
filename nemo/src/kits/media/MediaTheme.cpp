@@ -11,7 +11,7 @@
 
 #include <string.h>
 
-#include "DefaultMediaTheme.h"
+//#include "DefaultMediaTheme.h"
 #include "debug.h"
 
 
@@ -57,15 +57,14 @@ BMediaTheme::ID()
 	return _mID;
 }
 
-
+/*
 bool
 BMediaTheme::GetRef(entry_ref *out_ref)
 {
 	UNIMPLEMENTED();
 
 	return false;
-}
-
+}*/
 
 BView *
 BMediaTheme::ViewFor(BParameterWeb *web, const BRect *hintRect, BMediaTheme *usingTheme)
@@ -77,14 +76,18 @@ BMediaTheme::ViewFor(BParameterWeb *web, const BRect *hintRect, BMediaTheme *usi
 	if (usingTheme == NULL) {
 		BAutolock locker(sLock);
 
-		if (_mDefaultTheme == NULL)
-			_mDefaultTheme = new BPrivate::DefaultMediaTheme();
+		if (_mDefaultTheme == NULL){}
+//			_mDefaultTheme = new BPrivate::DefaultMediaTheme();
 
 		usingTheme = _mDefaultTheme;
 	}
 
 	if (usingTheme == NULL)
-		return new BStringView(BRect(0, 0, 200, 30), "", "No BMediaTheme available, sorry!");
+	{
+		printf("No BMediaTheme available, sorry!");
+		return NULL;
+	}
+	//	return new BStringView(BRect(0, 0, 200, 30), "", "No BMediaTheme available, sorry!");
 
 	return usingTheme->MakeViewFor(web, hintRect);
 }
@@ -103,8 +106,8 @@ BMediaTheme::SetPreferredTheme(BMediaTheme *defaultTheme)
 	if (defaultTheme == NULL) {
 		// if the current preferred theme is not the default media theme,
 		// delete it, and set it back to the default
-		if (dynamic_cast<BPrivate::DefaultMediaTheme *>(_mDefaultTheme) == NULL)
-			_mDefaultTheme = new BPrivate::DefaultMediaTheme();
+/*		if (dynamic_cast<BPrivate::DefaultMediaTheme *>(_mDefaultTheme) == NULL)
+			_mDefaultTheme = new BPrivate::DefaultMediaTheme();*/
 
 		return B_OK;
 	}
@@ -131,8 +134,8 @@ BMediaTheme::PreferredTheme()
 	//	add-on and load this from disk - in the meantime, just use
 	//	the default theme
 
-	if (_mDefaultTheme == NULL)
-		_mDefaultTheme = new BPrivate::DefaultMediaTheme();
+/*	if (_mDefaultTheme == NULL)
+		_mDefaultTheme = new BPrivate::DefaultMediaTheme();*/
 
 	return _mDefaultTheme;
 }
@@ -194,7 +197,7 @@ BMediaTheme::MakeFallbackViewFor(BParameter *parameter)
 	if (parameter == NULL)
 		return NULL;
 
-	return BPrivate::DefaultMediaTheme::MakeViewFor(parameter);
+	return NULL;/*BPrivate::DefaultMediaTheme::MakeViewFor(parameter);*/
 }
 
 

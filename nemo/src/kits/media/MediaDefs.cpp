@@ -631,17 +631,17 @@ media_format::SetMetaData(const void *data,
 {
 	// TODO: create_area / delete_area for this should be done by the media server?
 	if (meta_data_area > 0) {
-		delete_area(meta_data_area);
+/*		delete_area(meta_data_area);*/
 	}
 	uchar * addr = 0;
 	uint32 area_size = ((size - 1) / B_PAGE_SIZE + 1) * B_PAGE_SIZE ;
-	area_id area = create_area("meta_data_area", (void**)&addr, B_ANY_ADDRESS, area_size,
-	                           B_NO_LOCK, B_READ_AREA | B_WRITE_AREA);
+	area_id area;/* = create_area("meta_data_area", (void**)&addr, B_ANY_ADDRESS, area_size,
+	                           B_NO_LOCK, B_READ_AREA | B_WRITE_AREA);*/
 	if (area < 0) {
 		return area;
 	}
 	memcpy(addr, data, size);
-	set_area_protection(area,B_READ_AREA);
+/*	set_area_protection(area,B_READ_AREA);*/
 	meta_data = addr;
 	meta_data_size = size;
 	meta_data_area = area;
@@ -1031,13 +1031,13 @@ struct buffer_clone_info
 //	use these functions, rather than sending messages yourself.
 //	The callback will be called for various stages of the process, with 100 meaning completely done
 //	The callback should always return TRUE for the time being.
-status_t shutdown_media_server(bigtime_t timeout/* = B_INFINITE_TIMEOUT*/, bool (*progress)(int stage, const char * message, void * cookie)/* = NULL*/, void * cookie /*= NULL*/)
+status_t shutdown_media_server(bigtime_t timeout = B_INFINITE_TIMEOUT, bool (*progress)(int stage, const char * message, void * cookie)/* = NULL*/, void * cookie /*= NULL*/)
 {
 	UNIMPLEMENTED();
 	return B_OK;
 }
 
-status_t launch_media_server(uint32 flags /*= 0*/)
+status_t launch_media_server(uint32 flags = 0)
 {
 	UNIMPLEMENTED();
 	return B_OK;

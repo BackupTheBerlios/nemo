@@ -117,7 +117,8 @@ BBufferGroup::BBufferGroup(size_t size,
 	// now we create the area
 	area_size = ((allocsize * count) + (B_PAGE_SIZE - 1)) & ~(B_PAGE_SIZE - 1);
 
-	buffer_area = create_area("some buffers area", &start_addr,placement,area_size,lock,B_READ_AREA | B_WRITE_AREA);
+/*	buffer_area = create_area("some buffers area", &start_addr,placement,area_size,lock,B_READ_AREA | B_WRITE_AREA);*/
+	buffer_area=B_ERROR;
 	if (buffer_area < B_OK) {
 		ERROR("BBufferGroup: failed to allocate %ld bytes area\n",area_size);
 		fInitError = (status_t)buffer_area;
@@ -146,7 +147,7 @@ BBufferGroup::BBufferGroup(size_t size,
 		}
 	}
 
-	delete_area(buffer_area);
+/*	delete_area(buffer_area);*/
 }
 
 /* explicit */
