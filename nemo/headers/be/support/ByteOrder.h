@@ -5,13 +5,13 @@
 #define _sk_byte_order_h_
 
 #include <BeBuild.h>
-#include <endian.h>
+//#include <endian.h>
 #include <SupportDefs.h>
 #include <TypeConstants.h>	/* For convenience */
 
 #ifdef __cplusplus
 extern "C" {
-#endif 
+#endif
 
 /*----------------------------------------------------------------------*/
 /*------- Swap-direction constants, and swapping functions -------------*/
@@ -32,18 +32,27 @@ extern bool is_type_swapped(type_code type);
  
 /*-----------------------------------------------------------------------*/
 /*----- Private implementations -----------------------------------------*/
+#if 0
 extern double __swap_double(double arg);
 extern float  __swap_float(float arg);
 extern uint64 __swap_int64(uint64 uarg);
 extern uint32 __swap_int32(uint32 uarg);
 extern uint16 __swap_int16(uint16 uarg);
+#else
+#define __swap_double(arg) arg
+#define __swap_float(arg)  arg
+#define __swap_int64(arg)  arg
+#define __swap_int32(arg)  arg
+#define __swap_int16(arg)  arg
+#endif
 /*-------------------------------------------------------------*/
 
 
 /*-------------------------------------------------------------*/
 /*--------- Host is Little  --------------------------------------*/
 
-#if BYTE_ORDER == __LITTLE_ENDIAN
+#ifdef __i386__
+
 #define B_HOST_IS_LENDIAN 1
 #define B_HOST_IS_BENDIAN 0
 
@@ -76,14 +85,13 @@ extern uint16 __swap_int16(uint16 uarg);
 #define B_BENDIAN_TO_HOST_INT32(arg)	__swap_int32(arg)
 #define B_BENDIAN_TO_HOST_INT16(arg)	__swap_int16(arg)
 
-#else /* __LITTLE_ENDIAN */
-
+#else
 
 /*-------------------------------------------------------------*/
 /*--------- Host is Big  --------------------------------------*/
 
-#define B_HOST_IS_LENDIAN 0
-#define B_HOST_IS_BENDIAN 1
+#define B_HOST_IS_LENDIAN	0
+#define B_HOST_IS_BENDIAN	1
 
 /*--------- Host Native -> Little  -------------------*/
 #define B_HOST_TO_LENDIAN_DOUBLE(arg)	__swap_double(arg)

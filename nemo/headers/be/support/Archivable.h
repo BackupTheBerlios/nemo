@@ -54,17 +54,18 @@ public:
 /*						BArchivable(BMessage* from);
 	virtual	status_t	Archive(BMessage* into, bool deep = true) const;
 	static	BArchivable	*Instantiate(BMessage* from);
-
+*/
 // Private or reserved ---------------------------------------------------------
 	virtual status_t	Perform(perform_code d, void* arg);
 
 private:
 
-	virtual	void		_ReservedArchivable1();
+/*	virtual	void		_ReservedArchivable1();
 	virtual	void		_ReservedArchivable2();
 	virtual	void		_ReservedArchivable3();
 
-			uint32		_reserved[2];*/
+			uint32		_reserved[2];
+*/
 };
 
 
@@ -94,4 +95,3 @@ _IMPEXP_BE instantiation_func	find_instantiation_func(BMessage* archive_data);
  * $Id  $
  *
  */
-

@@ -71,47 +71,43 @@ enum message_source {
 class BMessageFilter {
 
 public:
-								BMessageFilter(	uint32 what,
-												filter_hook func = NULL);
-								BMessageFilter(	message_delivery delivery,
-												message_source source,
-												filter_hook func = NULL);
-								BMessageFilter(	message_delivery delivery,
-												message_source source,
-												uint32 what,
-												filter_hook func = NULL);
-								BMessageFilter(const BMessageFilter& filter);
-								BMessageFilter(const BMessageFilter* filter);
-	virtual						~BMessageFilter();
+							BMessageFilter(	uint32 what,
+											filter_hook func = NULL);
+							BMessageFilter(	message_delivery delivery,
+											message_source source,
+											filter_hook func = NULL);
+							BMessageFilter(	message_delivery delivery,
+											message_source source,
+											uint32 what,
+											filter_hook func = NULL);
+							BMessageFilter(const BMessageFilter& filter);
+							BMessageFilter(const BMessageFilter* filter);
+virtual						~BMessageFilter();
 
-			BMessageFilter		&operator=(const BMessageFilter& from);
+		BMessageFilter		&operator=(const BMessageFilter& from);
 
-	// Hook function; ignored if filter_hook is non-NULL
-	virtual	filter_result		Filter(BMessage* message, BHandler** target);
+// Hook function; ignored if filter_hook is non-NULL
+virtual	filter_result		Filter(BMessage* message, BHandler** target);
 
-			message_delivery	MessageDelivery() const;
-			message_source		MessageSource() const;
-			uint32				Command() const;
-			bool				FiltersAnyCommand() const;
-			BLooper				*Looper() const;
+		message_delivery	MessageDelivery() const;
+		message_source		MessageSource() const;
+		uint32				Command() const;
+		bool				FiltersAnyCommand() const;
+		BLooper				*Looper() const;
 
 // Private or reserved ---------------------------------------------------------
 private:
-	friend	class BLooper;
-	friend	class BHandler;
+friend	class BLooper;
+friend	class BHandler;
 
-	virtual	void				_ReservedMessageFilter1();
-	virtual	void				_ReservedMessageFilter2();
-
-			void				SetLooper(BLooper* owner);
-			filter_hook			FilterFunction() const;
-			bool				fFiltersAny;
-			uint32				what;
-			message_delivery	fDelivery;
-			message_source		fSource;
-			BLooper				*fLooper;
-			filter_hook			fFilterFunction;
-			uint32				_reserved[3];
+		void				SetLooper(BLooper* owner);
+		filter_hook			FilterFunction() const;
+		bool				fFiltersAny;
+		uint32				what;
+		message_delivery	fDelivery;
+		message_source		fSource;
+		BLooper				*fLooper;
+		filter_hook			fFilterFunction;
 };
 //------------------------------------------------------------------------------
 
@@ -123,4 +119,3 @@ private:
  * $Id  $
  *
  */
-

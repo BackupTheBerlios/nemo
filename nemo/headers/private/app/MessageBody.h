@@ -27,7 +27,7 @@
 
 #ifndef MESSAGEBODY_H
 #define MESSAGEBODY_H
-#include <MessageField.h>
+
 // Standard Includes -----------------------------------------------------------
 #include <map>
 #include <stdio.h>
@@ -39,10 +39,11 @@
 #include <Point.h>
 #include <Rect.h>
 //#include <StreamIO.h>
-#include <String.h>
+//#include <String.h>
 #include <SupportDefs.h>
 
 // Project Includes ------------------------------------------------------------
+#include <MessageField.h>
 
 // Local Includes --------------------------------------------------------------
 
@@ -239,4 +240,3 @@ status_t BMessageBody::ReplaceData(const char *name, int32 index,
  * $Id  $
  *
  */
-

@@ -125,7 +125,7 @@ BArchivable* BArchivable::Instantiate(BMessage* from)
 {
 	debugger("Can't create a plain BArchivable object");
 	return NULL;
-}
+}*/
 //------------------------------------------------------------------------------
 status_t BArchivable::Perform(perform_code d, void* arg)
 {
@@ -133,7 +133,7 @@ status_t BArchivable::Perform(perform_code d, void* arg)
 	return B_ERROR;
 }
 //------------------------------------------------------------------------------
-void BArchivable::_ReservedArchivable1()
+/*void BArchivable::_ReservedArchivable1()
 {
 	;
 }
@@ -567,4 +567,3 @@ bool CheckSig(const char* sig, image_info& info)
  * $Id  $
  *
  */
-

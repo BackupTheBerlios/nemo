@@ -22,7 +22,7 @@
 //	File Name:		Application.h
 //	Author:			Erik Jaesler (erik@cgsoftware.com)
 //	Description:	BApplication class is the center of the application
-//					universe.  The global be_app and be_app_messenger 
+//					universe.  The global be_app and be_app_messenger
 //					variables are defined here as well.
 //------------------------------------------------------------------------------
 
@@ -48,11 +48,11 @@
 
 // Globals ---------------------------------------------------------------------
 
-class BCursor;
+//class BCursor;
 class BList;
 class BWindow;
 class _BSession_;
-class BResources;
+//class BResources;
 class BMessageRunner;
 struct _server_heap_;
 struct _drag_data_;
@@ -64,15 +64,14 @@ class BApplication : public BLooper {
 
 public:
 							BApplication(const char* signature);
-							BApplication(const char* signature,
-										 status_t* error);
+							BApplication(const char* signature, status_t* error);
 	virtual					~BApplication();
 
 	// Archiving
-							BApplication(BMessage* data);
+/*							BApplication(BMessage* data);
 	static	BArchivable*	Instantiate(BMessage* data);
 	virtual	status_t		Archive(BMessage* data, bool deep = true) const;
-
+*/
 			status_t		InitCheck() const;
 
 	// App control and System Message handling
@@ -88,33 +87,33 @@ public:
 	virtual	void			AboutRequested();
 
 	// Scripting
-	virtual BHandler*		ResolveSpecifier(BMessage* msg,
+/*	virtual BHandler*		ResolveSpecifier(BMessage* msg,
 											 int32 index,
 											 BMessage* specifier,
 											 int32 form,
 											 const char* property);
-
+*/
 	// Cursor control, window/looper list, and app info
-			void			ShowCursor();
+/*			void			ShowCursor();
 			void			HideCursor();
 			void			ObscureCursor();
 			bool			IsCursorHidden() const;
 			void			SetCursor(const void* cursor);
 			void			SetCursor(const BCursor* cursor, bool sync = true);
 			int32			CountWindows() const;
-			BWindow*		WindowAt(int32 index) const;
+			BWindow*		WindowAt(int32 index) const;*/
 			int32			CountLoopers() const;
 			BLooper*		LooperAt(int32 index) const;
 			bool			IsLaunching() const;
-			status_t		GetAppInfo(app_info* info) const;
-	static	BResources*		AppResources();
+//			status_t		GetAppInfo(app_info* info) const;
+//	static	BResources*		AppResources();
 
 	virtual	void			DispatchMessage(BMessage* message,
 											BHandler* handler);
 			void			SetPulseRate(bigtime_t rate);
 
 	// More scripting
-	virtual status_t		GetSupportedSuites(BMessage* data);
+//	virtual status_t		GetSupportedSuites(BMessage* data);
 
 
 // Private or reserved ---------------------------------------------------------
@@ -125,34 +124,27 @@ private:
 	typedef BLooper _inherited;
 
 	friend class BWindow;
-	friend class BView;
-	friend class BBitmap;
-	friend class BScrollBar;
-	friend class BPrivateScreen;
+//	friend class BView;
+//	friend class BBitmap;
+//	friend class BScrollBar;
+//	friend class BPrivateScreen;
 	friend class BPrivate::BAppServerLink;
 	friend void _toggle_handles_(bool);
 
 							BApplication(uint32 signature);
 							BApplication(const BApplication&);
+
 			BApplication&	operator=(const BApplication&);
-
-	virtual	void			_ReservedApplication1();
-	virtual	void			_ReservedApplication2();
-	virtual	void			_ReservedApplication3();
-	virtual	void			_ReservedApplication4();
-	virtual	void			_ReservedApplication5();
-	virtual	void			_ReservedApplication6();
-	virtual	void			_ReservedApplication7();
-	virtual	void			_ReservedApplication8();
-
+/*
 	virtual	bool			ScriptReceived(BMessage* msg,
 											int32 index,
 											BMessage* specifier,
 											int32 form,
 											const char* property);
+*/
 			void			run_task();
 			void			InitData(const char* signature, status_t* error);
-			void			BeginRectTracking(BRect r, bool trackWhole);
+/*			void			BeginRectTracking(BRect r, bool trackWhole);
 			void			EndRectTracking();
 			void			get_scs();
 			void			setup_server_heaps();
@@ -185,22 +177,16 @@ private:
 	static	int32			async_quit_entry(void*);
 	static	BResources*		_app_resources;
 	static	BLocker			_app_resources_lock;
-
+*/
 			const char*		fAppName;
 			int32			fServerFrom;
 			int32			fServerTo;
-#ifndef FIX_FOR_4_6
-			void*			fCursorData;
-#else
-			void*			_unused1;
-#endif
-			_server_heap_* 	fServerHeap;
+//			void*			fCursorData;
 			bigtime_t		fPulseRate;
 			uint32			fInitialWorkspace;
-			_drag_data_*	fDraggedMessage;
-			BMessageRunner*	fPulseRunner;
+//			_drag_data_		*fDraggedMessage;
+//			BMessageRunner	*fPulseRunner;
 			status_t		fInitError;
-			uint32			_reserved[11];
 
 			bool			fReadyToRunCalled;
 };
@@ -209,7 +195,7 @@ private:
 
 // Global Objects --------------------------------------------------------------
 
-extern _IMPEXP_BE BApplication*	be_app;
+extern _IMPEXP_BE BApplication	*be_app;
 extern _IMPEXP_BE BMessenger	be_app_messenger;
 
 //------------------------------------------------------------------------------
@@ -222,4 +208,3 @@ extern _IMPEXP_BE BMessenger	be_app_messenger;
  * $Id  $
  *
  */
-

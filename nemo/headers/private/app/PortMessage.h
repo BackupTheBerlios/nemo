@@ -24,59 +24,259 @@
 //	Description:	Package class for port messaging-based data
 //  
 //------------------------------------------------------------------------------
-#ifndef PORTMESSAGE_H_
-#define PORTMESSAGE_H_
+#ifndef _PORTMESSAGE_H
+#define _PORTMESSAGE_H
 
+// Standard Includes -----------------------------------------------------------
+
+// System Includes -------------------------------------------------------------
 #include <OS.h>
-#include <ServerProtocol.h>
 
-class PortMessage
-{
+// Private Includes ------------------------------------------------------------
+#include "ServerProtocol.h"
+
+// Macro Defs ------------------------------------------------------------------
+#define DFLT_PORT_MSG_SIZE	4096
+
+//------------------------------------------------------------------------------
+class PortMessage {
+
 public:
-	PortMessage(const int32 &code, const void *buffer, const ssize_t &buffersize,
-			 const bool &copy);
-	PortMessage(void);
-	~PortMessage(void);
-	
-	status_t ReadFromPort(const port_id &port, const bigtime_t &timeout=B_INFINITE_TIMEOUT);
-	status_t WriteToPort(const port_id &port);	
-	
-	void SetCode(const int32 &code);
-	void SetProtocol(int32 protocol) { _protocol=protocol; }
-	void SetBuffer(const void *buffer, const ssize_t &size, const bool &copy=false);
+//------------------------------------------------------------------------------
+	PortMessage(int32 code, const void *buffer,	ssize_t buffersize, bool copy)
+    {
+		fCode = code;
+		fProtocol = AS_SERVER_PORTLINK;
+		fBufferSize = buffersize;
+		fSizeRead = fSizeWritten = 0;
 
-	int32 Code(void) { return _code; }
-	void *Buffer(void) { return _buffer; }
-	ssize_t BufferSize(void) { return _buffersize; }
-	int32 Protocol(void) const { return _protocol; }
-	
-	status_t Read(void *data, ssize_t size);
-	status_t ReadString(char **string);
-	template <class Type> status_t Read(Type *data)
+    	if(buffer) {
+        	if(copy)
+        	{
+        		fBuffer = new uint8[fBufferSize];
+        		memcpy(fBuffer, buffer, fBufferSize);
+        		fDeleteBuffer = true;
+        	}
+        	else
+        	{
+        		fBuffer = (uint8*)buffer;
+        		fDeleteBuffer = false;
+        	}
+    	}
+    	else {
+    		fBuffer = new uint8[fBufferSize];
+    		fDeleteBuffer = true;
+    	}
+
+    	fReadPosition = fWritePosition = fBuffer + 8;
+    }							
+//------------------------------------------------------------------------------							
+	PortMessage(ssize_t size = DFLT_PORT_MSG_SIZE)
+    {
+		if(size < 8)
+			size = 8;
+
+		fCode = 0;
+		fProtocol = AS_SERVER_PORTLINK;
+		fBuffer = new uint8[size];
+		fBufferSize = size;
+		fSizeRead = fSizeWritten = 0;
+		fDeleteBuffer = true;
+		fReadPosition = fWritePosition = fBuffer + 8;
+    }						
+//------------------------------------------------------------------------------						
+	~PortMessage(void)
+    {
+    	if(fDeleteBuffer)
+    		delete[] fBuffer;
+    }
+//------------------------------------------------------------------------------						
+	status_t ReadFromPort(port_id port,	bigtime_t timeout = B_INFINITE_TIMEOUT)
+    {
+		if(timeout == B_INFINITE_TIMEOUT)
 		{
-			int32 size = sizeof(Type);
-
-			if(!data)
-				return B_BAD_VALUE;
-
-			if( !_buffer || 
-				(_buffersize < size) ||
-				(_index+size > _buffer+_buffersize) )
-				return B_NO_MEMORY;
-	
-			*data=*((Type*)_index);
-			_index+=size;
-	
-			return B_OK;
+			fSizeWritten = read_port(port, &fProtocol, fBuffer, fBufferSize);
+		}
+		else
+		{
+			fSizeWritten = read_port_etc(port, &fProtocol, fBuffer,
+				fBufferSize, B_TIMEOUT, timeout);
 		}
 
-	void Rewind(void);
-private:
-	int32 _code;
-	uint8 *_buffer;
-	ssize_t _buffersize;
-	uint8 *_index;
-	int32 _protocol;
-};
+		// error?
+		if((status_t)fSizeWritten < B_OK)
+			return (status_t)fSizeWritten;
 
+		fCode = ((int32*)fBuffer)[0];
+		fSizeRead = 0;
+		fSizeWritten -= 8;
+		fReadPosition = fBuffer + 8;
+		fWritePosition = fBuffer + 8 + fSizeWritten;
+
+    	return B_OK;
+    }							
+//------------------------------------------------------------------------------							
+	status_t WriteToPort(port_id port)
+	{
+		// Check port validity
+		port_info pi;
+		if(get_port_info(port, &pi) != B_OK)
+			return B_BAD_VALUE;
+
+		((int32*)fBuffer)[0] = fCode;
+		((int32*)fBuffer)[1] = fSizeWritten;
+
+		status_t error =
+			write_port(port, AS_SERVER_PORTLINK, fBuffer, fSizeWritten + 8);
+		
+		return error;
+    }		
+//------------------------------------------------------------------------------	
+    void SetCode(int32 code)
+    {
+    	fCode = code;
+    }     
+//------------------------------------------------------------------------------     
+   	void SetProtocol(int32 protocol)
+    {
+		fProtocol = protocol;
+	}
+//------------------------------------------------------------------------------
+    int32 Code(void)
+    {
+		return fCode;
+	}
+//------------------------------------------------------------------------------     
+    void* Buffer(void)
+    {
+		return fBuffer;
+	}
+//------------------------------------------------------------------------------     
+    ssize_t BufferSize(void)
+	{
+		return fBufferSize;
+	}
+//------------------------------------------------------------------------------     
+    int32 Protocol(void) const
+    {
+		return fProtocol;
+	}
+//------------------------------------------------------------------------------     
+    void Reset(void)
+    {
+		fSizeRead = 0;
+		fSizeWritten = 0;
+		fReadPosition = fBuffer + 8;
+		fWritePosition = fBuffer + 8;
+    }
+//------------------------------------------------------------------------------      
+    status_t Read(void *data, ssize_t size)
+    {
+		if(!data || size < 1)
+			return B_BAD_VALUE;
+
+		if(!fBuffer ||
+			fBufferSize < size ||
+			fReadPosition + size > fBuffer + fBufferSize)
+    		return B_NO_MEMORY;
+
+    	memcpy(data, fReadPosition, size);
+    	fReadPosition += size;
+
+    	return B_OK;
+    }
+//------------------------------------------------------------------------------     
+   	template <class Type>
+    status_t Read(Type *data)
+	{
+		int32 size = sizeof(Type);
+
+		if(!data)
+			return B_BAD_VALUE;
+
+		if(!fBuffer ||
+			fBufferSize < size ||
+   			fReadPosition + size > fBuffer + fBufferSize)
+			return B_NO_MEMORY;
+
+   		*data = *((Type*)fReadPosition);
+   		fReadPosition += size;
+
+   		return B_OK;
+	}
+//------------------------------------------------------------------------------     
+    status_t ReadString(char **string)
+    {
+    	int16 len = 0;
+
+    	if(Read<int16>(&len) != B_OK)
+    		return B_ERROR;
+
+    	if (len)
+    	{
+    		*string = new char[len];
+    		if(Read(*string, len) != B_OK)
+    		{
+    			delete[] *string;
+    			*string = NULL;
+    		}
+    	}
+
+    	return B_OK;
+    }
+//------------------------------------------------------------------------------
+	status_t Attach(const void *data, size_t size)
+    {
+		if (size <= 0)
+			return B_ERROR;
+
+		if(!fBuffer ||
+			fBufferSize < size ||
+   			fWritePosition + size > fBuffer + fBufferSize)
+			return B_NO_MEMORY;
+
+   		memcpy(fWritePosition, data, size);
+   		fWritePosition += size;
+   		fSizeWritten += size;
+     
+   		return B_OK;
+    }
+//------------------------------------------------------------------------------
+	template <class Type>
+	status_t Attach(Type data)
+	{
+		int32 size	= sizeof(Type);
+
+    	if(!fBuffer ||
+    		fBufferSize < size ||
+   			fWritePosition + size > fBuffer + fBufferSize)
+    		return B_NO_MEMORY;
+			
+		memcpy(fWritePosition, &data, size);
+		fWritePosition += size;
+		fSizeWritten += size;
+		
+		return B_OK;
+   	}    
+//------------------------------------------------------------------------------
+    status_t AttachString(const char *string)
+    {
+    	int16 len = (int16)strlen(string) + 1;
+
+    	Attach<int16>(len);
+    	return Attach(string, len);
+    }
+//------------------------------------------------------------------------------
+private:
+	int32		fCode;
+   	uint8		*fBuffer;
+   	ssize_t		fBufferSize;
+    ssize_t		fSizeRead;
+    ssize_t		fSizeWritten;
+    uint8		*fReadPosition;
+    uint8		*fWritePosition;
+   	int32 		fProtocol;
+	bool		fDeleteBuffer;
+};
+//------------------------------------------------------------------------------
 #endif

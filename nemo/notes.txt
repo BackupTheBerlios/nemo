@@ -1,2 +1,13 @@
-o	make sure _REENTRANT is defined when linking against libpthread
-o	watch out for the differences in our libroot functions compared to the original
+Please make sure to follow theses instructions while coding:
+
+  o	make sure _REENTRANT is defined when linking against libpthread
+  o	watch out for the differences in our libroot functions compared to the original
+  o	"always" use exit_thread() when returning from a thread -- <well, not any more>
+  o	use single-line optional debugging as the standard debugging method. look at
+  	headers/private/nemo_debug.h & /src/servers/app/AppServer.cpp for an example
+  o	don't use suspend_thread() or resume_thread() wherever you wish, they simlpy don't work.
+  	resume_thread() can only be called "once" after the thread is spawned. it has to
+  	be called for the thread to run
+  o	signal handlers are process-wide. a SIGKILL sent to a thread will kill the whole process
+  
+  

@@ -1,56 +1,66 @@
-#include "AppServer.h"
-
-#include <OS.h>
-
+// Standard Includes -----------------------------------------------------------
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-  
+
+// System Includes -------------------------------------------------------------
+#include <AppDefs.h>
+#include <OS.h>
+
+// Private Includes ------------------------------------------------------------
+#include "ServerProtocol.h"
+#include "AppServer.h"
+#include "PortMessage.h"
+
+// Main ------------------------------------------------------------------------
 int main( void ) {
 	
 	// connect to app_server
-	port_id as_mqid = find_port(AS_PORT_NAME);
-	if(as_mqid < 0) {
+	port_id as_port = find_port(AS_PORT_NAME);
+	if(as_port < 0) {
 		printf("input_server: error connecting to app_server or app_server not running\n");
 		exit(-1);
 	} else {
-		printf("input_server: connected to app_server at port %d\n", as_mqid);
+		printf("input_server: connected to app_server at port %d\n", as_port);
 	}
 	
 	// get app_server's input message queue
-	port_id asi_mqid = find_port(AS_INPUT_PORT_NAME);
-	if(asi_mqid < 0) {
+	port_id as_input_port = find_port(AS_INPUT_PORT_NAME);
+	if(as_input_port < 0) {
 		printf("input_server: error connecting to app_server's input port\n");
 		exit(-1);
 	} else {
-		printf("input_server: app_server input port %d\n", asi_mqid);
+		printf("input_server: app_server input port %d\n", as_input_port);
 	}
 	
 	// create app's message queue
-	port_id is_mqid = create_port(100, "ismp");
-	if(is_mqid < 0) {
+	port_id is_port = create_port(100, "input_server_port");
+	if(is_port < 0) {
 		printf("input_server: error creating input_server's message port\n");
 		exit(-1);
 	} else {
-		printf("input_server: listening at port %d\n", is_mqid);
+		printf("input_server: listening at port %d\n", is_port);
 	}
 	
 	printf("\ninput_server: enter commands to send to app_server:\n");
-	app_server_msg msg;
+	PortMessage msg;
+	char text[1024];
 	bool quit = false;
 	while(true) {
-		scanf("%s", msg.input.command);
+		msg.Reset();
+		scanf("%s", text);
 		
-		if(!strcmp(msg.input.command, "quit")) {
+		if(!strcmp(text, "quit")) {
 			quit = true;
-			msg.what = B_QUIT_REQUESTED;
+			msg.SetCode(B_QUIT_REQUESTED);
 		}
 		else {
-			msg.what = AS_INPUT_EXAMPLE_MSG;
+			msg.SetCode(AS_INPUT_TEST_MSG);
+			msg.AttachString(text);
 		}
 	
-		if(write_port(asi_mqid, msg.what, &msg, sizeof(input_msg) - 4) != B_OK) {
+		if(msg.WriteToPort(as_input_port) != B_OK) {
 			printf("input_server: error sending input message to app_server\n");
 		}
 		
@@ -58,7 +68,7 @@ int main( void ) {
 	}
 	
 	// close the input_server's message queue
-	if(delete_port(is_mqid) != B_OK) {
+	if(delete_port(is_port) != B_OK) {
 		printf("input_server: error closing message port\n");
 	}
 	

@@ -1,26 +1,33 @@
 #ifndef _SESSION_H
 #define _SESSION_H
 
+// System Includes -------------------------------------------------------------
 #include <BeBuild.h>
 #include <OS.h>
 #include <Region.h>
 #include <Rect.h>
 #include <Point.h>
+
+// Private Includes ------------------------------------------------------------
 #include <ServerProtocol.h>
 
 class BSession {
 
 public:
-		BSession(port_id receivePort, port_id sendPort, bool isPortLink = false);
-		BSession(int32, char *);
-		BSession( const BSession &ses );
-		virtual	~BSession();
-		void	SetSendPort( port_id port );
-		void	SetRecvPort( port_id port );
-		port_id GetSendPort(void) const { return fSendPort; }
-		port_id GetRecvPort(void) const { return fReceivePort; }
-		bool	DropInputBuffer();
-		void SetMsgCode(int32 code);
+					BSession(	port_id receivePort,
+								port_id sendPort,
+								bool isPortLink = false);
+					BSession(int32, char *);
+					BSession( const BSession &ses );
+		virtual		~BSession();
+		
+		void		SetSendPort( port_id port );
+		void		SetRecvPort( port_id port );
+		port_id 	GetSendPort(void) const { return fSendPort; }
+		port_id 	GetRecvPort(void) const { return fReceivePort; }
+		bool		DropInputBuffer();
+		void 		SetMsgCode(int32 code);
+		
 		char*		ReadString();
 		status_t	ReadBool( bool *b );
 		status_t	ReadInt8( int8 *i );
@@ -67,16 +74,16 @@ public:
 		void		Close();
 private:
 
-		port_id	fSendPort;
-		port_id	fReceivePort;
+		port_id		fSendPort;
+		port_id		fReceivePort;
 
-		char	*fSendBuffer;
-		int32	fSendPosition;
-		int32	fSendCode;
+		char		*fSendBuffer;
+		int32		fSendPosition;
+		int32		fSendCode;
 
-		char	*fReceiveBuffer;
-		int32	fReceiveSize;
-		int32	fReceivePosition;
+		char		*fReceiveBuffer;
+		int32		fReceiveSize;
+		int32		fReceivePosition;
 };
 
 

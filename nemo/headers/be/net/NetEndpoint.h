@@ -71,10 +71,10 @@ public:
 	 * is later instantiated the connection to the FTP server will be reopened 
 	 * automatically.
 	 */
-	BNetEndpoint(BMessage *archive);
+/*	BNetEndpoint(BMessage *archive);
 	virtual	status_t Archive(BMessage *into, bool deep = true) const;
 	static BArchivable *Instantiate(BMessage *archive);
-		
+*/		
 
 	/*	
 	 * BNetEndpoint::SetProtocol()

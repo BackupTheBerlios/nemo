@@ -51,19 +51,60 @@
 
 // Globals ---------------------------------------------------------------------
 
+/*
+class BMessage {
+public:
+		uint32			what;
 
+						BMessage(){};
+						BMessage(uint32 what){};
+						BMessage(const BMessage &msg){};
+virtual					~BMessage(){};
 
-class	BBlockCache;
-class	BMessenger;
-class	BHandler;
-class	BString;
+		status_t		Unflatten(const char *flat_buffer) {return B_OK;};
+		status_t		SendReply(uint32 command, BHandler *reply_to = NULL){return B_OK;};
+		status_t		SendReply(BMessage *the_reply, BHandler *reply_to = NULL,
+							bigtime_t timeout = B_INFINITE_TIMEOUT){return B_OK;};
+		bool			IsSourceWaiting() const {return false;};
+		bool			IsSourceRemote() const {return false;};
+		bool			WasDropped() const {return false;};
+		
+		status_t		AddInt32(const char *name, int32 val){return B_OK;};
+		status_t		AddBool(const char *name, bool val){return B_OK;};
+
+private:
+friend class	BMessageQueue;
+friend class	BMessenger;
+	
+friend inline	bool		_use_preferred_target_(BMessage *);
+friend inline	int32		_get_message_target_(BMessage *);
+
+		status_t	_send_(port_id port,
+							int32 token,
+							bool preferred,
+							bigtime_t timeout,
+							bool reply_required,
+							BMessenger &reply_to) const {return B_OK;};
+
+		status_t	send_message(port_id port,
+								team_id port_owner,
+								int32 token,
+								bool preferred,
+								BMessage *reply,
+								bigtime_t send_timeout,
+								bigtime_t reply_timeout) const {return B_OK;};
+
+		BMessage		*link;
+		bool			fPreferred;
+		int32			fTarget;
+};
+*/
 
 // Private or reserved ---------------------------------------------------------
 extern "C" void		_msg_cache_cleanup_();
 extern "C" int		_init_message_();
 extern "C" int		_delete_message_();
 //------------------------------------------------------------------------------
-
 
 // Name lengths and Scripting specifiers ---------------------------------------
 #define B_FIELD_NAME_LENGTH			255
@@ -84,9 +125,13 @@ enum
 	// app-defined specifiers start at B_SPECIFIERS_END+1
 };
 
+class	BBlockCache;
+class	BMessenger;
+class	BHandler;
+//class	BString;
 namespace BPrivate {
 	class BMessageBody;
-}
+};
 
 // BMessage class --------------------------------------------------------------
 class BMessage
@@ -146,6 +191,7 @@ virtual				~BMessage();
 
 
 // Specifiers (scripting)
+/*
 		status_t	AddSpecifier(const char *property);
 		status_t	AddSpecifier(const char *property, int32 index);
 		status_t	AddSpecifier(const char *property, int32 index, int32 range);
@@ -157,7 +203,7 @@ virtual				~BMessage();
 							int32 *form = NULL, const char **property = NULL) const;
 		bool		HasSpecifiers() const;
 		status_t	PopSpecifier();
-
+*/
 // Adding data
 		status_t	AddRect(const char *name, BRect a_rect);
 		status_t	AddPoint(const char *name, BPoint a_point);
@@ -172,7 +218,7 @@ virtual				~BMessage();
 		status_t	AddDouble(const char *name, double a_double);
 		status_t	AddPointer(const char *name, const void *ptr);
 		status_t	AddMessenger(const char *name, BMessenger messenger);
-		status_t	AddRef(const char *name, const entry_ref *ref);
+//		status_t	AddRef(const char *name, const entry_ref *ref);
 		status_t	AddMessage(const char *name, const BMessage *msg);
 		status_t	AddFlat(const char *name, BFlattenable *obj, int32 count = 1);
 		status_t	AddData(const char *name, type_code type, const void *data,
@@ -210,8 +256,8 @@ virtual				~BMessage();
 		status_t	FindPointer(const char *name, int32 index,  void **ptr) const;
 		status_t	FindMessenger(const char *name, BMessenger *m) const;
 		status_t	FindMessenger(const char *name, int32 index, BMessenger *m) const;
-		status_t	FindRef(const char *name, entry_ref *ref) const;
-		status_t	FindRef(const char *name, int32 index, entry_ref *ref) const;
+//		status_t	FindRef(const char *name, entry_ref *ref) const;
+//		status_t	FindRef(const char *name, int32 index, entry_ref *ref) const;
 		status_t	FindMessage(const char *name, BMessage *msg) const;
 		status_t	FindMessage(const char *name, int32 index, BMessage *msg) const;
 		status_t	FindFlat(const char *name, BFlattenable *obj) const;
@@ -248,8 +294,8 @@ virtual				~BMessage();
 		status_t	ReplacePointer(const char *name,int32 index,const void *ptr);
 		status_t	ReplaceMessenger(const char *name, BMessenger messenger);
 		status_t	ReplaceMessenger(const char *name, int32 index, BMessenger msngr);
-		status_t	ReplaceRef(	const char *name,const entry_ref *ref);
-		status_t	ReplaceRef(	const char *name, int32 index, const entry_ref *ref);
+//		status_t	ReplaceRef(	const char *name,const entry_ref *ref);
+//		status_t	ReplaceRef(	const char *name, int32 index, const entry_ref *ref);
 		status_t	ReplaceMessage(const char *name, const BMessage *msg);
 		status_t	ReplaceMessage(const char *name, int32 index, const BMessage *msg);
 		status_t	ReplaceFlat(const char *name, BFlattenable *obj);
@@ -360,8 +406,8 @@ static	port_id		sReplyPorts[sNumReplyPorts];
 static	long		sReplyPortInUse[sNumReplyPorts];
 static	int32		sGetCachedReplyPort();
 
-friend	int _init_message_();
-friend	int _delete_message_();
+friend	int			_init_message_();
+friend	int			_delete_message_();
 static	BBlockCache	*sMsgCache;
 
 		struct dyn_array {
@@ -458,7 +504,6 @@ static	BBlockCache	*sMsgCache;
 };
 
 //------------------------------------------------------------------------------
-
 #endif	// _MESSAGE_H
 
 /*
@@ -467,4 +512,3 @@ static	BBlockCache	*sMsgCache;
  * $Id  $
  *
  */
-

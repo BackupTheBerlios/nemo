@@ -1,5 +1,5 @@
 //
-//	$Id: Autolock.h,v 1.1 2004/03/19 12:58:48 fadi_edward Exp $
+//	$Id: Autolock.h,v 1.2 2004/04/15 01:31:11 mahmoudfg Exp $
 //
 //	This is the BAutolock interface for OpenBeOS.  It has been created to
 //	be source and binary compatible with the BeOS version of BAutolock.
@@ -10,14 +10,14 @@
 #define	_AUTOLOCK_H
 
 #include <Locker.h>
-#include <Looper.h>
+//#include <Looper.h>
 
 //=============================================================================
 
 class BAutolock {
 	
 public:
-inline						BAutolock(BLooper *looper);
+//inline						BAutolock(BLooper *looper);
 inline						BAutolock(BLocker *locker);
 inline						BAutolock(BLocker &locker);
 	
@@ -27,24 +27,24 @@ inline	bool				IsLocked(void);
 
 private:
 		BLocker				*fTheLocker;
-		BLooper				*fTheLooper;
+//		BLooper				*fTheLooper;
 		bool				fIsLocked;
 };
 
 //=============================================================================
 
-inline BAutolock::BAutolock(BLooper *looper) :
+/*inline BAutolock::BAutolock(BLooper *looper) :
 	fTheLocker(NULL),
 	fTheLooper(looper),
 	fIsLocked(looper->Lock())
 {
-}
+}*/
 
 //=============================================================================
 
 inline BAutolock::BAutolock(BLocker *locker) :
 	fTheLocker(locker),
-	fTheLooper(NULL),
+//	fTheLooper(NULL),
 	fIsLocked(locker->Lock())
 {
 }
@@ -53,7 +53,7 @@ inline BAutolock::BAutolock(BLocker *locker) :
 
 inline BAutolock::BAutolock(BLocker &locker) :
 	fTheLocker(&locker),
-	fTheLooper(NULL),
+//	fTheLooper(NULL),
 	fIsLocked(locker.Lock())
 {
 }
@@ -63,11 +63,11 @@ inline BAutolock::BAutolock(BLocker &locker) :
 inline BAutolock::~BAutolock()
 {
 	if (fIsLocked) {
-		if (fTheLooper != NULL) {
-			fTheLooper->Unlock();
-		} else {
+//		if (fTheLooper != NULL) {
+//			fTheLooper->Unlock();
+//		} else {
 			fTheLocker->Unlock();
-		}
+//		}
 	}
 }
 

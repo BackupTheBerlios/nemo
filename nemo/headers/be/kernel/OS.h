@@ -121,7 +121,7 @@ extern ssize_t	port_count(port_id port);
 extern status_t set_port_owner(port_id port, team_id team);
 
 /* system private, use the macros instead */
-extern status_t _get_port_info(port_id port, port_info *portInfo, size_t portInfoSize);
+/*extern status_t _get_port_info(port_id port, port_info *portInfo, size_t portInfoSize);
 extern status_t _get_next_port_info(team_id team, int32 *cookie, port_info *portInfo,
 					size_t portInfoSize);
 
@@ -129,7 +129,9 @@ extern status_t _get_next_port_info(team_id team, int32 *cookie, port_info *port
 			_get_port_info((port), (info), sizeof(*(info)))
 #define get_next_port_info(team, cookie, info) \
 			_get_next_port_info((team), (cookie), (info), sizeof(*(info)))
-
+*/
+extern status_t get_port_info(port_id port, port_info *info);
+extern status_t get_next_port_info(team_id team, int32 *cookie, port_info *info);
 
 /*-------------------------------------------------------------*/
 /* Semaphores */
@@ -160,7 +162,7 @@ extern status_t	get_sem_count(sem_id id, int32 *threadCount);
 extern status_t	set_sem_owner(sem_id id, team_id team);
 
 /* system private, use the macros instead */
-extern status_t	_get_sem_info(sem_id id, struct sem_info *info, size_t infoSize);
+/*extern status_t	_get_sem_info(sem_id id, struct sem_info *info, size_t infoSize);
 extern status_t	_get_next_sem_info(team_id team, int32 *cookie, struct sem_info *info,
 					size_t infoSize);
 
@@ -169,7 +171,9 @@ extern status_t	_get_next_sem_info(team_id team, int32 *cookie, struct sem_info 
 
 #define get_next_sem_info(team, cookie, info) \
 			_get_next_sem_info((team), (cookie), (info), sizeof(*(info)))
-
+*/
+extern status_t	get_sem_info(sem_id id, struct sem_info *info);
+extern status_t	get_next_sem_info(team_id team, int32 *cookie, struct sem_info *info);
 
 /*-------------------------------------------------------------*/
 /* Teams */
@@ -193,7 +197,7 @@ extern status_t kill_team(team_id team);
 	/* see also: send_signal() */
 
 /* system private, use macros instead */
-extern status_t _get_team_info(team_id id, team_info *info, size_t size);
+/*extern status_t _get_team_info(team_id id, team_info *info, size_t size);
 extern status_t _get_next_team_info(int32 *cookie, team_info *info, size_t size);
 
 #define get_team_info(id, info) \
@@ -201,6 +205,9 @@ extern status_t _get_next_team_info(int32 *cookie, team_info *info, size_t size)
 
 #define get_next_team_info(cookie, info) \
 			_get_next_team_info((cookie), (info), sizeof(*(info)))
+*/
+extern status_t get_team_info(team_id id, team_info *info);
+extern status_t get_next_team_info(int32 *cookie, team_info *info);
 
 /* team usage info */
 
@@ -210,11 +217,12 @@ typedef struct {
 } team_usage_info;
 
 /* system private, use macros instead */
-extern status_t	_get_team_usage_info(team_id team, int32 who, team_usage_info *tui, size_t size);
+/*extern status_t	_get_team_usage_info(team_id team, int32 who, team_usage_info *tui, size_t size);
 
 #define get_team_usage_info(team, who, info) \
 			_get_team_usage_info((team), (who), (info), sizeof(*(info)))
-
+*/
+extern status_t	get_team_usage_info(team_id team, int32 who, team_usage_info *tui);
 /*-------------------------------------------------------------*/
 /* Threads */
 
@@ -281,14 +289,16 @@ extern status_t		snooze(bigtime_t amount);
 extern status_t		snooze_until(bigtime_t time, int timeBase);
 
 /* system private, use macros instead */
-extern status_t		_get_thread_info(thread_id id, thread_info *info, size_t size);
+/*extern status_t		_get_thread_info(thread_id id, thread_info *info, size_t size);
 extern status_t		_get_next_thread_info(team_id team, int32 *cookie, thread_info *info, size_t size);
 
 #define get_thread_info(id, info) \
 			_get_thread_info((id), (info), sizeof(*(info)))
 
 #define get_next_thread_info(team, cookie, info) \
-			_get_next_thread_info((team), (cookie), (info), sizeof(*(info)))
+			_get_next_thread_info((team), (cookie), (info), sizeof(*(info)))*/
+extern status_t		get_thread_info(thread_id id, thread_info *info);
+extern status_t		get_next_thread_info(team_id team, int32 *cookie, thread_info *info);
 
 
 /*-------------------------------------------------------------*/

@@ -46,15 +46,15 @@ class BRect;
 // BPoint class ----------------------------------------------------------------
 class BPoint {
 public:
-	float x;
-	float y;
+	int x;
+	int y;
 
 	BPoint();
-	BPoint(float X, float Y);
+	BPoint(int X, int Y);
 	BPoint(const BPoint &p);
 		
 	BPoint	&operator=(const BPoint &p);
-	void	Set(float X, float Y);
+	void	Set(int X, int Y);
 
 	void	ConstrainTo(BRect r);
 	void	PrintToStream() const;
@@ -77,7 +77,7 @@ inline BPoint::BPoint()
 	x = y = 0;
 }
 //------------------------------------------------------------------------------
-inline BPoint::BPoint(float X, float Y)
+inline BPoint::BPoint(int X, int Y)
 {
 	x = X;
 	y = Y;
@@ -96,7 +96,7 @@ inline BPoint &BPoint::operator=(const BPoint& from)
 	return *this;
 }
 //------------------------------------------------------------------------------
-inline void BPoint::Set(float X, float Y)
+inline void BPoint::Set(int X, int Y)
 {
 	x = X;
 	y = Y;

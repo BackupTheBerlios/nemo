@@ -1,4 +1,4 @@
-/* $Id: bootdir.h,v 1.1 2004/03/19 13:02:45 fadi_edward Exp $
+/* $Id: bootdir.h,v 1.2 2004/04/15 01:31:11 mahmoudfg Exp $
 **
 ** Copyright 1998 Brian J. Swetland
 ** All rights reserved.

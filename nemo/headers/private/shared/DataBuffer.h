@@ -37,6 +37,8 @@ class BDataBuffer
 	private:
 		class BDataReference
 		{
+			friend class BDataBuffer;
+				
 			public:
 				void	Acquire(BDataReference*& ref);
 				void	Release(BDataReference*& ref);
@@ -74,4 +76,3 @@ class BDataBuffer
  * $Id  $
  *
  */
-

@@ -122,21 +122,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <algorithm>
-#include <map>
-#include <vector>
-
 // System Includes -------------------------------------------------------------
 #include <AppDefs.h>
 #include <Handler.h>
-//#include <Looper.h>
-//#include <Message.h>
-//#include <MessageFilter.h>
-//#include <Messenger.h>
+#include <Looper.h>
+#include <Message.h>
+#include <MessageFilter.h>
+#include <Messenger.h>
 //#include <PropertyInfo.h>
 #include <Debug.h>
 
 // Project Includes ------------------------------------------------------------
+#include <ObserverList.h>
 #include <TokenSpace.h>
 
 // Local Includes --------------------------------------------------------------
@@ -144,8 +141,6 @@
 // Local Defines ---------------------------------------------------------------
 
 // Globals ---------------------------------------------------------------------
-using std::map;
-using std::vector;
 using BPrivate::gDefaultTokens;
 using BPrivate::BObserverList;
 
@@ -233,7 +228,14 @@ BHandler::~BHandler()
 
 	gDefaultTokens.RemoveToken(fToken);
 	
-	// TODO: delete filters
+	// delete filters
+	if (fFilters)
+	{
+		fFilters->DoForEach(FilterDeleter);
+		delete fFilters;
+	}
+
+	delete fObserverList;
 }
 
 //------------------------------------------------------------------------------
@@ -271,76 +273,76 @@ status_t BHandler::Archive(BMessage* data, bool deep) const
 	return err;
 }*/
 //------------------------------------------------------------------------------
-//void BHandler::MessageReceived(BMessage* message)
-//{
-//	switch (message->what)
-//	{
-//		/* NOTE: scripting messages are currently ignored
-//		 */
-///*		case B_GET_PROPERTY:
-//		{
-//			BMessage	Specifier;
-//			int32		form;
-//			const char*	prop;
-//			int32		cur;
-//			status_t	err;
-//
-//			err = message->GetCurrentSpecifier(&cur, &Specifier, &form, &prop);
-//			if (!err)
-//			{
-//				BMessage Reply(B_REPLY);
-//				if (strcmp(prop, "Suites") == 0)
-//				{
-//					if (GetSupportedSuites(&Reply) == B_OK &&
-//						Reply.AddInt32("error", B_OK) == B_OK)
-//					{
-//						message->SendReply(&Reply);
-//					}
-//				}
-//				else if (strcmp(prop, "Messenger") == 0)
-//				{
-//					if (Reply.AddMessenger("result", this) == B_OK &&
-//						Reply.AddInt32("error", B_OK) == B_OK)
-//
-//					{
-//						message->SendReply(&Reply);
-//					}
-//				}
-//				else if (strcmp(prop, "InternalName") == 0)
-//				{
-//					if (Reply.AddString("result", Name()) == B_OK &&
-//						Reply.AddInt32("error", B_OK) == B_OK)
-//
-//					{
-//						message->SendReply(&Reply);
-//					}
-//				}
-//				else
-//				{
-//					// Should never be here
-//					debugger("We are *not* supposed to be here");
-//				}
-//			}
-//			break;
-//		}
-//*/
-//		default:
-//			if (fNextHandler)
-//			{
-//				fNextHandler->MessageReceived(message);
-//			}
-//			else
-//			{
-//				message->SendReply(B_MESSAGE_NOT_UNDERSTOOD);
-//			}
-//			break;
-//	}
-//}
+void BHandler::MessageReceived(BMessage* message)
+{
+	switch (message->what)
+	{
+		/* NOTE: scripting messages are currently ignored
+		 */
+		/*case B_GET_PROPERTY:
+		{
+			BMessage	Specifier;
+			int32		form;
+			const char*	prop;
+			int32		cur;
+			status_t	err;
+
+			err = message->GetCurrentSpecifier(&cur, &Specifier, &form, &prop);
+			if (!err)
+			{
+				BMessage Reply(B_REPLY);
+				if (strcmp(prop, "Suites") == 0)
+				{
+					if (GetSupportedSuites(&Reply) == B_OK &&
+						Reply.AddInt32("error", B_OK) == B_OK)
+					{
+						message->SendReply(&Reply);
+					}
+				}
+				else if (strcmp(prop, "Messenger") == 0)
+				{
+					if (Reply.AddMessenger("result", this) == B_OK &&
+						Reply.AddInt32("error", B_OK) == B_OK)
+
+					{
+						message->SendReply(&Reply);
+					}
+				}
+				else if (strcmp(prop, "InternalName") == 0)
+				{
+					if (Reply.AddString("result", Name()) == B_OK &&
+						Reply.AddInt32("error", B_OK) == B_OK)
+
+					{
+						message->SendReply(&Reply);
+					}
+				}
+				else
+				{
+					 Should never be here
+					debugger("We are *not* supposed to be here");
+				}
+			}
+			break;
+		}*/
+
+		default:
+			if (fNextHandler)
+			{
+				fNextHandler->MessageReceived(message);
+			}
+			else
+			{
+				message->SendReply(B_MESSAGE_NOT_UNDERSTOOD);
+			}
+			break;
+	}
+}
 //------------------------------------------------------------------------------
-/*BLooper* BHandler::Looper() const
+BLooper* BHandler::Looper() const
 {
 	return fLooper;
-}*/
+}
 //------------------------------------------------------------------------------
 void BHandler::SetName( const char* name )
 {
@@ -363,7 +365,7 @@ const char* BHandler::Name() const
 //------------------------------------------------------------------------------
 void BHandler::SetNextHandler(BHandler* handler)
 {
-/*	if (!fLooper)
+	if (!fLooper)
 	{
 		debugger("handler must belong to looper before setting NextHandler");
 		fNextHandler = NULL;
@@ -387,7 +389,7 @@ void BHandler::SetNextHandler(BHandler* handler)
 	// TODO: implement correctly
 	// TODO: what about the current next handler? this way it will be
 	// completely disconnected from the handler chain
-	fNextHandler = handler;*/
+	fNextHandler = handler;
 }
 //------------------------------------------------------------------------------
 BHandler* BHandler::NextHandler() const
@@ -395,216 +397,222 @@ BHandler* BHandler::NextHandler() const
 	return fNextHandler;
 }
 //------------------------------------------------------------------------------
-//void BHandler::AddFilter(BMessageFilter* filter)
-//{
-//	// NOTE:  Although the documentation states that the handler must belong to
-//	// a looper and the looper must be locked in order to use this method,
-//	// testing shows that this is not the case in the original implementation.
-//	// We may want to investigate enforcing these rules; it would be interesting
-//	// to see how many apps out there have violated the dictates of the docs.
-//	// For now, though, we'll play nicely.
-//#if 0
-//	if (!fLooper)
-//	{
-//		// TODO: error handling
-//		return false;
-//	}
-//
-//	if (!fLooper->IsLocked())
-//	{
-//		// TODO: error handling
-//		return false;
-//	}
-//#endif
-//	if (!fFilters)
-//	{
-//		fFilters = new BList;
-//	}
-//
-//	fFilters->AddItem(filter);
-//}
-////------------------------------------------------------------------------------
-//bool BHandler::RemoveFilter(BMessageFilter* filter)
-//{
-//	// NOTE:  Although the documentation states that the handler must belong to
-//	// a looper and the looper must be locked in order to use this method,
-//	// testing shows that this is not the case in the original implementation.
-//	// We may want to investigate enforcing these rules; it would be interesting
-//	// to see how many apps out there have violated the dictates of the docs.
-//	// For now, though, we'll play nicely.
-//#if 0
-//	if (!fLooper)
-//	{
-//		// TODO: error handling
-//		return false;
-//	}
-//
-//	if (!fLooper->IsLocked())
-//	{
-//		// TODO: error handling
-//		return false;
-//	}
-//#endif
-//
-//	if (fFilters)
-//	{
-//		if (fFilters->RemoveItem((void*)filter))
-//		{
-//			filter->SetLooper(NULL);
-//			return true;
-//		}
-//	}
-//
-//	return false;
-//}
-////------------------------------------------------------------------------------
-//void BHandler::SetFilterList(BList* filters)
-//{
-///**
-//	@note	Although the documentation states that the handler must belong to
-//			a looper and the looper must be locked in order to use this method,
-//			testing shows that this is not the case in the original implementation.
-// */
-//#if 0
-//	if (!fLooper)
-//	{
-//		// TODO: error handling
-//		return;
-//	}
-//#endif
-//
-//	if (fLooper && !fLooper->IsLocked())
-//	{
-//		debugger("Owning Looper must be locked before calling SetFilterList");
-//		return;
-//	}
-//
-///**
-//	@note	I would like to use BObjectList internally, but this function is
-//			spec'd such that fFilters would get deleted and then assigned
-//			'filters', which would obviously mess this up.  Wondering if
-//			anyone ever assigns a list of filters and then checks against
-//			FilterList() to see if they are the same.
-// */
-//	// TODO: Explore issues with using BObjectList
-//	if (fFilters)
-//	{
-//		fFilters->DoForEach(FilterDeleter);
-//		delete fFilters;
-//	}
-//
-//	fFilters = filters;
-//	if (fFilters)
-//	{
-//		for (int32 i = 0; i < fFilters->CountItems(); ++i)
-//		{
-//			BMessageFilter* Filter =
-//				static_cast<BMessageFilter*>(fFilters->ItemAt(i));
-//			if (Filter)
-//			{
-//				Filter->SetLooper(fLooper);
-//			}
-//		}
-//	}
-//}
-////------------------------------------------------------------------------------
-//BList* BHandler::FilterList()
-//{
-//	return fFilters;
-//}
-////------------------------------------------------------------------------------
-//bool BHandler::LockLooper()
-//{
-///**
-//	@note	BeBook says that this function "retrieves the handler's looper and
-//			unlocks it in a pseudo-atomic operation, thus avoiding a race
-//			condition."  How "pseudo-atomic" would look completely escapes me,
-//			so we'll go with the dumb version for now.  Maybe I should use a
-//			benaphore?
-//
-//			BeBook mentions handling the case where the handler's looper
-//			changes during this call.  I've attempted a "pseudo-atomic"
-//			operation to check that.
-// */
-//	BLooper* Looper = fLooper;
-//	if (Looper)
-//	{
-//		bool result = Looper->Lock();
-//
-//		// Are we still assigned to the same looper?
-//		if (fLooper == Looper)
-//		{
-//			return result;
-//		}
-//		else if (result)
-//		{
-//			// Our looper is different, and the lock was successful on the old
-//			// one; undo the lock
-//			Looper->Unlock();
-//		}
-//	}
-//
-//	return false;
-//}
-////------------------------------------------------------------------------------
-//status_t BHandler::LockLooperWithTimeout(bigtime_t timeout)
-//{
-///**
-//	@note	BeBook says that this function "retrieves the handler's looper and
-//			unlocks it in a pseudo-atomic operation, thus avoiding a race
-//			condition."  How "pseudo-atomic" would look completely escapes me,
-//			so we'll go with the dumb version for now.  Maybe I should use a
-//			benaphore?
-//
-//			BeBook mentions handling the case where the handler's looper
-//			changes during this call.  I've attempted a "pseudo-atomic"
-//			operation to check for that.
-// */
-//	BLooper* Looper = fLooper;
-//	if (Looper)
-//	{
-//		status_t result = Looper->LockWithTimeout(timeout);
-//
-//		// Are we still assigned to the same looper?
-//		if (fLooper == Looper)
-//		{
-//			return result;
-//		}
-//		else
-//		{
-//			// Our looper changed during the lock attempt
-//			if (result == B_OK)
-//			{
-//				// The lock was successful on the old looper; undo the lock
-//				Looper->Unlock();
-//			}
-//
-//			return B_MISMATCHED_VALUES;
-//		}
-//	}
-//
-//	return B_BAD_VALUE;
-//}
-////------------------------------------------------------------------------------
-//void BHandler::UnlockLooper()
-//{
-///**
-//	@note	BeBook says that this function "retrieves the handler's looper and
-//			unlocks it in a pseudo-atomic operation, thus avoiding a race
-//			condition."  How "pseudo-atomic" would look completely escapes me,
-//			so we'll go with the dumb version for now.  Maybe I should use a
-//			benaphore?
-//
-//			The solution I used for Lock() and LockWithTimeout() seems out of
-//			place here; if our looper does change while attempting to unlock it,
-//			re-Lock()ing the original looper just doesn't seem right.
-// */
-//	// TODO: implement correctly
-//	if (fLooper)
-//	{
-//		fLooper->Unlock();
-//	}
-//}
+void BHandler::AddFilter(BMessageFilter* filter)
+{
+	// NOTE:  Although the documentation states that the handler must belong to
+	// a looper and the looper must be locked in order to use this method,
+	// testing shows that this is not the case in the original implementation.
+	// We may want to investigate enforcing these rules; it would be interesting
+	// to see how many apps out there have violated the dictates of the docs.
+	// For now, though, we'll play nicely.
+#if 0
+	if (!fLooper)
+	{
+		// TODO: error handling
+		return false;
+	}
+
+	if (!fLooper->IsLocked())
+	{
+		// TODO: error handling
+		return false;
+	}
+#endif
+	if (!fFilters)
+	{
+		fFilters = new BList;
+	}
+
+	/* TODO: The BeBook says that a BMessageFilter can be assigned to only
+		one BHandler or BLooper at a time, but doesn't specify what happens
+		if AddFilter() is called with a BMessageFilter that's already assigned
+		to one. Same problem with SetFilterList()
+	*/
+	fFilters->AddItem(filter);
+	filter->SetLooper(fLooper);
+}
+//------------------------------------------------------------------------------
+bool BHandler::RemoveFilter(BMessageFilter* filter)
+{
+	// NOTE:  Although the documentation states that the handler must belong to
+	// a looper and the looper must be locked in order to use this method,
+	// testing shows that this is not the case in the original implementation.
+	// We may want to investigate enforcing these rules; it would be interesting
+	// to see how many apps out there have violated the dictates of the docs.
+	// For now, though, we'll play nicely.
+#if 0
+	if (!fLooper)
+	{
+		// TODO: error handling
+		return false;
+	}
+
+	if (!fLooper->IsLocked())
+	{
+		// TODO: error handling
+		return false;
+	}
+#endif
+
+	if (fFilters)
+	{
+		if (fFilters->RemoveItem((void*)filter))
+		{
+			filter->SetLooper(NULL);
+			return true;
+		}
+	}
+
+	return false;
+}
+//------------------------------------------------------------------------------
+void BHandler::SetFilterList(BList* filters)
+{
+/**
+	@note	Although the documentation states that the handler must belong to
+			a looper and the looper must be locked in order to use this method,
+			testing shows that this is not the case in the original implementation.
+ */
+#if 0
+	if (!fLooper)
+	{
+		 TODO: error handling
+		return;
+	}
+#endif
+
+	if (fLooper && !fLooper->IsLocked())
+	{
+		debugger("Owning Looper must be locked before calling SetFilterList");
+		return;
+	}
+
+/**
+	@note	I would like to use BObjectList internally, but this function is
+			spec'd such that fFilters would get deleted and then assigned
+			'filters', which would obviously mess this up.  Wondering if
+			anyone ever assigns a list of filters and then checks against
+			FilterList() to see if they are the same.
+ */
+	// TODO: Explore issues with using BObjectList
+	if (fFilters)
+	{
+		fFilters->DoForEach(FilterDeleter);
+		delete fFilters;
+	}
+
+	fFilters = filters;
+	if (fFilters)
+	{
+		for (int32 i = 0; i < fFilters->CountItems(); ++i)
+		{
+			BMessageFilter* filter =
+				static_cast<BMessageFilter*>(fFilters->ItemAt(i));
+			if (filter)
+			{
+				filter->SetLooper(fLooper);
+			}
+		}
+	}
+}
+//------------------------------------------------------------------------------
+BList* BHandler::FilterList()
+{
+	return fFilters;
+}
+//------------------------------------------------------------------------------
+bool BHandler::LockLooper()
+{
+/**
+	@note	BeBook says that this function "retrieves the handler's looper and
+			unlocks it in a pseudo-atomic operation, thus avoiding a race
+			condition."  How "pseudo-atomic" would look completely escapes me,
+			so we'll go with the dumb version for now.  Maybe I should use a
+			benaphore?
+
+			BeBook mentions handling the case where the handler's looper
+			changes during this call.  I've attempted a "pseudo-atomic"
+			operation to check that.
+ */
+	BLooper* Looper = fLooper;
+	if (Looper)
+	{
+		bool result = Looper->Lock();
+
+		// Are we still assigned to the same looper?
+		if (fLooper == Looper)
+		{
+			return result;
+		}
+		else if (result)
+		{
+			// Our looper is different, and the lock was successful on the old
+			// one; undo the lock
+			Looper->Unlock();
+		}
+	}
+
+	return false;
+}
+//------------------------------------------------------------------------------
+status_t BHandler::LockLooperWithTimeout(bigtime_t timeout)
+{
+/**
+	@note	BeBook says that this function "retrieves the handler's looper and
+			unlocks it in a pseudo-atomic operation, thus avoiding a race
+			condition."  How "pseudo-atomic" would look completely escapes me,
+			so we'll go with the dumb version for now.  Maybe I should use a
+			benaphore?
+
+			BeBook mentions handling the case where the handler's looper
+			changes during this call.  I've attempted a "pseudo-atomic"
+			operation to check for that.
+ */
+	BLooper* Looper = fLooper;
+	if (Looper)
+	{
+		status_t result = Looper->LockWithTimeout(timeout);
+
+		// Are we still assigned to the same looper?
+		if (fLooper == Looper)
+		{
+			return result;
+		}
+		else
+		{
+			// Our looper changed during the lock attempt
+			if (result == B_OK)
+			{
+				// The lock was successful on the old looper; undo the lock
+				Looper->Unlock();
+			}
+
+			return B_MISMATCHED_VALUES;
+		}
+	}
+
+	return B_BAD_VALUE;
+}
+//------------------------------------------------------------------------------
+void BHandler::UnlockLooper()
+{
+/**
+	@note	BeBook says that this function "retrieves the handler's looper and
+			unlocks it in a pseudo-atomic operation, thus avoiding a race
+			condition."  How "pseudo-atomic" would look completely escapes me,
+			so we'll go with the dumb version for now.  Maybe I should use a
+			benaphore?
+
+			The solution I used for Lock() and LockWithTimeout() seems out of
+			place here; if our looper does change while attempting to unlock it,
+			re-Lock()ing the original looper just doesn't seem right.
+ */
+	// TODO: implement correctly
+	if (fLooper)
+	{
+		fLooper->Unlock();
+	}
+}
 //------------------------------------------------------------------------------
 /*BHandler* BHandler::ResolveSpecifier(BMessage* msg, int32 index,
 									 BMessage* specifier, int32 form,
@@ -670,64 +678,64 @@ BMessage: what =  (0x0, or 0)
 	return err;
 }*/
 //------------------------------------------------------------------------------
-/*status_t BHandler::StartWatching(BMessenger Messenger, uint32 what)
+status_t BHandler::StartWatching(BMessenger messenger, uint32 what)
 {
-	fObserverList ? fObserverList : fObserverList = new BObserverList;
-	return fObserverList->StartObserving(Messenger, what);
+	fObserverList? fObserverList : fObserverList = new BObserverList;
+	return fObserverList->StartObserving(messenger, what);
 }
 //------------------------------------------------------------------------------
-status_t BHandler::StartWatchingAll(BMessenger Messenger)
+status_t BHandler::StartWatchingAll(BMessenger messenger)
 {
 	fObserverList ? fObserverList : fObserverList = new BObserverList;
-	return fObserverList->StartObserving(Messenger, B_OBSERVER_OBSERVE_ALL);
+	return fObserverList->StartObserving(messenger, B_OBSERVER_OBSERVE_ALL);
 }
 //------------------------------------------------------------------------------
-status_t BHandler::StopWatching(BMessenger Messenger, uint32 what)
+status_t BHandler::StopWatching(BMessenger messenger, uint32 what)
 {
 	fObserverList ? fObserverList : fObserverList = new BObserverList;
-	return fObserverList->StopObserving(Messenger, what);
+	return fObserverList->StopObserving(messenger, what);
 }
 //------------------------------------------------------------------------------
-status_t BHandler::StopWatchingAll(BMessenger Messenger)
+status_t BHandler::StopWatchingAll(BMessenger messenger)
 {
 	fObserverList ? fObserverList : fObserverList = new BObserverList;
-	return fObserverList->StopObserving(Messenger, B_OBSERVER_OBSERVE_ALL);
-}*/
-//------------------------------------------------------------------------------
-status_t BHandler::StartWatching(BHandler* Handler, uint32 what)
-{
-	fObserverList ? fObserverList : fObserverList = new BObserverList;
-	return fObserverList->StartObserving(Handler, what);
+	return fObserverList->StopObserving(messenger, B_OBSERVER_OBSERVE_ALL);
 }
 //------------------------------------------------------------------------------
-status_t BHandler::StartWatchingAll(BHandler* Handler)
+status_t BHandler::StartWatching(BHandler* handler, uint32 what)
 {
 	fObserverList ? fObserverList : fObserverList = new BObserverList;
-	return fObserverList->StartObserving(Handler, B_OBSERVER_OBSERVE_ALL);
+	return fObserverList->StartObserving(handler, what);
 }
 //------------------------------------------------------------------------------
-status_t BHandler::StopWatching(BHandler* Handler, uint32 what)
+status_t BHandler::StartWatchingAll(BHandler* handler)
 {
 	fObserverList ? fObserverList : fObserverList = new BObserverList;
-	return fObserverList->StopObserving(Handler, what);
+	return fObserverList->StartObserving(handler, B_OBSERVER_OBSERVE_ALL);
 }
 //------------------------------------------------------------------------------
-status_t BHandler::StopWatchingAll(BHandler* Handler)
+status_t BHandler::StopWatching(BHandler* handler, uint32 what)
 {
 	fObserverList ? fObserverList : fObserverList = new BObserverList;
-	return fObserverList->StopObserving(Handler, B_OBSERVER_OBSERVE_ALL);
+	return fObserverList->StopObserving(handler, what);
 }
 //------------------------------------------------------------------------------
-/*status_t BHandler::Perform(perform_code d, void* arg)
+status_t BHandler::StopWatchingAll(BHandler* handler)
+{
+	fObserverList ? fObserverList : fObserverList = new BObserverList;
+	return fObserverList->StopObserving(handler, B_OBSERVER_OBSERVE_ALL);
+}
+//------------------------------------------------------------------------------
+status_t BHandler::Perform(perform_code d, void* arg)
 {
 	return BArchivable::Perform(d, arg);
-}*/
+}
 //------------------------------------------------------------------------------
-/*void BHandler::SendNotices(uint32 what, const BMessage* msg)
+void BHandler::SendNotices(uint32 what, const BMessage* msg)
 {
 	fObserverList ? fObserverList : fObserverList = new BObserverList;
 	fObserverList->SendNotices(what, msg);
-}*/
+}
 //------------------------------------------------------------------------------
 bool BHandler::IsWatched() const
 {
@@ -738,7 +746,7 @@ void BHandler::InitData(const char* name)
 {
 	SetName(name);
 
-//	fLooper			= NULL;
+	fLooper			= NULL;
 	fNextHandler	= NULL;
 	fFilters		= NULL;
 	fObserverList	= NULL;
@@ -758,22 +766,22 @@ BHandler& BHandler::operator=(const BHandler& )
 	return *this;
 }
 //------------------------------------------------------------------------------
-/*void BHandler::SetLooper(BLooper* loop)
+void BHandler::SetLooper(BLooper* loop)
 {
 	fLooper = loop;
-}*/
+}
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
 bool FilterDeleter(void* filter)
 {
-/*	BMessageFilter* Filter = static_cast<BMessageFilter*>(filter);
+	BMessageFilter* Filter = static_cast<BMessageFilter*>(filter);
 	if (Filter)
 	{
 		delete Filter;
 		Filter = NULL;
 	}
-*/
+
 	return false;
 }
 //------------------------------------------------------------------------------

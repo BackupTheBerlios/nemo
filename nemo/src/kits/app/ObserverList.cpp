@@ -1,9 +1,10 @@
 // Standard Includes -----------------------------------------------------------
+#include <algorithm>
 
 // System Includes -------------------------------------------------------------
-//#include <Handler.h>
-//#include <Message.h>
-//#include <Messenger.h>
+#include <Handler.h>
+#include <Message.h>
+#include <Messenger.h>
 
 // Project Includes ------------------------------------------------------------
 
@@ -14,7 +15,7 @@
 
 // Globals ---------------------------------------------------------------------
 
-//namespace BPrivate {
+namespace BPrivate {
 //------------------------------------------------------------------------------
 //	#pragma mark -
 //	#pragma mark _ObserverList
@@ -28,89 +29,89 @@ BObserverList::~BObserverList(void)
 {
 }
 //------------------------------------------------------------------------------
-/*status_t BObserverList::SendNotices(unsigned long what, BMessage const* Message)
+status_t BObserverList::SendNotices(unsigned long what, BMessage const* message)
 {
 	// Having to new a temporary is really irritating ...
-	BMessage* CopyMsg = NULL;
-	if (Message)
+	BMessage* copyMsg = NULL;
+	if (message)
 	{
-		CopyMsg = new BMessage(*Message);
-		CopyMsg->what = B_OBSERVER_NOTICE_CHANGE;
-		CopyMsg->AddInt32(B_OBSERVE_ORIGINAL_WHAT, Message->what);
+		copyMsg = new BMessage(*message);
+		copyMsg->what = B_OBSERVER_NOTICE_CHANGE;
+		copyMsg->AddInt32(B_OBSERVE_ORIGINAL_WHAT, message->what);
 	}
 	else
 	{
-		CopyMsg = new BMessage(B_OBSERVER_NOTICE_CHANGE);
+		copyMsg = new BMessage(B_OBSERVER_NOTICE_CHANGE);
 	}
 
-	CopyMsg->AddInt32(B_OBSERVE_WHAT_CHANGE, what);
+	copyMsg->AddInt32(B_OBSERVE_WHAT_CHANGE, what);
 
-	vector<BHandler*>& Handlers = fHandlerMap[what];
-	for (uint32 i = 0; i < Handlers.size(); ++i)
+	vector<BHandler*>& handlers = fHandlerMap[what];
+	for (uint32 i = 0; i < handlers.size(); ++i)
 	{
-		BMessenger msgr(Handlers[i]);
-		msgr.SendMessage(CopyMsg);
+		BMessenger msgr(handlers[i]);
+		msgr.SendMessage(copyMsg);
 	}
 
-	vector<BMessenger>& Messengers = fMessengerMap[what];
-	for (uint32 i = 0; i < Messengers.size(); ++i)
+	vector<BMessenger>& messengers = fMessengerMap[what];
+	for (uint32 i = 0; i < messengers.size(); ++i)
 	{
-		Messengers[i].SendMessage(CopyMsg);
+		messengers[i].SendMessage(copyMsg);
 	}
 
 	// Gotta make sure to clean up the annoying temporary ...
-	delete CopyMsg;
+	delete copyMsg;
 
 	return B_OK;
-}*/
+}
 //------------------------------------------------------------------------------
-/*status_t BObserverList::StartObserving(BHandler* Handler, unsigned long what)
+status_t BObserverList::StartObserving(BHandler* handler, unsigned long what)
 {
-	if (!Handler)
+	if (!handler)
 	{
 		return B_BAD_HANDLER;
 	}
 
-	vector<BHandler*>& Handlers = fHandlerMap[what];
+	vector<BHandler*>& handlers = fHandlerMap[what];
 	vector<BHandler*>::iterator iter;
-	iter = find(Handlers.begin(), Handlers.end(), Handler);
-	if (iter != Handlers.end())
+	iter = find(handlers.begin(), handlers.end(), handler);
+	if (iter != handlers.end())
 	{
 		// TODO: verify
 		return B_OK;
 	}
 
-	Handlers.push_back(Handler);
+	handlers.push_back(handler);
 	return B_OK;
-}*/
+}
 //------------------------------------------------------------------------------
-/*status_t BObserverList::StartObserving(const BMessenger& Messenger,
+status_t BObserverList::StartObserving(const BMessenger& messenger,
 									   unsigned long what)
 {
-	vector<BMessenger>& Messengers = fMessengerMap[what];
+	vector<BMessenger>& messengers = fMessengerMap[what];
 	vector<BMessenger>::iterator iter;
-	iter = find(Messengers.begin(), Messengers.end(), Messenger);
-	if (iter != Messengers.end())
+	iter = find(messengers.begin(), messengers.end(), messenger);
+	if (iter != messengers.end())
 	{
 		// TODO: verify
 		return B_OK;
 	}
 
-	Messengers.push_back(Messenger);
+	messengers.push_back(messenger);
 	return B_OK;
-}*/
+}
 //------------------------------------------------------------------------------
-/*status_t BObserverList::StopObserving(BHandler* Handler, unsigned long what)
+status_t BObserverList::StopObserving(BHandler* handler, unsigned long what)
 {
-	if (Handler)
+	if (handler)
 	{
-		vector<BHandler*>& Handlers = fHandlerMap[what];
+		vector<BHandler*>& handlers = fHandlerMap[what];
 		vector<BHandler*>::iterator iter;
-		iter = find(Handlers.begin(), Handlers.end(), Handler);
-		if (iter != Handlers.end())
+		iter = find(handlers.begin(), handlers.end(), handler);
+		if (iter != handlers.end())
 		{
-			Handlers.erase(iter);
-			if (Handlers.empty())
+			handlers.erase(iter);
+			if (handlers.empty())
 			{
 				fHandlerMap.erase(what);
 			}
@@ -119,9 +120,9 @@ BObserverList::~BObserverList(void)
 	}
 
 	return B_BAD_HANDLER;
-}*/
+}
 //------------------------------------------------------------------------------
-/*status_t BObserverList::StopObserving(const BMessenger& Messenger,
+status_t BObserverList::StopObserving(const BMessenger& messenger,
 									  unsigned long what)
 {
 	// ???:	What if you call StartWatching(MyMsngr, aWhat) and then call
@@ -129,13 +130,13 @@ BObserverList::~BObserverList(void)
 	//		watcher list?  For now, we'll assume that they're discreet lists
 	//		which do no cross checking; i.e., MyMsnger would *not* be removed in
 	//		this scenario.
-	vector<BMessenger>& Messengers = fMessengerMap[what];
+	vector<BMessenger>& messengers = fMessengerMap[what];
 	vector<BMessenger>::iterator iter;
-	iter = find(Messengers.begin(), Messengers.end(), Messenger);
-	if (iter != Messengers.end())
+	iter = find(messengers.begin(), messengers.end(), messenger);
+	if (iter != messengers.end())
 	{
-		Messengers.erase(iter);
-		if (Messengers.empty())
+		messengers.erase(iter);
+		if (messengers.empty())
 		{
 			fMessengerMap.erase(what);
 		}
@@ -143,12 +144,12 @@ BObserverList::~BObserverList(void)
 	}
 
 	return B_BAD_HANDLER;
-}*/
+}
 //------------------------------------------------------------------------------
-/*bool BObserverList::IsEmpty()
+bool BObserverList::IsEmpty()
 {
 	return fHandlerMap.empty() && fMessengerMap.empty();
-}*/
+}
 //------------------------------------------------------------------------------
 
-//} // namespace BPrivate
+} // namespace BPrivate

@@ -41,12 +41,12 @@ class NLAddress;
 class BNetAddress : public BArchivable
 {
 public:
-    BNetAddress( BMessage* archive );
+//    BNetAddress( BMessage* archive );
     virtual ~BNetAddress();
 
-    virtual  status_t Archive( BMessage* into, bool deep = true ) const;
+/*    virtual  status_t Archive( BMessage* into, bool deep = true ) const;
     static   BArchivable* Instantiate( BMessage* archive );
-
+*/
     BNetAddress( const char* hostname = 0, unsigned short port = 0 );
     BNetAddress( const struct sockaddr_in& sa );
     BNetAddress( in_addr addr, int port = 0 );

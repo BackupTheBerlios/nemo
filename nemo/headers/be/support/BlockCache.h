@@ -52,9 +52,6 @@ public:
 /* Private or reserved functions and data
  */
 private:
-	virtual	void _ReservedBlockCache1();
-	virtual	void _ReservedBlockCache2();
-
 				BBlockCache(const BBlockCache &);
 	BBlockCache	&operator=(const BBlockCache &);
 
@@ -67,7 +64,6 @@ private:
 	BLocker		fLocker;
 	void *		(*fAlloc)(size_t size);
 	void		(*fFree)(void *pointer);
-	uint32		_reserved[2];
 };
 
 #endif /* _BLOCK_CACHE_H */

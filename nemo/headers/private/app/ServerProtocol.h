@@ -1,21 +1,55 @@
-#ifndef _APPSERVER_PROTOCOL_
-#define _APPSERVER_PROTOCOL_
+//------------------------------------------------------------------------------
+// ServerProtocol.h
+//
+// DESCRIPTION:
+//	Defines message codes used in communication with the app_server
+//
+// AUTHOR: Mahmoud Al Gammal
+// DATE: 24/2/2004
+//------------------------------------------------------------------------------
 
+#ifndef _APPSERVER_PROTOCOL_H
+#define _APPSERVER_PROTOCOL_H
+
+//------------------------------------------------------------------------------
 // Server port names. The input port is the port which is used to receive
 // input messages from the Input Server. The other is the "main" port for
 // the server and is utilized mostly by BApplication objects.
-#define SERVER_PORT_NAME "OBappserver"
-#define SERVER_INPUT_PORT "OBinputport"
+#define AS_PORT_NAME		"_as_app_port_"
+#define AS_INPUT_PORT_NAME	"_as_input_port_"
 
+//------------------------------------------------------------------------------
+// TODO: determine the actual max size for app_server messages
+#define AS_MAX_MSG_SIZE		1024
+
+//------------------------------------------------------------------------------
+// NOTE:	when defining macros for message code make sure they are
+//			"striclty positive".
+//
+//			for example, in the following enum:
+//			SERVER_TRUE = '_srt' = 0x5f737274 (positive)
+//			and there's still room for another few million symbols till
+//			we reach the last positive value; 0x7fffffff.
+//
+//			As a rule of thumb, the use of just chars & '_' is pretty much safe
 enum
 {
+// NOTE: always keep these values in increasing order, preferably with no gaps
+
 // Used for quick replies from the app_server
-SERVER_TRUE='_srt',
+SERVER_TRUE	=	'_srt',
+
+// always set this to the first value in the enum
+AS_FIRST_MSG_INDEX = SERVER_TRUE,
+
 SERVER_FALSE,
 AS_SERVER_BMESSAGE,
 AS_SERVER_AREALINK,
 AS_SERVER_SESSION,
 AS_SERVER_PORTLINK,
+
+// For testing
+AS_INPUT_TEST_MSG,
 
 // Application definitions
 AS_CREATE_APP,
@@ -95,7 +129,7 @@ AS_GET_STYLE_ID,
 AS_GET_STYLE_FOR_FACE,
 
 // This will be modified. Currently a kludge for the input server until
-// BScreens are implemented by the IK Taeam
+// BScreens are implemented by the IK Team
 AS_GET_SCREEN_MODE,
 
 // Global function call defs
@@ -244,9 +278,13 @@ AS_LAYER_SET_FONT_STATE,
 AS_LAYER_GET_STATE,
 AS_LAYER_SET_VIEW_IMAGE,
 AS_LAYER_SET_PATTERN,
-AS_SET_CURRENT_LAYER
+AS_SET_CURRENT_LAYER,
+
+// always set this to the last value in the enum
+AS_LAST_MSG_INDEX = AS_SET_CURRENT_LAYER
 };
 
+//------------------------------------------------------------------------------
 #define AS_PATTERN_SIZE 8
 #define AS_SET_COLOR_MSG_SIZE 8+4
 #define AS_STROKE_ARC_MSG_SIZE 8+6*sizeof(float)+AS_PATTERN_SIZE
@@ -263,4 +301,5 @@ AS_SET_CURRENT_LAYER
 #define AS_FILL_ROUNDRECT_MSG_SIZE 8+6*sizeof(float)+AS_PATTERN_SIZE
 #define AS_FILL_TRIANGLE_MSG_SIZE 8+10*sizeof(float)+AS_PATTERN_SIZE
 
+//------------------------------------------------------------------------------
 #endif

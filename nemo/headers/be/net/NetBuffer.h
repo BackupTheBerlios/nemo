@@ -46,10 +46,10 @@ public:
 
     status_t InitCheck();
 
-    BNetBuffer(BMessage *archive);
+/*    BNetBuffer(BMessage *archive);
     virtual  status_t Archive(BMessage *into, bool deep = true) const;
     static   BArchivable *Instantiate(BMessage *archive);
-
+*/
     BNetBuffer(const BNetBuffer &);
     BNetBuffer& operator=(const BNetBuffer &);
 

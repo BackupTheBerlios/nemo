@@ -27,49 +27,168 @@
 #ifndef _PORTLINK_H
 #define _PORTLINK_H
 
-#include <BeBuild.h>
+// Standard Includes -----------------------------------------------------------
+
+// System Includes -------------------------------------------------------------
 #include <OS.h>
 
+// Private Includes ------------------------------------------------------------
+#include "PortMessage.h"
+#include "ServerProtocol.h"
+
+// Type Defs -------------------------------------------------------------------
 class PortMessage;
 
-class PortLink
-{
+//------------------------------------------------------------------------------
+class PortLink {
+
 public:
-	PortLink(port_id port);
-	PortLink(const PortLink &link);
-	virtual ~PortLink(void);
-
-	void SetOpCode(int32 code);
-
-	void SetPort(port_id port);
-	port_id	GetPort();
-
-	status_t Flush(bigtime_t timeout = B_INFINITE_TIMEOUT);
-	status_t FlushWithReply(PortMessage *msg,bigtime_t timeout=B_INFINITE_TIMEOUT);
-	
-	void MakeEmpty();
-	status_t Attach(const void *data, size_t size);
-	status_t AttachString(const char *string);
-	template <class Type> status_t Attach(Type data)
+//------------------------------------------------------------------------------
+	PortLink(port_id port)
 	{
-		int32 size	= sizeof(Type);
+		port_info pi;
+		port_ok	= (get_port_info(port, &pi)==B_OK)? true: false;
 
-		if (4096 - fSendPosition > size){
-			memcpy(fSendBuffer + fSendPosition, &data, size);
-			fSendPosition += size;
-			return B_OK;
-		}
-		return B_NO_MEMORY;
+		fSendPort=port;
+		fReceivePort=create_port(30,"PortLink reply port");
+
+		fSendCode=0;
+		fSendBuffer=new char[4096];
+		fSendPosition=8;
+		fDataSize=(int32*)fSendBuffer+sizeof(int32);
+		*fDataSize=0;
 	}
-	
-private:
-	bool port_ok;
-	port_id	fSendPort;
-	port_id fReceivePort;
-	char	*fSendBuffer;
-	int32	fSendPosition;
-	int32	fSendCode;
-	int32	*fDataSize;
-};
+//------------------------------------------------------------------------------
+    PortLink(const PortLink &link)
+    {
+		port_ok=link.port_ok;
 
+		fSendPort=link.fSendPort;
+		fReceivePort=create_port(30,"PortLink reply port");
+
+		fSendCode		= 0;
+		fSendBuffer		= new char[4096];
+		fSendPosition	= 8;
+		fDataSize		= (int32*)fSendBuffer + sizeof(int32);
+		*fDataSize		= 0;
+	}
+//------------------------------------------------------------------------------                        
+   	~PortLink(void)
+   	{
+		delete [] fSendBuffer;
+		delete_port(fReceivePort);
+   	}
+//------------------------------------------------------------------------------
+	void SetCode(int32 code)
+	{
+		fSendCode = code;
+		int32 *cast = (int32*)fSendBuffer;
+		*cast = code;
+	}
+//------------------------------------------------------------------------------		
+	void SetPort(port_id port)
+	{
+    	port_info pi;
+
+    	fSendPort=port;
+    	port_ok=(get_port_info(port, &pi) == B_OK)? true: false;
+	}
+//------------------------------------------------------------------------------		
+	port_id GetPort()
+	{
+		return fSendPort;
+	}		
+//------------------------------------------------------------------------------
+	status_t Flush(bigtime_t timeout = B_INFINITE_TIMEOUT)
+    {
+		status_t	write_stat;
+
+		if(!port_ok)
+			return B_BAD_VALUE;
+
+		if(timeout!=B_INFINITE_TIMEOUT)
+			write_stat=write_port_etc(fSendPort, AS_SERVER_PORTLINK, fSendBuffer,
+				fSendPosition, B_TIMEOUT, timeout);
+    	else
+			 write_stat=write_port(fSendPort, AS_SERVER_PORTLINK, fSendBuffer,
+				 fSendPosition);
+
+		fSendPosition=8;
+    	*fDataSize=0;
+
+		 return write_stat;
+    }
+//------------------------------------------------------------------------------		
+	status_t Attach(const void *data, size_t size)
+    {
+    	if (size <= 0)
+    		return B_ERROR;
+
+    	if (4096 - fSendPosition > (int32)size)
+    	{
+    		memcpy(fSendBuffer + fSendPosition, data, size);
+    		fSendPosition += size;
+    		*fDataSize+=size;
+    		return B_OK;
+    	}
+    	return B_NO_MEMORY;
+    }
+//------------------------------------------------------------------------------		
+   	template <class Type>
+    status_t Attach(Type data)
+   	{
+   		int32 size	= sizeof(Type);
+
+   		if (4096 - fSendPosition > size) {
+   			memcpy(fSendBuffer + fSendPosition, &data, size);
+   			fSendPosition += size;
+   			return B_OK;
+   		}
+   		return B_NO_MEMORY;
+   	}    
+//------------------------------------------------------------------------------		
+	status_t AttachString(const char *string)
+    {
+    	int16 len = (int16)strlen(string)+1;
+
+    	Attach<int16>(len);
+    	return Attach(string, len);
+    }			
+//------------------------------------------------------------------------------		
+	status_t FlushWithReply(PortMessage *msg,
+		bigtime_t timeout = B_INFINITE_TIMEOUT)
+    {
+    	if(!port_ok || !msg)
+    		return B_BAD_VALUE;
+
+    	// attach our reply port_id at the end
+    	Attach<int32>(fReceivePort);
+
+    	// Flush the thing....FOOSH! :P
+    	write_port(fSendPort, AS_SERVER_PORTLINK, fSendBuffer, fSendPosition);
+    	fSendPosition	= 8;
+    	*fDataSize=0;
+
+    	// Now we wait for the reply
+    	msg->ReadFromPort(fReceivePort,timeout);
+
+    	return B_OK;
+    }
+//------------------------------------------------------------------------------							
+	void MakeEmpty()
+    {
+    	fSendPosition=8;
+    	*fDataSize=0;
+    }   	
+//------------------------------------------------------------------------------
+private:
+   	bool 		port_ok;
+   	port_id		fSendPort;
+   	port_id 	fReceivePort;
+   	char		*fSendBuffer;
+   	int32		fSendPosition;
+   	int32		fSendCode;
+   	int32		*fDataSize;
+};
+//------------------------------------------------------------------------------
 #endif

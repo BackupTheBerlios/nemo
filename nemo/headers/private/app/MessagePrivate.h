@@ -20,11 +20,11 @@
 // Local Defines ---------------------------------------------------------------
 
 // Globals ---------------------------------------------------------------------
-
 extern "C" void		_msg_cache_cleanup_();
 extern "C" int		_init_message_();
 extern "C" int		_delete_message_();
 
+//------------------------------------------------------------------------------
 class BMessage::Private
 {
 	public:
@@ -56,6 +56,7 @@ class BMessage::Private
 	private:
 		BMessage*	fMessage;
 };
+//------------------------------------------------------------------------------
 
 #endif	// MESSAGEPRIVATE_H
 

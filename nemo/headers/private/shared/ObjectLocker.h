@@ -27,8 +27,8 @@
 //						void Unlock()	--	unlocks the class
 //------------------------------------------------------------------------------
 
-#ifndef OBJECTLOCKER_H
-#define OBJECTLOCKER_H
+#ifndef _OBJECTLOCKER_H
+#define _OBJECTLOCKER_H
 
 // Standard Includes -----------------------------------------------------------
 
@@ -48,8 +48,8 @@ template<class T>
 class BObjectLocker
 {
 	public:
-		inline BObjectLocker(T* looper);
-		inline BObjectLocker(T& locker);
+		inline BObjectLocker(T* client);
+		inline BObjectLocker(T& client);
 		
 		inline ~BObjectLocker();
 		
@@ -59,19 +59,19 @@ class BObjectLocker
 		T*		fLockClient;
 		bool	fIsLocked;
 };
-
+//------------------------------------------------------------------------------
 template<class T>
 BObjectLocker<T>::BObjectLocker(T* client)
 	:	fLockClient(client), fIsLocked(client->Lock())
 {
 }
-
+//------------------------------------------------------------------------------
 template<class T>
 BObjectLocker<T>::BObjectLocker(T& client)
 	:	fLockClient(&client), fIsLocked(client.Lock())
 {
 }
-
+//------------------------------------------------------------------------------
 template<class T>
 BObjectLocker<T>::~BObjectLocker()
 {
@@ -80,15 +80,16 @@ BObjectLocker<T>::~BObjectLocker()
 		fLockClient->Unlock();
 	}
 }
-
+//------------------------------------------------------------------------------
 template<class T>
 bool BObjectLocker<T>::IsLocked(void)
 {
 	return fIsLocked;
 }
-
+//------------------------------------------------------------------------------
 }	// namespace BPrivate
 
+//------------------------------------------------------------------------------
 #endif	//OBJECTLOCKER_H
 
 /*
@@ -97,4 +98,3 @@ bool BObjectLocker<T>::IsLocked(void)
  * $Id  $
  *
  */
-

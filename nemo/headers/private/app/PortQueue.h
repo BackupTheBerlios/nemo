@@ -24,35 +24,42 @@
 //	Description:	Facilitation class for reading and queueing messages from ports
 //  
 //------------------------------------------------------------------------------
-#ifndef PORTQUEUE_H_
-#define PORTQUEUE_H_
+#ifndef _PORTQUEUE_H
+#define _PORTQUEUE_H
 
-#include <OS.h>
+// Standard Includes -----------------------------------------------------------
 #include <queue>
 
+// System Includes -------------------------------------------------------------
+#include <OS.h>
+
+// Private Includes ------------------------------------------------------------
+
+// Type Defs -------------------------------------------------------------------
 class PortMessage;
 
-class PortQueue
-{
+//------------------------------------------------------------------------------
+class PortQueue {
 public:
-	PortQueue(const port_id &port);
-	~PortQueue(void);
-	bool IsInitialized(void) { return _init; }
+    					PortQueue(port_id port);
+	    				~PortQueue(void);
+    				
+    	bool			IsInitialized(void) { return _init; }
 
-	bool SetPort(const port_id &port);
-	port_id GetPort(void) { return _port; }
-	
-	bool MessagesWaiting(void) { return !_q.empty(); }
-	
-	void GetMessagesFromPort(bool wait_for_messages=false);
-	PortMessage *GetMessageFromQueue(void);
+    	bool			SetPort(port_id port);
+    	port_id			GetPort(void) { return _port; }
 
-	void MakeEmpty(void);
+    	bool			MessagesWaiting(void) { return !_q.empty(); }
+
+    	void			GetMessagesFromPort(bool wait_for_messages=false);
+    	PortMessage*	GetMessageFromQueue(void);
+
+    	void			MakeEmpty(void);
 	
 private:
 	std::queue<PortMessage*> _q;
-	bool _init;
-	port_id _port;
+	bool	_init;
+	port_id	_port;
 };
-
+//------------------------------------------------------------------------------
 #endif

@@ -45,81 +45,81 @@
 
 class BHandler;
 class BLooper;
-
-namespace BPrivate {
-	class TRoster;
-};
+//class BPrivate::TRoster;
 
 // BMessenger class ------------------------------------------------------------
 class BMessenger {
 public:	
-	BMessenger();
-	BMessenger(const char *signature, team_id team = -1,
-			   status_t *result = NULL);
-	BMessenger(const BHandler *handler, const BLooper *looper = NULL,
-			   status_t *result = NULL);
-	BMessenger(const BMessenger &from);
-	~BMessenger();
+						BMessenger();
+						
+						BMessenger(const char *signature,
+									team_id team = -1,
+									status_t *result = NULL);
+									
+						BMessenger(const BHandler *handler,
+									const BLooper *looper = NULL,
+									status_t *result = NULL);
+									
+						BMessenger(const BMessenger &from);
+						~BMessenger();
 
 	// Target
-
-	bool IsTargetLocal() const;
-	BHandler *Target(BLooper **looper) const;
-	bool LockTarget() const;
-	status_t LockTargetWithTimeout(bigtime_t timeout) const;
+	bool				IsTargetLocal() const;
+	BHandler*			Target(BLooper **looper) const;
+	bool				LockTarget() const;
+	status_t			LockTargetWithTimeout(bigtime_t timeout) const;
 
 	// Message sending
+	status_t			SendMessage(uint32 command, BHandler *replyTo = NULL) const;
+	status_t 			SendMessage(BMessage *message, BHandler *replyTo = NULL,
+						 			bigtime_t timeout = B_INFINITE_TIMEOUT) const;
+	status_t			SendMessage(BMessage *message, BMessenger replyTo,
+									bigtime_t timeout = B_INFINITE_TIMEOUT) const;
+	status_t			SendMessage(uint32 command, BMessage *reply) const;
+	status_t			SendMessage(BMessage *message, BMessage *reply,
+									bigtime_t deliveryTimeout = B_INFINITE_TIMEOUT,
+						 			bigtime_t replyTimeout = B_INFINITE_TIMEOUT) const;
 
-	status_t SendMessage(uint32 command, BHandler *replyTo = NULL) const;
-	status_t SendMessage(BMessage *message, BHandler *replyTo = NULL,
-						 bigtime_t timeout = B_INFINITE_TIMEOUT) const;
-	status_t SendMessage(BMessage *message, BMessenger replyTo,
-						 bigtime_t timeout = B_INFINITE_TIMEOUT) const;
-	status_t SendMessage(uint32 command, BMessage *reply) const;
-	status_t SendMessage(BMessage *message, BMessage *reply,
-						 bigtime_t deliveryTimeout = B_INFINITE_TIMEOUT,
-						 bigtime_t replyTimeout = B_INFINITE_TIMEOUT) const;
-	
 	// Operators and misc
+	BMessenger&			operator=(const BMessenger &from);
+	bool				operator==(const BMessenger &other) const;
 
-	BMessenger &operator=(const BMessenger &from);
-	bool operator==(const BMessenger &other) const;
-
-	bool IsValid() const;
-	team_id Team() const;
+	bool				IsValid() const;
+	team_id				Team() const;
 
 	//----- Private or reserved -----------------------------------------
-
 	class Private;
 
 private:
-	friend class BRoster;
-	friend class BPrivate::TRoster;
-	friend class BMessage;
-	friend class BQuery;
-	friend class Private;
-	friend inline void _set_message_reply_(BMessage *, BMessenger);
-	friend status_t swap_data(type_code, void *, size_t, swap_action);
-	friend bool operator<(const BMessenger &a, const BMessenger &b);
-	friend bool operator!=(const BMessenger &a, const BMessenger &b);
+	
+//friend	class	BRoster;
+//friend	class	BPrivate::TRoster;
+friend	class	BMessage;
+//friend	class	BQuery;
+friend	class	Private;
+	
+friend	inline	void		_set_message_reply_(BMessage *, BMessenger);
+friend			status_t	swap_data(type_code, void *, size_t, swap_action);
+friend			bool		operator<(const BMessenger &a, const BMessenger &b);
+friend			bool		operator!=(const BMessenger &a, const BMessenger &b);
 				
-	BMessenger(team_id team, port_id port, int32 token, bool preferred);
+						BMessenger(team_id team, port_id port,
+									int32 token, bool preferred);
 
-	void InitData(const char *signature, team_id team, status_t *result);
+		void			InitData(const char *signature,
+								team_id team, status_t *result);
 
 private:
-	port_id	fPort;
-	int32	fHandlerToken;
-	team_id	fTeam;
-	int32	extra0;
-	int32	extra1;
-	bool	fPreferredTarget;
-	bool	extra2;
-	bool	extra3;
-	bool	extra4;
+	port_id		fPort;
+	int32		fHandlerToken;
+	team_id		fTeam;
+	bool		fPreferredTarget;
 };
 
+//------------------------------------------------------------------------------
 _IMPEXP_BE bool operator<(const BMessenger &a, const BMessenger &b);
 _IMPEXP_BE bool operator!=(const BMessenger &a, const BMessenger &b);
+
+//------------------------------------------------------------------------------
 
 #endif	// _MESSENGER_H

@@ -24,8 +24,8 @@
 //	Description:	Maintains a global list of all loopers in a given team.
 //------------------------------------------------------------------------------
 
-#ifndef LOOPERLIST_H
-#define LOOPERLIST_H
+#ifndef _LOOPERLIST_H
+#define _LOOPERLIST_H
 
 // Standard Includes -----------------------------------------------------------
 #include <vector>
@@ -49,8 +49,8 @@ namespace BPrivate {
 
 class BLooperList
 {
-	public:
-		BLooperList();
+public:
+					BLooperList();
 
 		bool		Lock();
 		void		Unlock();
@@ -77,7 +77,7 @@ class BLooperList
 			uint32		id;
 		};
 
-	private:
+private:
 		static	bool	EmptySlotPred(LooperData& Data);
 		struct FindLooperPred
 		{
@@ -111,11 +111,14 @@ class BLooperList
 		std::vector<LooperData>	fData;
 };
 
+//------------------------------------------------------------------------------
 extern _IMPEXP_BE BLooperList gLooperList;
-}
+
+//------------------------------------------------------------------------------
+} // namespace BPrivate
 
 
-#endif	//LOOPERLIST_H
+#endif	// _LOOPERLIST_H
 
 /*
  * $Log $
@@ -123,4 +126,3 @@ extern _IMPEXP_BE BLooperList gLooperList;
  * $Id  $
  *
  */
-

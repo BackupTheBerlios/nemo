@@ -1,15 +1,50 @@
-o	implemented BLocker & tested it with 2 threads
-o	added BAutoLock, not tested yet
-o	added a temporary fix for the lack of atomic operations (i386 only)
+15/4/2004
+  o	Added ServerWindow and DirectFB initialization code into app_server
+  o	broken build...
+  o	Added to CVS
+  
+12/4/2004
+  o	changed the source tree to build for x86 and ARM in separate directories
+  o	written a new make file for ARM
+  o	first build of kernel_server, libroot & libbe for ARM!
+  
+10/4/2004
+  o	added initialization/finalization to libbe to free BMessage cache
+  o	BApplication quitting sequence fixed
+  o cleanup in libbe to avoid orphan ports/semaphores
+  
+9/4/2004
+  o	migration to eclipse 3, hopefully no more jumps
+  o	the makefile witnisses another rewrite to avoid unnecessary recompilation
+  o	thread functions in libroot revised -- thread suspension still doesn't work
+  o	spawned threads don't run immediately now, but after they are resumed
+  o	added single-line optional debugging to kernel_server, libroot & app_server files
+  o	most AppKit classes now working, excluding BRoster
+  o BApplication-app_server protocol yet to be revised
+  o	ARM cross-compiler built and tested successfully
+  o	libroot initialization and finalization mechanism revised
+
+5/2/2004
+  o	libroot functionality now divided between libroot & kernel_server
+  o added initialization & finalization code to libroot
+
+22/1/2004
+  o	rewrote the make file completely
+  o	most semaphore functions implemented in libroot
+  o	kernel layer code now is compiled in libroot.so separately
+  o	kit classes are now compiled separately in libbe.so
+  o	last version before migrating to Anjuta...
 
 22/12/2003
-o	cleaned up the make file and added the _REENTRANT flag
-o	implemented most thread & port functions in libroot.so and made changes in
-	all the rest of the code to make use of them instead of pthread* & msg* functions
+  o	cleaned up the make file and added the _REENTRANT flag
+  o	implemented most thread & port functions in libroot.so and made changes in
+	the rest of the code to make use of them instead of pthread* & msg* functions
+
+first version
+  o	implemented BLocker & tested it with 2 threads
+  o	added BAutoLock, not tested yet
+  o	added a temporary fix for the lack of atomic operations (i386 only)
+
 	
-22/1/2004
-o	rewrote the make file completely
-o	most semaphore functions implemented in libroot
-o	kernel layer code now is compiled in libroot.so separately
-o	kit classes are now compiled separately in libbe.so
-o	last version before migrating to Anjuta...
+
+

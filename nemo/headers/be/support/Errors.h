@@ -134,78 +134,78 @@ enum {
 
 /*-------------------------------------------------------------*/
 /*----- POSIX Errors ------------------------------------------*/
-#define E2BIG			(B_POSIX_ERROR_BASE + 1)
-#define ECHILD			(B_POSIX_ERROR_BASE + 2)
-#define EDEADLK			(B_POSIX_ERROR_BASE + 3)
-#define EFBIG			(B_POSIX_ERROR_BASE + 4)
-#define EMLINK			(B_POSIX_ERROR_BASE + 5)
-#define ENFILE			(B_POSIX_ERROR_BASE + 6)
-#define ENODEV			(B_POSIX_ERROR_BASE + 7)
-#define ENOLCK			(B_POSIX_ERROR_BASE + 8)
-#define ENOSYS			(B_POSIX_ERROR_BASE + 9)
-#define ENOTTY			(B_POSIX_ERROR_BASE + 10)
-#define ENXIO			(B_POSIX_ERROR_BASE + 11)
-#define ESPIPE			(B_POSIX_ERROR_BASE + 12)
-#define ESRCH			(B_POSIX_ERROR_BASE + 13)
-#define EFPOS			(B_POSIX_ERROR_BASE + 14)
-#define ESIGPARM		(B_POSIX_ERROR_BASE + 15)
-#define EDOM			(B_POSIX_ERROR_BASE + 16)
-#define ERANGE			(B_POSIX_ERROR_BASE + 17)
-#define EPROTOTYPE		(B_POSIX_ERROR_BASE + 18)
-#define EPROTONOSUPPORT	(B_POSIX_ERROR_BASE + 19)
-#define EPFNOSUPPORT	(B_POSIX_ERROR_BASE + 20)
-#define EAFNOSUPPORT	(B_POSIX_ERROR_BASE + 21)
-#define EADDRINUSE		(B_POSIX_ERROR_BASE + 22)
-#define EADDRNOTAVAIL	(B_POSIX_ERROR_BASE + 23)
-#define ENETDOWN		(B_POSIX_ERROR_BASE + 24)
-#define ENETUNREACH		(B_POSIX_ERROR_BASE + 25)
-#define ENETRESET		(B_POSIX_ERROR_BASE + 26)
-#define ECONNABORTED	(B_POSIX_ERROR_BASE + 27)
-#define ECONNRESET		(B_POSIX_ERROR_BASE + 28)
-#define EISCONN			(B_POSIX_ERROR_BASE + 29)
-#define ENOTCONN		(B_POSIX_ERROR_BASE + 30)
-#define ESHUTDOWN		(B_POSIX_ERROR_BASE + 31)
-#define ECONNREFUSED	(B_POSIX_ERROR_BASE + 32)
-#define EHOSTUNREACH	(B_POSIX_ERROR_BASE + 33)
-#define ENOPROTOOPT		(B_POSIX_ERROR_BASE + 34)
-#define ENOBUFS			(B_POSIX_ERROR_BASE + 35)
-#define EINPROGRESS		(B_POSIX_ERROR_BASE + 36)
-#define EALREADY		(B_POSIX_ERROR_BASE + 37)
-#define EILSEQ          (B_POSIX_ERROR_BASE + 38)
-#define ENOMSG          (B_POSIX_ERROR_BASE + 39)
-#define ESTALE          (B_POSIX_ERROR_BASE + 40)
-#define EOVERFLOW       (B_POSIX_ERROR_BASE + 41)
-#define EMSGSIZE        (B_POSIX_ERROR_BASE + 42)
-#define EOPNOTSUPP      (B_POSIX_ERROR_BASE + 43)                       
-#define ENOTSOCK		(B_POSIX_ERROR_BASE + 44)
-#define EHOSTDOWN		(B_POSIX_ERROR_BASE + 45)
-
-/*---- POSIX errors that can be mapped to BeOS error codes ----*/
-#define ENOMEM			B_NO_MEMORY
-#define EACCES			B_PERMISSION_DENIED
-#define EINTR			B_INTERRUPTED
-#define EIO				B_IO_ERROR
-#define EBUSY			B_BUSY
-#define EFAULT			B_BAD_ADDRESS
-#define ETIMEDOUT		B_TIMED_OUT
-#define EAGAIN 			B_WOULD_BLOCK	/* SysV compatibility */
-#define EWOULDBLOCK 	B_WOULD_BLOCK	/* BSD compatibility */
-#define EBADF			B_FILE_ERROR
-#define EEXIST			B_FILE_EXISTS
-#define EINVAL			B_BAD_VALUE
-#define ENAMETOOLONG	B_NAME_TOO_LONG
-#define ENOENT			B_ENTRY_NOT_FOUND
-#define EPERM			B_NOT_ALLOWED
-#define ENOTDIR			B_NOT_A_DIRECTORY
-#define EISDIR			B_IS_A_DIRECTORY
-#define ENOTEMPTY		B_DIRECTORY_NOT_EMPTY
-#define ENOSPC			B_DEVICE_FULL
-#define EROFS			B_READ_ONLY_DEVICE
-#define EMFILE			B_NO_MORE_FDS
-#define EXDEV			B_CROSS_DEVICE_LINK
-#define ELOOP			B_LINK_LIMIT
-#define ENOEXEC			B_NOT_AN_EXECUTABLE
-#define EPIPE			B_BUSTED_PIPE
+//#define E2BIG			(B_POSIX_ERROR_BASE + 1)
+//#define ECHILD			(B_POSIX_ERROR_BASE + 2)
+//#define EDEADLK			(B_POSIX_ERROR_BASE + 3)
+//#define EFBIG			(B_POSIX_ERROR_BASE + 4)
+//#define EMLINK			(B_POSIX_ERROR_BASE + 5)
+//#define ENFILE			(B_POSIX_ERROR_BASE + 6)
+//#define ENODEV			(B_POSIX_ERROR_BASE + 7)
+//#define ENOLCK			(B_POSIX_ERROR_BASE + 8)
+//#define ENOSYS			(B_POSIX_ERROR_BASE + 9)
+//#define ENOTTY			(B_POSIX_ERROR_BASE + 10)
+//#define ENXIO			(B_POSIX_ERROR_BASE + 11)
+//#define ESPIPE			(B_POSIX_ERROR_BASE + 12)
+//#define ESRCH			(B_POSIX_ERROR_BASE + 13)
+//#define EFPOS			(B_POSIX_ERROR_BASE + 14)
+//#define ESIGPARM		(B_POSIX_ERROR_BASE + 15)
+//#define EDOM			(B_POSIX_ERROR_BASE + 16)
+//#define ERANGE			(B_POSIX_ERROR_BASE + 17)
+//#define EPROTOTYPE		(B_POSIX_ERROR_BASE + 18)
+//#define EPROTONOSUPPORT	(B_POSIX_ERROR_BASE + 19)
+//#define EPFNOSUPPORT	(B_POSIX_ERROR_BASE + 20)
+//#define EAFNOSUPPORT	(B_POSIX_ERROR_BASE + 21)
+//#define EADDRINUSE		(B_POSIX_ERROR_BASE + 22)
+//#define EADDRNOTAVAIL	(B_POSIX_ERROR_BASE + 23)
+//#define ENETDOWN		(B_POSIX_ERROR_BASE + 24)
+//#define ENETUNREACH		(B_POSIX_ERROR_BASE + 25)
+//#define ENETRESET		(B_POSIX_ERROR_BASE + 26)
+//#define ECONNABORTED	(B_POSIX_ERROR_BASE + 27)
+//#define ECONNRESET		(B_POSIX_ERROR_BASE + 28)
+//#define EISCONN			(B_POSIX_ERROR_BASE + 29)
+//#define ENOTCONN		(B_POSIX_ERROR_BASE + 30)
+//#define ESHUTDOWN		(B_POSIX_ERROR_BASE + 31)
+//#define ECONNREFUSED	(B_POSIX_ERROR_BASE + 32)
+//#define EHOSTUNREACH	(B_POSIX_ERROR_BASE + 33)
+//#define ENOPROTOOPT		(B_POSIX_ERROR_BASE + 34)
+//#define ENOBUFS			(B_POSIX_ERROR_BASE + 35)
+//#define EINPROGRESS		(B_POSIX_ERROR_BASE + 36)
+//#define EALREADY		(B_POSIX_ERROR_BASE + 37)
+//#define EILSEQ          (B_POSIX_ERROR_BASE + 38)
+//#define ENOMSG          (B_POSIX_ERROR_BASE + 39)
+//#define ESTALE          (B_POSIX_ERROR_BASE + 40)
+//#define EOVERFLOW       (B_POSIX_ERROR_BASE + 41)
+//#define EMSGSIZE        (B_POSIX_ERROR_BASE + 42)
+//#define EOPNOTSUPP      (B_POSIX_ERROR_BASE + 43)                       
+//#define ENOTSOCK		(B_POSIX_ERROR_BASE + 44)
+//#define EHOSTDOWN		(B_POSIX_ERROR_BASE + 45)
+//
+///*---- POSIX errors that can be mapped to BeOS error codes ----*/
+//#define ENOMEM			B_NO_MEMORY
+//#define EACCES			B_PERMISSION_DENIED
+//#define EINTR			B_INTERRUPTED
+//#define EIO				B_IO_ERROR
+//#define EBUSY			B_BUSY
+//#define EFAULT			B_BAD_ADDRESS
+//#define ETIMEDOUT		B_TIMED_OUT
+//#define EAGAIN 			B_WOULD_BLOCK	/* SysV compatibility */
+//#define EWOULDBLOCK 	B_WOULD_BLOCK	/* BSD compatibility */
+//#define EBADF			B_FILE_ERROR
+//#define EEXIST			B_FILE_EXISTS
+//#define EINVAL			B_BAD_VALUE
+//#define ENAMETOOLONG	B_NAME_TOO_LONG
+//#define ENOENT			B_ENTRY_NOT_FOUND
+//#define EPERM			B_NOT_ALLOWED
+//#define ENOTDIR			B_NOT_A_DIRECTORY
+//#define EISDIR			B_IS_A_DIRECTORY
+//#define ENOTEMPTY		B_DIRECTORY_NOT_EMPTY
+//#define ENOSPC			B_DEVICE_FULL
+//#define EROFS			B_READ_ONLY_DEVICE
+//#define EMFILE			B_NO_MORE_FDS
+//#define EXDEV			B_CROSS_DEVICE_LINK
+//#define ELOOP			B_LINK_LIMIT
+//#define ENOEXEC			B_NOT_AN_EXECUTABLE
+//#define EPIPE			B_BUSTED_PIPE
 
 /*---- new error codes that can be mapped to POSIX errors ----*/
 #define	B_BUFFER_OVERFLOW	EOVERFLOW

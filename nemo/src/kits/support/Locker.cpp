@@ -1,17 +1,27 @@
 //
-//	$Id: Locker.cpp,v 1.1 2004/03/19 13:06:20 fadi_edward Exp $
+//	$Id: Locker.cpp,v 1.2 2004/04/15 01:31:11 mahmoudfg Exp $
 //
 //	This file contains the OpenBeOS implementation of BLocker.
 //
+//------------------------------------------------------------------------------
 
+// Standard Includes -----------------------------------------------------------
+
+// System Includes -------------------------------------------------------------
 #include <Locker.h>
 #include <OS.h>
 #include <SupportDefs.h>
 
-#if DEBUG
-	#include "nemo_debug.h"
+// Debugging -------------------------------------------------------------------
+#include "nemo_debug.h"
+#if DEBUG_LIBBE
+	#define OUT(x...)	fprintf(LIBBE_LOG, "BLocker"x);
+	#define DBG(x)		x;
+#else
+	#define DBG(x)		;
 #endif
 
+//------------------------------------------------------------------------------
 //
 // Data Member Documentation:
 //
@@ -44,38 +54,28 @@
 // All constructors just pass their arguments to InitLocker().  Note that
 // the default for "name" is "some BLocker" and "benaphore_style" is true.
 //
-
-//=============================================================================
-
+//------------------------------------------------------------------------------
 BLocker::BLocker()
 {
 	InitLocker("some BLocker", true);
 }
-
-//=============================================================================
-
+//------------------------------------------------------------------------------
 BLocker::BLocker(const char *name)
 {
 	InitLocker(name, true);
 }
-
-//=============================================================================
-
+//------------------------------------------------------------------------------
 BLocker::BLocker(bool benaphore_style)
 {
 	InitLocker("some BLocker", benaphore_style);
 }
-
-//=============================================================================
-
+//------------------------------------------------------------------------------
 BLocker::BLocker(const char *name,
                  bool benaphore_style)
 {
 	InitLocker(name, benaphore_style);
 }
-
-//=============================================================================
-
+//------------------------------------------------------------------------------
 //
 //	This constructor is not documented.  The final argument is ignored for
 //	now.  In Be's headers, its called "for_IPC".  DO NOT USE THIS
@@ -87,9 +87,7 @@ BLocker::BLocker(const char *name,
 {
 	InitLocker(name, benaphore_style);
 }
-
-//=============================================================================
-
+//------------------------------------------------------------------------------
 //
 // The destructor just deletes the semaphore.  By deleting the semaphore,
 // any threads waiting to acquire the BLocker will be unblocked.
@@ -98,9 +96,7 @@ BLocker::~BLocker()
 {
 	delete_sem(fSemaphoreID);
 }
-
-//=============================================================================
-
+//------------------------------------------------------------------------------
 bool
 BLocker::Lock(void)
 {
@@ -108,9 +104,7 @@ BLocker::Lock(void)
 
     return (AcquireLock(B_INFINITE_TIMEOUT, &result));
 }
-
-//=============================================================================
-
+//------------------------------------------------------------------------------
 status_t
 BLocker::LockWithTimeout(bigtime_t timeout)
 {
@@ -119,9 +113,7 @@ BLocker::LockWithTimeout(bigtime_t timeout)
 	AcquireLock(timeout, &result);
     return result;
 }
-
-//=============================================================================
-
+//------------------------------------------------------------------------------
 void
 BLocker::Unlock(void)
 {
@@ -158,17 +150,13 @@ BLocker::Unlock(void)
 	    }
     }		
 }
-
-//=============================================================================
-
+//------------------------------------------------------------------------------
 thread_id
 BLocker::LockingThread(void) const
 {
     return fLockOwner;
 }
-
-//=============================================================================
-
+//------------------------------------------------------------------------------
 bool
 BLocker::IsLocked(void) const
 {
@@ -177,37 +165,29 @@ BLocker::IsLocked(void) const
 	// find_thread() to the fLockOwner.
 	return (find_thread(NULL) == fLockOwner);
 }
-
-//=============================================================================
-
+//------------------------------------------------------------------------------
 int32
 BLocker::CountLocks(void) const
 {
     return fRecursiveCount;
 }
-
-//=============================================================================
-
+//------------------------------------------------------------------------------
 int32
 BLocker::CountLockRequests(void) const
 {
     return fBenaphoreCount;
 }
-
-//=============================================================================
-
+//------------------------------------------------------------------------------
 sem_id
 BLocker::Sem(void) const
 {
     return fSemaphoreID;
 }
-
-//=============================================================================
-
+//------------------------------------------------------------------------------
 void
 BLocker::InitLocker(const char *name,
                   bool benaphore)
-{
+{	
 	if (benaphore) {
 		// Because this is a benaphore, initialize the benaphore count and
 		// create the semaphore.  Because this is a benaphore, the semaphore
@@ -229,9 +209,7 @@ BLocker::InitLocker(const char *name,
 	// The lock is currently not acquired so the recursive count is zero.
 	fRecursiveCount = 0;
 }
-
-//=============================================================================
-
+//------------------------------------------------------------------------------
 bool
 BLocker::AcquireLock(bigtime_t timeout,
                status_t *error)
@@ -311,7 +289,4 @@ BLocker::AcquireLock(bigtime_t timeout,
    	// Return true if the lock has been acquired.
     return (*error == B_NO_ERROR);
 }
-
-//=============================================================================
-
-
+//------------------------------------------------------------------------------
