@@ -19,48 +19,53 @@ inline float abs(float f) { return f < 0 ? -f : f; }
 void PlayBuffer(void *cookie, void * buffer, size_t size, const media_raw_audio_format & format)
 {
 	if (size != (size_t)read(fd, buffer, size)) {
+		//  implemented
 		sp->SetHasData(false);
+		//  implemented
 		release_sem(finished);
 	}
 }
 
 int main(int argc, char *argv[])
 {
-	printf("This is a soundplayer test file");
+	printf("This is a soundplayer test file\n");
 	fd = open((argc > 1) ? argv[1] : FILENAME, O_RDONLY);
 	if (fd < 0)
 		return -1;
 		
 	lseek(fd, 44, SEEK_SET); // skip wav header
-
+	//  implemented
 	new BApplication("application/x-vnd.SoundPlayTest");
+	//  implemented
 	finished = create_sem(0, "finish wait");
 	
 	media_raw_audio_format format;
-//	format = media_raw_audio_format::wildcard;
+	format = media_raw_audio_format::wildcard;
 	format.frame_rate = 44100;
 	format.channel_count = 2;
 	format.format = media_raw_audio_format::B_AUDIO_SHORT;
 	format.byte_order = B_MEDIA_LITTLE_ENDIAN;
 	format.buffer_size = 4 * 4096;
 
-	
+	//  implemented
 	sp = new NAMESPACE BSoundPlayer(&format, "sound player test", PlayBuffer);
 
 	printf("playing soundfile\n");
+	//  implemented
 	sp->SetHasData(true);
+	// depends on BMediaRoster
 	sp->Start();
 
 	printf("volume now %.2f\n", sp->Volume());
 	printf("volumeDB now %.2f\n", sp->VolumeDB());
 
 	float f;
-//	media_node out_node;
+	media_node out_node;
 	int32 out_parameter;
 	float out_min_dB=5;
 	float out_max_dB=5.1;
 
-//	sp->GetVolumeInfo(&out_node, &out_parameter, &out_min_dB, &out_max_dB);
+	sp->GetVolumeInfo(&out_node, &out_parameter, &out_min_dB, &out_max_dB);
 
 	printf("out_min_dB %.2f\n", out_min_dB);
 	printf("out_max_dB %.2f\n", out_max_dB);

@@ -10,11 +10,11 @@
 #########################################################################
 
 # compilers
-C_COMPILER		:= $(CC)
-CPP_COMPILER	:= $(CXX)
+C_COMPILER		:= arm-linuc-gcc
+CPP_COMPILER	:= arm-linux-gcc
 
 # output directories
-BUILD_DIR	:= ./build/x86
+BUILD_DIR	:= ./build/arm
 OBJ_DIR		:= $(BUILD_DIR)/obj
 LIB_DIR		:= $(BUILD_DIR)/lib
 BIN_DIR		:= $(BUILD_DIR)/bin
@@ -77,39 +77,6 @@ SRC_BASE	:= ./src
 CXXFLAGS	:= -g -D_REENTRANT -D__NEMO__ -DDEBUG_NEMO=1 -Wno-multichar
 
 #########################################################################
-# TARGET libroot.so
-#########################################################################
-LIBROOT_INCLUDES := $(INCLUDE_ALL_BE) $(INCLUDE_ALL_PRIVATE)
-
-$(OBJ_DIR)/libroot/%.o: $(SRC_BASE)/kernel/libroot/os/%.c
-	$(C_COMPILER) $(CXXFLAGS) -c -fPIC $(LIBROOT_INCLUDES) -o $@ $<
-	
-LIBROOT_DEP	:=	kernel_server \
-				\
-				$(OBJ_DIR)/libroot/nemo_debug.o \
-				$(OBJ_DIR)/libroot/libroot.o \
-				$(OBJ_DIR)/libroot/port.o \
-				$(OBJ_DIR)/libroot/sem.o \
-				$(OBJ_DIR)/libroot/thread.o \
-				$(OBJ_DIR)/libroot/team.o \
-				$(OBJ_DIR)/libroot/debug.o
-
-libroot: $(LIBROOT_DEP)
-	$(C_COMPILER) -shared -o $(LIB_DIR)/libroot.so \
-	\
-	$(OBJ_DIR)/libroot/nemo_debug.o \
-	$(OBJ_DIR)/libroot/libroot.o \
-	$(OBJ_DIR)/libroot/port.o \
-	$(OBJ_DIR)/libroot/sem.o \
-	$(OBJ_DIR)/libroot/thread.o \
-	$(OBJ_DIR)/libroot/team.o \
-	$(OBJ_DIR)/libroot/debug.o \
-	-lpthread
-	
-#######  install lib
-#	cp -f $(LIB_DIR)/libroot.so /usr/lib
-
-#########################################################################
 # TARGET libbe.so
 #########################################################################
 LIBBE_INCLUDES := $(INCLUDE_ALL_BE) $(INCLUDE_ALL_PRIVATE) -I$(SRC_BASE)/kits/support	-I$(SRC_BASE)/kits/storage
@@ -126,7 +93,8 @@ $(OBJ_DIR)/libbe/%.o: $(SRC_BASE)/kits/interface/%.cpp
 $(OBJ_DIR)/libbe/%.o: $(SRC_BASE)/kits/storage/%.cpp
 	$(CPP_COMPILER) $(CXXFLAGS) -c -fPIC $(LIBBE_INCLUDES) -o $@ $<
 	
-LIBBE_DEP	:=	$(OBJ_DIR)/libbe/InitTerminateLibBe.o \
+LIBBE_DEP	:=	libroot \
+				$(OBJ_DIR)/libbe/InitTerminateLibBe.o \
 				\
 				$(OBJ_DIR)/libbe/Archivable.o \
 				$(OBJ_DIR)/libbe/BlockCache.o \
@@ -159,8 +127,11 @@ LIBBE_DEP	:=	$(OBJ_DIR)/libbe/InitTerminateLibBe.o \
 				$(OBJ_DIR)/libbe/Point.o \
 				$(OBJ_DIR)/libbe/Window.o \
 				\
-				$(OBJ_DIR)/libbe/Entry.o
-
+				$(OBJ_DIR)/libbe/Directory.o \
+				$(OBJ_DIR)/libbe/Entry.o \
+				$(OBJ_DIR)/libbe/File.o \
+				$(OBJ_DIR)/libbe/Path.o \
+				$(OBJ_DIR)/libbe/SymLink.o
 				
 libbe: $(LIBBE_DEP)
 	$(CPP_COMPILER) -shared -o $(LIB_DIR)/libbe.so \
@@ -197,11 +168,14 @@ libbe: $(LIBBE_DEP)
 	$(OBJ_DIR)/libbe/Point.o \
 	$(OBJ_DIR)/libbe/Window.o \
 	\
+	$(OBJ_DIR)/libbe/Directory.o \
 	$(OBJ_DIR)/libbe/Entry.o \
+	$(OBJ_DIR)/libbe/File.o \
+	$(OBJ_DIR)/libbe/Path.o \
+	$(OBJ_DIR)/libbe/SymLink.o \
 	\
 	-lroot
-
-
+	
 #########################################################################
 # libmedia target added by fadi raafat on 17-4-2004
 #########################################################################
@@ -233,14 +207,13 @@ LIBMEDIA_DEP:=	$(OBJ_DIR)/libmedia/BufferConsumer.o \
 				$(OBJ_DIR)/libmedia/MediaExtractor.o \
 				$(OBJ_DIR)/libmedia/MediaFile.o \
 				$(OBJ_DIR)/libmedia/MediaFiles.o \
+				$(OBJ_DIR)/libmedia/MediaFormats.o \
 				$(OBJ_DIR)/libmedia/MediaNode.o \
 				$(OBJ_DIR)/libmedia/MediaPlugin.o \
-				$(OBJ_DIR)/libmedia/MediaRoster.o \
 				$(OBJ_DIR)/libmedia/MediaTheme.o \
 				$(OBJ_DIR)/libmedia/MediaTrack.o \
 				$(OBJ_DIR)/libmedia/!missing_symbols.o \
 				$(OBJ_DIR)/libmedia/Notifications.o \
-				$(OBJ_DIR)/libmedia/ParameterWeb.o \
 				$(OBJ_DIR)/libmedia/PlaySound.o \
 				$(OBJ_DIR)/libmedia/PluginManager.o \
 				$(OBJ_DIR)/libmedia/PortPool.o \
@@ -250,6 +223,7 @@ LIBMEDIA_DEP:=	$(OBJ_DIR)/libmedia/BufferConsumer.o \
 				$(OBJ_DIR)/libmedia/SamplingrateConverter.o \
 				$(OBJ_DIR)/libmedia/SharedBufferList.o \
 				$(OBJ_DIR)/libmedia/Sound.o \
+				$(OBJ_DIR)/libmedia/SoundFile.o \
 				$(OBJ_DIR)/libmedia/SoundPlayer.o \
 				$(OBJ_DIR)/libmedia/SoundPlayNode.o \
 				$(OBJ_DIR)/libmedia/TimeCode.o \
@@ -286,14 +260,13 @@ libmedia: $(LIBMEDIA_DEP)
 	$(OBJ_DIR)/libmedia/MediaExtractor.o \
 	$(OBJ_DIR)/libmedia/MediaFile.o \
 	$(OBJ_DIR)/libmedia/MediaFiles.o \
+	$(OBJ_DIR)/libmedia/MediaFormats.o \
 	$(OBJ_DIR)/libmedia/MediaNode.o \
 	$(OBJ_DIR)/libmedia/MediaPlugin.o \
-	$(OBJ_DIR)/libmedia/MediaRoster.o \
 	$(OBJ_DIR)/libmedia/MediaTheme.o \
 	$(OBJ_DIR)/libmedia/MediaTrack.o \
 	$(OBJ_DIR)/libmedia/!missing_symbols.o \
 	$(OBJ_DIR)/libmedia/Notifications.o \
-	$(OBJ_DIR)/libmedia/ParameterWeb.o \
 	$(OBJ_DIR)/libmedia/PlaySound.o \
 	$(OBJ_DIR)/libmedia/PluginManager.o \
 	$(OBJ_DIR)/libmedia/PortPool.o \
@@ -303,6 +276,7 @@ libmedia: $(LIBMEDIA_DEP)
 	$(OBJ_DIR)/libmedia/SamplingrateConverter.o \
 	$(OBJ_DIR)/libmedia/SharedBufferList.o \
 	$(OBJ_DIR)/libmedia/Sound.o \
+	$(OBJ_DIR)/libmedia/SoundFile.o \
 	$(OBJ_DIR)/libmedia/SoundPlayer.o \
 	$(OBJ_DIR)/libmedia/SoundPlayNode.o \
 	$(OBJ_DIR)/libmedia/TimeCode.o \
