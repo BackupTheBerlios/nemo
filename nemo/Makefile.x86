@@ -413,13 +413,13 @@ wnd_test: $(WND_TEST_DEP)
 .PHONEY: clean
 clean:
 	rm -f \
-	$(OBJ_DIR)/*.o \
-	$(OBJ_DIR)/kernel_server/*.* \
-	$(OBJ_DIR)/libroot/*.* \
-	$(OBJ_DIR)/libbe/*.* \
-	$(OBJ_DIR)/libnetapi/*.* \
-	$(OBJ_DIR)/app_server/*.* \
+	$(OBJ_DIR)/* \
+	$(OBJ_DIR)/kernel_server/* \
+	$(OBJ_DIR)/libroot/* \
+	$(OBJ_DIR)/libbe/* \
+	$(OBJ_DIR)/libnetapi/* \
+	$(OBJ_DIR)/app_server/* \
 	\
-	$(LIB_DIR)/*.* \
+	$(LIB_DIR)/* \
 	\
-	$(BIN_DIR)/*.*
+	$(BIN_DIR)/*
